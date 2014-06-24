@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo $$ >> /tmp/pin_cpu.pid
+
+NUM_PROC=$(nproc || echo 30)
+NUM_PROC=$((NUM_PROC + 2))
+
+for i in $(seq 1 ${NUM_PROC}); do
+    bash -c "sleep 5; exec openssl speed" &
+    echo $! >> /tmp/pin_cpu.pid
+done

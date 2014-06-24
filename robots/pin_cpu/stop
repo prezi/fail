@@ -1,0 +1,4 @@
+#!/bin/bash
+
+kill $(cat /tmp/pin_cpu.pid)
+rm /tmp/pin_cpu.pid
