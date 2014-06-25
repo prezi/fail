@@ -1,0 +1,23 @@
+// Kotlin plugin
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.7.1217'
+	}
+}
+apply plugin: "kotlin"
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile 'org.jetbrains.kotlin:kotlin-stdlib:0.7.1217'
+}
+
+// Run / build
+apply plugin: "application"
+mainClassName = "com.prezi.anthro.AnthroPackage"
+
