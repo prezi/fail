@@ -14,10 +14,17 @@ repositories {
 }
 
 dependencies {
-	compile 'org.jetbrains.kotlin:kotlin-stdlib:0.7.1217'
+	compile 'org.jetbrains.kotlin:kotlin-stdlib:0.7.1217',
+            'com.amazonaws:aws-java-sdk:1.8.0'
+
 }
 
 // Run / build
 apply plugin: "application"
 mainClassName = "com.prezi.anthro.AnthroPackage"
+
+run {
+    // Pass system properties when using `gradle run`
+    systemProperties = System.properties
+}
 
