@@ -9,7 +9,7 @@ import com.jcraft.jsch.agentproxy.ConnectorFactory
 import com.prezi.anthro.inHome
 
 
-class Ssh {
+class Ssh(val config: SshConfig = SshConfig()) {
     fun useSshAgent(jsch: JSch, session: Session) {
         session.setConfig("PreferredAuthentications", "publickey")
         val sshAgentConnector = ConnectorFactory.getDefault()?.createConnector()
@@ -21,8 +21,8 @@ class Ssh {
         val jsch = JSch()
 
         val session = jsch.getSession(host)!!
-        session.setConfig("StrictHostKeyChecking", "no")
-        useSshAgent(jsch, session)
+        if (config.shouldDisableHostKeyChecking()) session.setConfig("StrictHostKeyChecking", "no")
+        if (config.getAuthType() == AuthType.SSH_AGENT) useSshAgent(jsch, session)
         session.connect()
 
         val channel = session.openChannel("exec") as ChannelExec

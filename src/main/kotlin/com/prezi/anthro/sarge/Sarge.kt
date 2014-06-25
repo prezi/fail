@@ -15,6 +15,5 @@ class Sarge(config: SargeConfig = SargeConfig()) {
                 instance -> ssh.exec(instance.getPublicIpAddress()!!, "echo hello from \$HOSTNAME")
             }
         }
-//        ssh.exec("oam3.us.prezi.private", "echo hello from \$HOSTNAME")
     }
 }
