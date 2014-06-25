@@ -1,5 +1,7 @@
 package com.prezi.anthro.sarge
 
+import org.slf4j.LoggerFactory
+
 import com.jcraft.jsch.JSch
 import com.jcraft.jsch.ChannelExec
 import com.jcraft.jsch.agentproxy.RemoteIdentityRepository
@@ -10,7 +12,10 @@ import com.prezi.anthro.inHome
 
 
 class Ssh(val config: SshConfig = SshConfig()) {
+    val logger = LoggerFactory.getLogger(this.javaClass)!!
+
     fun useSshAgent(jsch: JSch, session: Session) {
+        logger.debug("using ssh-agent for authentication")
         session.setConfig("PreferredAuthentications", "publickey")
         val sshAgentConnector = ConnectorFactory.getDefault()?.createConnector()
         val sshAgentIdentityRepository = RemoteIdentityRepository(sshAgentConnector)
@@ -18,6 +23,8 @@ class Ssh(val config: SshConfig = SshConfig()) {
     }
 
     fun exec(host: String, cmd: String) {
+        logger.info("executing on ${host}: ${cmd}")
+
         val jsch = JSch()
 
         val session = jsch.getSession(host)!!
@@ -31,7 +38,7 @@ class Ssh(val config: SshConfig = SshConfig()) {
         channel.connect()
 
         val reader = inputStream.buffered().reader()
-        reader.forEachLine { line -> println(line) }
+        reader.forEachLine { line -> logger.info("response line: ${line}") }
 
         channel.disconnect()
         session.disconnect()
