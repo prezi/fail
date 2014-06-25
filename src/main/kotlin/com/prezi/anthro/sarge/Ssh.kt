@@ -19,9 +19,9 @@ class Ssh {
 
     fun exec(host: String, cmd: String) {
         val jsch = JSch()
-        jsch.setKnownHosts(inHome(".ssh/known_hosts"))
 
         val session = jsch.getSession(host)!!
+        session.setConfig("StrictHostKeyChecking", "no")
         useSshAgent(jsch, session)
         session.connect()
 
