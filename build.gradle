@@ -30,18 +30,8 @@ dependencies {
 
 }
 
-// Run / build
 apply plugin: "application"
 mainClassName = "com.prezi.anthro.AnthroPackage"
-
-run {
-    // Pass system properties when using `gradle run`
-    systemProperties = System.properties
-    // pass -PappArgs=foo,bar to main when using `gradle run`
-    if (project.hasProperty("appArgs")) {
-        args(appArgs.split(","))
-    }
-}
 
 // Package application
 task packageRobots(type:Tar) {
@@ -51,3 +41,16 @@ task packageRobots(type:Tar) {
 }
 applicationDistribution.from(packageRobots)
 distTar { compression Compression.GZIP }
+
+// Run with gradle run
+run {
+    // Pass system properties when using `gradle run`
+    systemProperties = System.properties
+    // pass -PappArgs=foo,bar to main when using `gradle run`
+    if (project.hasProperty("appArgs")) {
+        args(appArgs.split(","))
+    }
+    // Make sure we have the robots.tgz ready
+    dependsOn packageRobots
+}
+
