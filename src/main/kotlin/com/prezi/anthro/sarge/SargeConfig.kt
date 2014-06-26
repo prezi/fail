@@ -8,5 +8,5 @@ enum class SargeConfigKey(val key: String) {
 }
 
 class SargeConfig : Config<SargeConfigKey>() {
-    fun getTargzPath() = getString(SargeConfigKey.TGZ_PATH) ?: "build/distributions/robots.tgz"
+    fun getTargzPath() = getString(SargeConfigKey.TGZ_PATH) ?: "robots.tgz"
 }

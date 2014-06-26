@@ -44,6 +44,10 @@ run {
 }
 
 // Package application
-distTar {
+task packageRobots(type:Tar) {
+    baseName "robots"
+    from "robots"
     compression Compression.GZIP
 }
+applicationDistribution.from(packageRobots)
+distTar { compression Compression.GZIP }
