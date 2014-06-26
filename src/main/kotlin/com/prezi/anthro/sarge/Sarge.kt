@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory
 
 import com.prezi.anthro.sarge.scout.ScoutFactory
 import com.prezi.anthro.sarge.mercy.MercyFactory
+import kotlin.concurrent.thread
 
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
@@ -27,7 +28,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
         val deathRow = mercy.spare(targets)
         logger.info("Targets on death row after ${config.getMercyType()}: ${deathRow}")
 
-        deathRow.forEach {
+        deathRow forEach { thread(start = true, block = {
             logger.info("Robot '${robot}' will hammer ${it} for ${runtime} seconds")
             Ssh(it)
                     .exec("echo \$HOSTNAME")
@@ -36,6 +37,8 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
                     .exec("cd ${dir} && tar -xzf robots.tgz && ./runner.sh ${robot} ${runtime}")
                     .exec("rm -rf ${dir}")
                     .close()
+
+        })
         }
     }
 }
