@@ -13,6 +13,9 @@ enum class AuthType {
 }
 
 class SshConfig : Config<SshConfigKey>() {
-    fun getAuthType() =  AuthType.valueOf(getString(SshConfigKey.AUTH_TYPE) ?: AuthType.SSH_AGENT.toString())
-    fun shouldDisableHostKeyChecking() = getBool(SshConfigKey.DISABLE_STRICT_HOST_KEY_CHECKING, true)
+    val DEFAULT_AUTH_TYPE = AuthType.SSH_AGENT
+    val DEFAULT_DISABLE_STRICT_HOST_KEY_CHECKING = true
+
+    fun getAuthType() =  AuthType.valueOf(getString(SshConfigKey.AUTH_TYPE) ?: DEFAULT_AUTH_TYPE.toString())
+    fun shouldDisableHostKeyChecking() = getBool(SshConfigKey.DISABLE_STRICT_HOST_KEY_CHECKING, DEFAULT_DISABLE_STRICT_HOST_KEY_CHECKING)
 }

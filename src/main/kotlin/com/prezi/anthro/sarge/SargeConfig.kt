@@ -1,12 +1,22 @@
 package com.prezi.anthro.sarge
 
 import com.prezi.anthro.Config
+import java.security.InvalidParameterException
 
 enum class SargeConfigKey(val key: String) {
-    TGZ_PATH : SargeConfigKey("anthro.sarge.targz")
+    ROBOTS_TGZ_PATH : SargeConfigKey("anthro.sarge.targz")
+    SCOUT_TYPE : SargeConfigKey("anthro.sarge.scoutType")
     override fun toString() = key
 }
 
+enum class ScoutType {
+    TAG
+}
+
 class SargeConfig : Config<SargeConfigKey>() {
-    fun getTargzPath() = getString(SargeConfigKey.TGZ_PATH) ?: "robots.tgz"
+    val DEFAULT_SCOUT_TYPE = ScoutType.TAG
+    val DEFAULT_ROBOTS_TGZ_PATH = "robots.tgz"
+
+    fun getRobotsTargzPath() = getString(SargeConfigKey.ROBOTS_TGZ_PATH) ?: DEFAULT_ROBOTS_TGZ_PATH
+    fun getScoutType() = ScoutType.valueOf(getString(SargeConfigKey.SCOUT_TYPE) ?: DEFAULT_SCOUT_TYPE.toString())
 }
