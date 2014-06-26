@@ -12,6 +12,9 @@ import com.prezi.anthro.inHome
 import kotlin.properties.Delegates
 import java.io.InputStream
 import java.io.OutputStream
+import com.jcraft.jsch.Channel
+import com.jcraft.jsch.ChannelSftp
+import com.jcraft.jsch.SftpProgressMonitor
 
 
 class Ssh(val host: String, val config: SshConfig = SshConfig()) {
@@ -33,23 +36,35 @@ class Ssh(val host: String, val config: SshConfig = SshConfig()) {
         jsch.setIdentityRepository(sshAgentIdentityRepository)
     }
 
-    fun overExecChannel(cmd: String, f: (InputStream, OutputStream) -> Unit): Ssh {
-        val channel = session.openChannel("exec") as ChannelExec
-        val input = channel.getInputStream()!!
-        val output = channel.getOutputStream()!!
-        channel.setCommand(cmd)
+    fun overChannel<T : Channel>(channelName: String, beforeConnect: ((T) -> Unit)?, f: (T) -> Unit): Ssh {
+        val channel = session.openChannel(channelName) as T
+        if (beforeConnect != null) beforeConnect(channel)
         channel.connect()
-        f(input, output)
+        f(channel)
         channel.disconnect()
         return this
     }
 
+    fun overExecChannel(cmd: String, f: (InputStream, OutputStream, ChannelExec) -> Unit): Ssh =
+            overChannel<ChannelExec>(
+                    "exec",
+                    {c -> c.setCommand(cmd)},
+                    {c -> f(c.getInputStream()!!, c.getOutputStream()!!, c)})
+
+    fun overSftpChannel(f: (ChannelSftp) -> Unit): Ssh = overChannel("sftp", null, f)
+
     fun exec(cmd: String): Ssh {
         logger.info("executing on ${host}: ${cmd}")
-
-        return overExecChannel(cmd, { input, output ->
+        return overExecChannel(cmd, { input, output, channel ->
             val reader = input.buffered().reader()
             reader.forEachLine { line -> logger.info("response line: ${line}") }
+        })
+    }
+
+    fun put(src: String, dst: String, monitor: SftpProgressMonitor?): Ssh {
+        logger.info("uploading ${src} to ${host}:${dst}")
+        return overSftpChannel({ channel ->
+            channel.put(src, dst, monitor)
         })
     }
 
