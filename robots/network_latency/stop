@@ -1,0 +1,6 @@
+#!/bin/bash
+
+IFACE=${1:-eth0}
+
+tc filter del dev ${IFACE} prio 1 parent 1:
+tc qdisc del dev ${IFACE} root prio
