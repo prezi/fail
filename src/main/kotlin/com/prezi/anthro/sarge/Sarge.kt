@@ -5,6 +5,7 @@ import com.amazonaws.services.ec2.model.Filter
 import org.slf4j.LoggerFactory
 import com.jcraft.jsch.SftpProgressMonitor
 import java.util.Date
+import com.prezi.anthro.sarge.scout.ScoutFactory
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
                    scoutFactory: ScoutFactory = ScoutFactory())
@@ -17,8 +18,8 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
         val remoteTgz = "${dir}/robots.tgz"
         logger.info("Looking for victims tagged with ${tag}...")
         scout.findTargets(tag).forEach {
-            logger.info("Robot '${robot}' will hammer ${it.getInstanceId()} via public DNS ${it.getPublicDnsName()} for ${runtime} seconds")
-            Ssh(it.getPublicDnsName()!!)
+            logger.info("Robot '${robot}' will hammer ${it} for ${runtime} seconds")
+            Ssh(it)
                     .exec("echo \$HOSTNAME")
                     .exec("mkdir ${dir}")
                     .put(config.getRobotsTargzPath(), remoteTgz)

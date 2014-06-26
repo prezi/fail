@@ -10,6 +10,7 @@ enum class SargeConfigKey(val key: String) {
 }
 
 enum class ScoutType {
+    IDENTITY
     TAG
 }
 
