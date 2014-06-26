@@ -6,7 +6,7 @@ import com.prezi.anthro.sarge.SargeConfig
 class ScoutFactory {
     fun build(t: ScoutType, c: SargeConfig): Scout = when (t) {
         ScoutType.TAG      -> TagScout(c)
-        ScoutType.IDENTITY -> IdentityScout(c)
+        ScoutType.PUBLIC_DNS -> PublicDnsScout()
         else               -> throw Exception("Unknown scout type ${t}")
     }
 

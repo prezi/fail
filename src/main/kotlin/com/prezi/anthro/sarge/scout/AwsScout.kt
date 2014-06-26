@@ -5,7 +5,7 @@ import com.prezi.anthro.sarge.Aws
 import com.amazonaws.services.ec2.model.Filter
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest
 
-abstract class AwsScout(config: SargeConfig) : Scout(config) {
+abstract class AwsScout(config: SargeConfig) : Scout {
     val aws = Aws(config)
 
     abstract fun buildFilters(by: String): List<Filter>
