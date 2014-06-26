@@ -1,20 +1,23 @@
 package com.prezi.anthro.sarge
 
-import org.slf4j.LoggerFactory
-
-import com.jcraft.jsch.JSch
-import com.jcraft.jsch.ChannelExec
-import com.jcraft.jsch.agentproxy.RemoteIdentityRepository
-import com.jcraft.jsch.Session
-import com.jcraft.jsch.agentproxy.ConnectorFactory
-
-import com.prezi.anthro.inHome
-import kotlin.properties.Delegates
+// Java stdlib
 import java.io.InputStream
 import java.io.OutputStream
+// Kotlin stdlib
+import kotlin.properties.Delegates
+// SLF4J
+import org.slf4j.LoggerFactory
+// JSch
+import com.jcraft.jsch.JSch
+import com.jcraft.jsch.Session
 import com.jcraft.jsch.Channel
+import com.jcraft.jsch.ChannelExec
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.SftpProgressMonitor
+import com.jcraft.jsch.agentproxy.ConnectorFactory
+import com.jcraft.jsch.agentproxy.RemoteIdentityRepository
+// Anthropomorphic Battalion
+import com.prezi.anthro.inHome
 
 
 class Ssh(val host: String, val config: SshConfig = SshConfig()) {
@@ -54,18 +57,15 @@ class Ssh(val host: String, val config: SshConfig = SshConfig()) {
     fun overSftpChannel(f: (ChannelSftp) -> Unit): Ssh = overChannel("sftp", null, f)
 
     fun exec(cmd: String): Ssh {
-        logger.info("executing on ${host}: ${cmd}")
+        logger.info("${host} < ${cmd}")
         return overExecChannel(cmd, { input, output, channel ->
             val reader = input.buffered().reader()
-            reader.forEachLine { line -> logger.info("response line: ${line}") }
+            reader.forEachLine { line -> logger.info("${host} > ${line}") }
         })
     }
 
-    fun put(src: String, dst: String, monitor: SftpProgressMonitor?): Ssh {
-        logger.info("uploading ${src} to ${host}:${dst}")
-        return overSftpChannel({ channel ->
-            channel.put(src, dst, monitor)
-        })
+    fun put(src: String, dst: String, monitor: SftpProgressMonitor = LoggingSftpProgressMonitor(host)): Ssh {
+        return overSftpChannel({ it.put(src, dst, monitor) })
     }
 
     fun close() {

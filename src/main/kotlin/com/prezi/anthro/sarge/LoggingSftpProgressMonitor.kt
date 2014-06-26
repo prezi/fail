@@ -3,7 +3,7 @@ package com.prezi.anthro.sarge
 import org.slf4j.LoggerFactory
 import com.jcraft.jsch.SftpProgressMonitor
 
-class LoggingSftpProgressMonitor : SftpProgressMonitor {
+class LoggingSftpProgressMonitor(val host: String) : SftpProgressMonitor {
     val logger = LoggerFactory.getLogger(this.javaClass)!!
     var op: Int = 0
     var src: String? = null
@@ -18,7 +18,7 @@ class LoggingSftpProgressMonitor : SftpProgressMonitor {
     }
 
     fun log(msg: String) {
-        logger.info("${opToString(op)} ${src} ${dest} ${msg}")
+        logger.info("${host} ${opToString(op)} ${src} ${dest} ${msg}")
     }
 
     override fun init(op: Int, src: String?, dest: String?, max: Long) {
