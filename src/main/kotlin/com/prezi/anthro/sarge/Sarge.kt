@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 
 class Sarge(config: SargeConfig = SargeConfig()) {
     val aws = Aws(config)
-    val ssh = Ssh()
     val logger = LoggerFactory.getLogger(this.javaClass)!!
 
     fun hello(tag: String) {
@@ -15,7 +14,7 @@ class Sarge(config: SargeConfig = SargeConfig()) {
                 DescribeInstancesRequest().withFilters(Filter("tag-key", array(tag).toList()))
         )?.getReservations()?.forEach {
             reservation -> reservation.getInstances()?.forEach {
-                instance -> ssh.exec(instance.getPublicIpAddress()!!, "echo hello from \$HOSTNAME")
+                instance -> Ssh(instance.getPublicIpAddress()!!).exec("echo hello from \$HOSTNAME").close()
             }
         }
     }

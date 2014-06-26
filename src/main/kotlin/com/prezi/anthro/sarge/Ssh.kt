@@ -9,10 +9,21 @@ import com.jcraft.jsch.Session
 import com.jcraft.jsch.agentproxy.ConnectorFactory
 
 import com.prezi.anthro.inHome
+import kotlin.properties.Delegates
+import java.io.InputStream
+import java.io.OutputStream
 
 
-class Ssh(val config: SshConfig = SshConfig()) {
+class Ssh(val host: String, val config: SshConfig = SshConfig()) {
     val logger = LoggerFactory.getLogger(this.javaClass)!!
+    val session: Session by Delegates.lazy {
+        val jsch = JSch()
+        val session = jsch.getSession(host)!!
+        if (config.shouldDisableHostKeyChecking() ) session.setConfig("StrictHostKeyChecking", "no")
+        if (config.getAuthType() == AuthType.SSH_AGENT ) useSshAgent(jsch, session)
+        session.connect()
+        session
+    }
 
     fun useSshAgent(jsch: JSch, session: Session) {
         logger.debug("using ssh-agent for authentication")
@@ -22,25 +33,27 @@ class Ssh(val config: SshConfig = SshConfig()) {
         jsch.setIdentityRepository(sshAgentIdentityRepository)
     }
 
-    fun exec(host: String, cmd: String) {
-        logger.info("executing on ${host}: ${cmd}")
-
-        val jsch = JSch()
-
-        val session = jsch.getSession(host)!!
-        if (config.shouldDisableHostKeyChecking()) session.setConfig("StrictHostKeyChecking", "no")
-        if (config.getAuthType() == AuthType.SSH_AGENT) useSshAgent(jsch, session)
-        session.connect()
-
+    fun overExecChannel(cmd: String, f: (InputStream, OutputStream) -> Unit): Ssh {
         val channel = session.openChannel("exec") as ChannelExec
-        val inputStream = channel.getInputStream()!!
+        val input = channel.getInputStream()!!
+        val output = channel.getOutputStream()!!
         channel.setCommand(cmd)
         channel.connect()
-
-        val reader = inputStream.buffered().reader()
-        reader.forEachLine { line -> logger.info("response line: ${line}") }
-
+        f(input, output)
         channel.disconnect()
+        return this
+    }
+
+    fun exec(cmd: String): Ssh {
+        logger.info("executing on ${host}: ${cmd}")
+
+        return overExecChannel(cmd, { input, output ->
+            val reader = input.buffered().reader()
+            reader.forEachLine { line -> logger.info("response line: ${line}") }
+        })
+    }
+
+    fun close() {
         session.disconnect()
     }
 }
