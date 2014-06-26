@@ -43,3 +43,14 @@ run {
     }
 }
 
+// Package
+task copyRobots(type:Copy) {
+    from "$projectDir/robots"
+    into "$buildDir/robots"
+}
+applicationDistribution.from(copyRobots) {
+    into "robots"
+}
+distTar {
+    compression Compression.GZIP
+}
