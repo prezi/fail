@@ -2,10 +2,10 @@
 
 IFACE=${1:-eth0}
 PORTS=${2:-80 443 3306 11211}
-DELAY=${3:-1s 500ms}
+CONDITION=${3:-delay 1s 500ms distribution normal}
 
 tc qdisc add dev ${IFACE} root handle 1: prio bands 4 priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1
-tc qdisc add dev ${IFACE} parent 1:4 handle 42: netem delay ${DELAY} distribution normal
+tc qdisc add dev ${IFACE} parent 1:4 handle 42: netem ${CONDITION}
 
 for port in ${PORTS}; do
     case "${port:0:1}" in
