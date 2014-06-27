@@ -6,6 +6,7 @@ sleep=${1:-5}
 rm -f nohup.out && touch nohup.out
 tail -f nohup.out &
 tailer=$!
+export sapper sleep tailer
 (
     trap "./${sapper}/stop ; sleep 1 ; kill $tailer" EXIT
     set -x
