@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DELAY=${1:-1s 500ms distribution normal}
+source $(dirname $0)/common
+
+for IFACE in $IFACES; do
+    $(dirname $0)/../network_condition/start $IFACE 11211 "$DELAY"
+done
