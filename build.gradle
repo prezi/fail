@@ -16,19 +16,22 @@ repositories {
 
 dependencies {
 	compile 'org.jetbrains.kotlin:kotlin-stdlib:0.7.1217',
-	// AWS
-	'com.amazonaws:aws-java-sdk:1.8.0',
-	// SSH
-	'com.jcraft:jsch:0.1.51',
-	'com.jcraft:jsch.agentproxy.jsch:0.0.7',
-	'com.jcraft:jsch.agentproxy.sshagent:0.0.7',
-	'com.jcraft:jsch.agentproxy.connector-factory:0.0.7',
-	// Logging
-	'org.slf4j:slf4j-api:1.7.7',
-	'ch.qos.logback:logback-classic:1.1.2',
-	'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
-	'org.slf4j:jcl-over-slf4j:1.7.7'
-
+			// AWS
+			'com.amazonaws:aws-java-sdk:1.8.0',
+			// SSH
+			'com.jcraft:jsch:0.1.51',
+			'com.jcraft:jsch.agentproxy.jsch:0.0.7',
+			'com.jcraft:jsch.agentproxy.sshagent:0.0.7',
+			'com.jcraft:jsch.agentproxy.connector-factory:0.0.7',
+			// Logging
+			'org.slf4j:slf4j-api:1.7.7',
+			'ch.qos.logback:logback-classic:1.1.2',
+			'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
+			'org.slf4j:jcl-over-slf4j:1.7.7',
+			// Changelog
+			'org.apache.httpcomponents:httpclient:4.3.4',
+			'org.json:json:20140107',
+			'commons-codec:commons-codec:1.4'  // For HTTP Basic auth
 }
 
 apply plugin: "application"

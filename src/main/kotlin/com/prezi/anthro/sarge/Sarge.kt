@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory
 import com.prezi.anthro.sarge.scout.ScoutFactory
 import com.prezi.anthro.sarge.mercy.MercyFactory
 import kotlin.concurrent.thread
+import com.prezi.changelog.ChangelogClient
+import com.prezi.changelog.ChangelogClientConfig
+import com.prezi.anthro.AnthroChangelogClientConfig
 
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
@@ -16,6 +19,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
     val logger = LoggerFactory.getLogger(this.javaClass)!!
     val scout = scoutFactory.build(config)
     val mercy = mercyFactory.build(config)
+    val changelog = ChangelogClient(AnthroChangelogClientConfig())
 
     fun charge(tag: String, sapper: String, runtime: String) {
         val dir = "/tmp/anthro-${sapper}-${Date().getTime()}"
@@ -30,6 +34,8 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
 
         deathRow forEach { thread(start = true, block = {
             logger.info("Sapper '${sapper}' will hammer ${it} for ${runtime} seconds")
+            val user = System.getProperty("user.name")
+            changelog.send("${user} starting ${sapper} against ${it} for ${runtime} seconds")
             Ssh(it)
                     .exec("echo \$HOSTNAME")
                     .exec("mkdir ${dir}")
@@ -37,7 +43,6 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
                     .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime}")
                     .exec("rm -rf ${dir}")
                     .close()
-
         })
         }
     }
