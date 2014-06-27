@@ -24,7 +24,7 @@ class Ssh(val host: String, val config: SshConfig = SshConfig()) {
     val logger = LoggerFactory.getLogger(this.javaClass)!!
     val session: Session by Delegates.lazy {
         val jsch = JSch()
-        val session = jsch.getSession(host)!!
+        val session = jsch.getSession("root", host)!!
         if (config.shouldDisableHostKeyChecking() ) session.setConfig("StrictHostKeyChecking", "no")
         if (config.getAuthType() == AuthType.SSH_AGENT ) useSshAgent(jsch, session)
         session.connect()
