@@ -22,7 +22,7 @@ enum class MercyType {
 
 class SargeConfig : Config<SargeConfigKey>() {
     val DEFAULT_SCOUT_TYPE = ScoutType.TAG
-    val DEFAULT_SAPPERS_TGZ_PATH = "sappers.tgz"
+    val DEFAULT_SAPPERS_TGZ_PATH = "build/distributions/sappers.tgz"
     val DEFAULT_MERCY_TYPE = MercyType.HURT_JUST_ONE
 
     fun getSappersTargzPath() = getString(SargeConfigKey.SAPPERS_TGZ_PATH) ?: DEFAULT_SAPPERS_TGZ_PATH
