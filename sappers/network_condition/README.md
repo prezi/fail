@@ -1,4 +1,4 @@
-# network_condition robot
+# network_condition sapper
 
 Injects network conditions into IP traffic (both TCP/UDP).
 
@@ -14,7 +14,7 @@ both.
 # This is the default, it adds a random delay between 500ms and 1500ms
 # to every packet to and from the ports specified on eth0
 ./start eth0 "80 443 3306 11211" "delay 1s 500ms distribution normal"
-# Stop the robot
+# Stop the sapper
 ./stop eth0
 
 
@@ -22,6 +22,6 @@ both.
 # element depending 25% on the last one. This isn't true statistical
 # correlation, but an approximation.
 ./start eth0 "80 443 3306 11211" "delay 100ms 10ms 25%"
-# Stop the robot
+# Stop the sapper
 ./stop eth0
 ```

@@ -34,12 +34,12 @@ apply plugin: "application"
 mainClassName = "com.prezi.anthro.AnthroPackage"
 
 // Package application
-task packageRobots(type:Tar) {
-    baseName "robots"
-    from "robots"
+task packageSappers(type:Tar) {
+    baseName "sappers"
+    from "sappers"
     compression Compression.GZIP
 }
-applicationDistribution.from(packageRobots)
+applicationDistribution.from(packageSappers)
 distTar { compression Compression.GZIP }
 
 // Run with gradle run
@@ -50,7 +50,7 @@ run {
     if (project.hasProperty("appArgs")) {
         args(appArgs.split(","))
     }
-    // Make sure we have the robots.tgz ready
-    dependsOn packageRobots
+    // Make sure we have the sappers.tgz ready
+    dependsOn packageSappers
 }
 
