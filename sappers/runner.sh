@@ -1,6 +1,6 @@
 #!/bin/bash
 
-saper=$1; shift
+sapper=$1; shift
 sleep=${1:-5}
 
 rm -f nohup.out && touch nohup.out
