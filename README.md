@@ -25,7 +25,7 @@ Alternatively:
 ./gradlew run -PappArgs=$TAG,$SAPPER,$SECONDS
 ```
 
-These will choose a single EC2 node in us-east that has the tag $TAG (with any value), and ron $SAPPER for $SECONDS
+These will choose a single EC2 node in us-east that has the tag $TAG (with any value), and run $SAPPER for $SECONDS
 seconds on it. Details below.
 
 ## How does this thing work?
@@ -58,7 +58,7 @@ setting the system property `anthro.sarge.mercyType` to a value from the enum `M
                       
 A Sapper is a pair of scripts that start and stop a specific kind of malfunction on a target server. See the directories
 under `sappers` for a list. `noop` deserves a special mention; you can use it to check that everything is in order before
-starting to actually hurt nodes. Note that targets all targets will be attacked _in parallel_. If you introduce
+starting to actually hurt nodes. Note that all targets will be attacked _in parallel_. If you introduce
 critical failures on all your nodes, the service _will_ go down.
 
 
