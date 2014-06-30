@@ -1,6 +1,6 @@
 # Anthropomorphic Battalion
 
-A light-weight implementation of the ideas behind Chaos Monkey. 
+A light-weight implementation of the ideas behind Chaos Monkey. See the original: [Simian Army](https://github.com/Netflix/SimianArmy). 
 
 ## Getting started
 
@@ -81,8 +81,6 @@ servers it's a very very good idea to automatically collect what exactly is happ
 At the time of writing this project uses the latest Kotlin version, which is not supported by the latest stable Kotlin IntelliJ plugin. Use the
 nightly, available by adding http://teamcity.jetbrains.com/guestAuth/repository/download/bt345/.lastSuccessful/updatePlugins.xml
 in Settings -> Plugins -> Browse Repositories.
-
-See the [Simian Army](https://github.com/Netflix/SimianArmy).
 
 ------------
 ![cat](https://i.chzbgr.com/maxW500/3576064768/h35FCCB8D/)
