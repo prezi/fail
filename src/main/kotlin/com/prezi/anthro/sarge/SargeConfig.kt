@@ -12,7 +12,7 @@ enum class SargeConfigKey(val key: String) {
 }
 
 enum class ScoutType {
-    PUBLIC_DNS
+    DNS
     TAG
 }
 
