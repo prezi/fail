@@ -36,6 +36,15 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
             logger.info("Sapper '${sapper}' will hammer ${it} for ${runtime} seconds")
             val user = System.getProperty("user.name")
             changelog.send("${user} starting ${sapper} against ${it} for ${runtime} seconds")
+            val killSwitch = object : Thread() {
+                override fun run() {
+                    logger.info("Terminating '${sapper}' on ${it}")
+                    Ssh(it).exec("pkill -f ' ./runner.sh '")
+                    logger.info("Terminated '${sapper}' on ${it}")
+                    changelog.send("${user} terminated ${sapper} on ${it}")
+                }
+            }
+            Runtime.getRuntime().addShutdownHook(killSwitch)
             Ssh(it)
                     .exec("echo \$HOSTNAME")
                     .exec("mkdir ${dir}")
@@ -43,6 +52,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
                     .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime}")
                     .exec("rm -rf ${dir}")
                     .close()
+            Runtime.getRuntime().removeShutdownHook(killSwitch)
         })
         }
     }
