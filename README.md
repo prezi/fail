@@ -61,6 +61,12 @@ under `sappers` for a list. `noop` deserves a special mention; you can use it to
 starting to actually hurt nodes. Note that all targets will be attacked _in parallel_. If you introduce
 critical failures on all your nodes, the service _will_ go down.
 
+### PANIC! The army is causing an outage!
+
+Your first reflex reaction is correct: it you kill the process (for example with Ctrl-C), then before going down, we'll
+stop hurting the server (assuming we can communicate with it) by running the `stop` script of the active Sapper on
+each node under attack. This event also gets a separate event in Changelog if Changelog integration is enabled.
+
 
 ## Changelog integration
 
