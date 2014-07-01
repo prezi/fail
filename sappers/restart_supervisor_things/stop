@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "Stopping this sapper does not make sense."
