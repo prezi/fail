@@ -1,0 +1,4 @@
+#!/bin/bash
+
+: > /disk_filler
+rm /disk_filler
