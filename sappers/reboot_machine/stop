@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "Sorry, this can not be stopped."
