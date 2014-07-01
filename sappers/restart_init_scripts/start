@@ -1,0 +1,23 @@
+#!/bin/bash
+
+CANDIDATES=${@:-stunnel4 supervisord apache2 scribe ssh auditd syslogng rsyslog}
+
+declare -a valid_candidates
+
+for c in $CANDIDATES; do
+    if [ -x "/etc/init.d/${c}" ]; then
+        valid_candidates+=$c
+    fi
+done
+
+RANDOM_MAX=32767
+chosen=${valid_candidates[$(($RANDOM * ${#valid_candidates[@]} / $RANDOM_MAX))]}
+
+if [ -z "${chosen}" ]; then
+    echo "No valid init scripts found to restart from these: $CANDIDATES"
+    exit 1
+fi
+
+/etc/init.d/$chosen stop
+sleep 10
+/etc/init.d/$chosen start
