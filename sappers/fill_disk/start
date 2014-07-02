@@ -1,0 +1,5 @@
+#!/bin/bash
+
+MOUNT_POINT=${1:-/}
+
+dd if=/dev/zero of=${MOUNT_POINT%/}/disk_filler bs=1M count=65535 || true

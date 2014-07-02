@@ -1,4 +1,3 @@
 #!/bin/bash
 
-: > /disk_filler
-rm /disk_filler
+exec $(dirname $0)/../fill_disk/stop /

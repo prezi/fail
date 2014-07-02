@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec $(dirname $0)/../fill_disk/stop /mnt
