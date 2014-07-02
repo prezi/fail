@@ -10,7 +10,13 @@ export sapper sleep tailer
 (
     trap "./${sapper}/stop ; sleep 1 ; kill $tailer" EXIT
     set -x
-    ./${sapper}/start && sleep ${sleep}
+    if ./${sapper}/start; then
+        sleep ${sleep}
+    else
+        exitcode=$?
+        echo "Start script exited with ${exitcode}, exiting immediately." >&2
+        exit $exitcode
+    fi
 ) &>>nohup.out &
 supervisor_pid=$!
 trap "kill $supervisor_pid" TERM
