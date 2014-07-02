@@ -1,6 +1,6 @@
 # Anthropomorphic Battalion
 
-A light-weight implementation of the ideas behind Chaos Monkey. See the original: [Simian Army](https://github.com/Netflix/SimianArmy). 
+A light-weight implementation of the ideas behind Chaos Monkey. See the original: [Simian Army](https://github.com/Netflix/SimianArmy).
 
 ## Getting started
 
@@ -44,18 +44,18 @@ with the values to use here defined by the enum `ScoutType`:
    future.
  * `DNS` (class `DnsScout`): splits the argument along `:`, and considers each item a target. They can be DNS names
    or IP addresses.
-   
+
 ### Mercy: choosing which targets to attack
- 
+
 You can think of this component as a filter on the list of targets provided by the Scout. Choose an implementation by
 setting the system property `anthro.sarge.mercyType` to a value from the enum `MercyType` (the default is `HURT_JUST_ONE`):
-  
+
  * `HURT_JUST_ONE`: choose a random target from the list provided by the Scout.
  * `NO_MERCY`: attack all the targets found by the Scout.
-                        
-                        
+
+
 ### Sapper: bring the pain to the servers
-                      
+
 A Sapper is a pair of scripts that start and stop a specific kind of malfunction on a target server. See the directories
 under `sappers` for a list. `noop` deserves a special mention; you can use it to check that everything is in order before
 starting to actually hurt nodes. Note that all targets will be attacked _in parallel_. If you introduce
@@ -71,7 +71,7 @@ each node under attack. This event also gets a separate event in Changelog if Ch
 ## Changelog integration
 
 Anything done with this tool is inherently dangerous, and thus important to track. When running against production
-servers it's a very very good idea to automatically collect what exactly is happening. To this end 
+servers it's a very very good idea to automatically collect what exactly is happening. To this end
 [Changelog](https://github.com/prezi/changelog) integration can be enabled by setting a few system properties:
 
  * `anthro.useChangelog`: send events to Changelog? Defaults to `false`.
