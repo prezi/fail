@@ -1,11 +1,7 @@
 #!/bin/bash
 
-source $(dirname $0)/common
-iptables-save > $save_file
-if [ $? -ne 0 ]; then
-    echo "Failed to save iptables rules to $save_file; bailing out."
-    exit 1
-fi
+. $(dirname $0)/../helpers.sh
+save_iptables nullroute
 
 client=${SSH_CLIENT%% *}
 

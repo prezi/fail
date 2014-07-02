@@ -1,4 +1,0 @@
-#!/usr/bin/env false
-# not to be executed directly
-
-save_file=/tmp/nullroute.iptables.save
