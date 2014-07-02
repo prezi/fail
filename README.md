@@ -61,6 +61,8 @@ under `sappers` for a list. `noop` deserves a special mention; you can use it to
 starting to actually hurt nodes. Note that all targets will be attacked _in parallel_. If you introduce
 critical failures on all your nodes, the service _will_ go down.
 
+More details can be found in the [sappers directory](https://github.com/prezi/anthropomorphic-battalion/tree/master/sappers)'s [README](https://github.com/prezi/anthropomorphic-battalion/blob/master/sappers/README.md).
+
 ### PANIC! The army is causing an outage!
 
 Your first reflex reaction is correct: it you kill the process (for example with Ctrl-C), then before going down, we'll
