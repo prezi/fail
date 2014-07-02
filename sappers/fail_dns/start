@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. $(dirname $0)/../helpers.sh
+save_iptables fail_dns
+
+iptables -A INPUT -p tcp -m tcp --dport 53 -j DROP
+iptables -A INPUT -p udp -m udp --dport 53 -j DROP
+
+iptables -A OUTPUT -p tcp -m tcp --dport 53 -j DROP
+iptables -A OUTPUT -p udp -m udp --dport 53 -j DROP

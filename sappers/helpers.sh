@@ -22,3 +22,14 @@ restore_iptables() {
     fi
     rm -f ${save_file}
 }
+
+mess_with_outgoing_traffic() {
+    rule=$1; shift
+    for dst in $*; do
+        iptables -A OUTPUT --destination $dst -j $rule
+    done
+}
+
+drop_traffic_to() {
+    mess_with_outgoing_traffic DROP $*
+}

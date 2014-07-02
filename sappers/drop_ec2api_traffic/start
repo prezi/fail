@@ -1,0 +1,15 @@
+#!/bin/bash
+# Endpoints as found on http://docs.aws.amazon.com/general/latest/gr/rande.html on 2014-07-02
+
+. $(dirname $0)/../helpers.sh
+save_iptables drop_ec2api_traffic
+
+drop_traffic_to \
+    ec2.us-east-1.amazonaws.com \
+    ec2.us-west-2.amazonaws.com \
+    ec2.us-west-1.amazonaws.com \
+    ec2.eu-west-1.amazonaws.com \
+    ec2.ap-southeast-1.amazonaws.com \
+    ec2.ap-southeast-2.amazonaws.com \
+    ec2.ap-northeast-1.amazonaws.com \
+    ec2.sa-east-1.amazonaws.com
