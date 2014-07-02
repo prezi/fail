@@ -14,7 +14,7 @@ export sapper sleep tailer
         sleep ${sleep}
     else
         exitcode=$?
-        echo "Start script exited with ${exitcode}, exiting immediately." >&2
+        echo "Start script exited with ${exitcode} (which is non-zero), exiting immediately." >&2
         exit $exitcode
     fi
 ) &>>nohup.out &
