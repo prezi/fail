@@ -1,16 +1,19 @@
 #!/bin/bash
 
+abort() {
+    echo "$*"
+    exit 1
+}
+
 iptables_save_file() {
     echo "/tmp/iptables.$1.dump"
 }
 
 save_iptables() {
     save_file=$(iptables_save_file "$1")
+    [ -f ${save_file} ] && abort "iptables dump file ${save_file} already exists; bailing out."
     iptables-save > ${save_file}
-    if [ $? -ne 0 ]; then
-        echo "Failed to save iptables rules to $save_file; bailing out."
-        exit 1
-    fi
+    [ $? -ne 0 ] && abort "Failed to save iptables rules to $save_file; bailing out."
 }
 
 restore_iptables() {
