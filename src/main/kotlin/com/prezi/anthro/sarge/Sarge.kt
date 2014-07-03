@@ -29,7 +29,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
         val targets = scout.findTargets(tag)
         logger.info("Found ${targets.size()} targets: ${targets}")
 
-        val deathRow = mercy.spare(targets)
+        val deathRow = mercy.deny(targets)
         logger.info("Targets on death row after ${config.getMercyType()}: ${deathRow}")
 
         deathRow forEach { thread(start = true, block = {
