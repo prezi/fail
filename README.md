@@ -7,7 +7,7 @@ A light-weight implementation of the ideas behind Chaos Monkey. See the original
 Build:
 
 ```sh
-./gradlew build
+./gradlew distTar
 ```
 
 Run:
