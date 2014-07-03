@@ -12,5 +12,6 @@ abstract class AwsScout(config: SargeConfig) : Scout {
 
     override fun findTargets(by: String) =
             aws.ec2().describeInstances(DescribeInstancesRequest().withFilters(buildFilters(by)))
-                    ?.getReservations()!!.flatMap{ it.getInstances()!!}.map{ it.getPublicDnsName()!!}
+                    ?.getReservations()!!.flatMap{ it.getInstances()!!}
+                    .filter{ it.getState()?.getName() == "running" }.map{ it.getPublicDnsName()!!}
 }
