@@ -1,0 +1,11 @@
+#!/bin/bash
+# TODO once start scripts are parameterizable make ports an input to this scripg
+
+source $(dirname $0)/common
+
+# According to https://github.com/netflix/SimianArmy/blob/master/src/main/resources/scripts/networkloss.sh:
+# Drops 7% of packets, with 25% correlation with previous packet loss
+# 7% is high, but it isn't high enough that TCP will fail entirely
+for IFACE in $IFACES; do
+    $(dirname $0)/../network_condition/start $IFACE "80 443 3306 11211" "loss 7% 25%"
+done

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source $(dirname $0)/common
+
+for IFACE in $IFACES; do
+    $(dirname $0)/../network_condition/stop $IFACE
+done

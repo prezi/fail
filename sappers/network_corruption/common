@@ -1,0 +1,4 @@
+#!/usr/bin/env false
+# not to be executed directly
+
+IFACES=$(route -n | sed 1,2d | awk '{print $8}' | sort | uniq)
