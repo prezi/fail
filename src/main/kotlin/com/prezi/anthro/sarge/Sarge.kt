@@ -32,10 +32,10 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
         val deathRow = mercy.deny(targets)
         logger.info("Targets on death row after ${config.getMercyType()}: ${deathRow}")
 
+        val user = System.getProperty("user.name")
+        changelog?.send("${user} starting ${sapper} against ${deathRow.join(", ")} for ${runtime} seconds")
         deathRow forEach { thread(start = true, block = {
             logger.info("Sapper '${sapper}' will hammer ${it} for ${runtime} seconds")
-            val user = System.getProperty("user.name")
-            changelog?.send("${user} starting ${sapper} against ${it} for ${runtime} seconds")
             val killSwitch = object : Thread() {
                 override fun run() {
                     logger.info("Terminating '${sapper}' on ${it}")
