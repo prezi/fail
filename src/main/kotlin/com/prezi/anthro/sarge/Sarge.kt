@@ -21,7 +21,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
     val changelog: ChangelogClient? = if (config.useChangelog()) ChangelogClient(AnthroChangelogClientConfig()) else null
 
 
-    fun charge(tag: String, sapper: String, runtime: String) {
+    fun charge(tag: String, sapper: String, runtime: String, args: List<String> = listOf()) {
         val dir = "/tmp/anthro-${sapper}-${Date().getTime()}"
         val remoteTgz = "${dir}/sappers.tgz"
         logger.info("${config.getScoutType()} looking for victims by ${tag}...")
@@ -49,7 +49,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
                     .exec("echo \$HOSTNAME")
                     .exec("mkdir ${dir}")
                     .put(config.getSappersTargzPath(), remoteTgz)
-                    .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime}")
+                    .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime} ${args.join(" ")}")
                     .exec("rm -rf ${dir}")
                     .close()
             Runtime.getRuntime().removeShutdownHook(killSwitch)

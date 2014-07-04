@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "noop sapper started"
+echo "noop sapper started with args $*"

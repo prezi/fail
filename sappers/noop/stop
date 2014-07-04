@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "noop sapper stopped"
+echo "noop sapper stopped with args $*"

@@ -1,16 +1,17 @@
 #!/bin/bash
 
-sapper=$1; shift
-sleep=${1:-5}
+sapper=${1}; shift
+sleep=${1}; shift
+args=$*
 
 rm -f nohup.out && touch nohup.out
 tail -f nohup.out &
 tailer=$!
 export sapper sleep tailer
 (
-    trap "./${sapper}/stop ; sleep 1 ; kill $tailer" EXIT
+    trap "./${sapper}/stop ${args} ; sleep 1 ; kill $tailer" EXIT
     set -x
-    if ./${sapper}/start; then
+    if ./${sapper}/start ${args}; then
         sleep ${sleep}
     else
         exitcode=$?
