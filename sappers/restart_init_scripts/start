@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CANDIDATES=${@:-stunnel4 supervisord apache2 scribe ssh auditd syslogng rsyslog}
+CANDIDATES=${@:-stunnel4 supervisord apache2 scribe ssh auditd syslog-ng rsyslog}
 
 declare -a valid_candidates
 
