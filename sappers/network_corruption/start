@@ -1,10 +1,15 @@
-#!/bin/bash
-# TODO once start scripts are parameterizable make ports an input to this scripg
+#!/bin/bash -x
 
 source $(dirname $0)/common
 
 corruption=${1:-5%}
 
+if shift && [ $# -ne 0 ]; then
+    ports="$*"
+else
+    ports="80 443 3306 1211"
+fi
+
 for IFACE in $IFACES; do
-    $(dirname $0)/../network_condition/start $IFACE "80 443 3306 11211" "corrupt $corruption"
+    $(dirname $0)/../network_condition/start $IFACE "$ports" "corrupt $corruption"
 done
