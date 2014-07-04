@@ -1,0 +1,14 @@
+#!/bin/bash
+
+PORT=$1
+DELAY=${2:-1s 500ms distribution normal}
+source $(dirname $0)/common
+
+if [ -z "$PORT" ]; then
+	echo "Usage: $0 <port> [<delay>]"
+	exit 1
+fi
+
+for IFACE in $IFACES; do
+    $(dirname $0)/../network_condition/start $IFACE $PORT "delay $DELAY"
+done
