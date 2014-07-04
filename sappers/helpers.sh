@@ -12,6 +12,8 @@ iptables_save_file() {
 save_iptables() {
     save_file=$(iptables_save_file "$1")
     [ -f ${save_file} ] && abort "iptables dump file ${save_file} already exists; bailing out."
+    iptables -L > /dev/null  # if iptables / netfilter hasn't been touched since boot, iptables-save output will be
+                             # an empty string, which iptables-restore will ignore.
     iptables-save > ${save_file}
     [ $? -ne 0 ] && abort "Failed to save iptables rules to $save_file; bailing out."
 }
