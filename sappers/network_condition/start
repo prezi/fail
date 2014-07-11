@@ -1,24 +1,19 @@
 #!/bin/bash
 
-IFACE=${1:-eth0}
-PORTS=${2:-80 443 3306 11211}
-CONDITION=${3:-delay 1s 500ms distribution normal}
+IFACE=$1; shift
+deplare -a MATCHES
+while [ $# -gt 0 -a $1 != '--' ]; do
+    MATCHES=("${MATCHES[@]}" "$1")
+    shift
+done
+shift  # to get rid of '--'
+CONDITION="$*"
 
 tc qdisc add dev ${IFACE} root handle 1: prio bands 4 priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1
 tc qdisc add dev ${IFACE} parent 1:4 handle 42: netem ${CONDITION}
 
-for port in ${PORTS}; do
-    case "${port:0:1}" in
-        "s") MATCH="match ip sport ${port#s} 0xffff"
-            ;;
-        "d") MATCH="match ip dport ${port#d} 0xffff"
-            ;;
-        *) MATCH="match ip dport $port 0xffff"
-            # I'm sincerely sorry for this
-            tc filter add dev ${IFACE} protocol ip parent 1: prio 1 u32 match ip sport $port 0xffff flowid 1:4
-            ;;
-    esac
-    tc filter add dev ${IFACE} protocol ip parent 1: prio 1 u32 $MATCH flowid 1:4
+for match in "${MATCHES[@]}"; do
+    tc filter add dev ${IFACE} protocol ip parent 1: prio 1 u32 $match flowid 1:4
 done
 
 tc filter add dev ${IFACE} protocol ip parent 1: prio 1 u32 \

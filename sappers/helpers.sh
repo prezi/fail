@@ -38,3 +38,9 @@ mess_with_outgoing_traffic() {
 drop_traffic_to() {
     mess_with_outgoing_traffic DROP $*
 }
+
+match_ip() {
+    for item in "$*"; do
+        echo match ip $item 0xffff
+    done
+}
