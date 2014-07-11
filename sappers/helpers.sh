@@ -40,6 +40,7 @@ drop_traffic_to() {
 }
 
 match_ip() {
+    # TODO die if more than 2 args, because tc only supports two `match args at most
     for item in "$*"; do
         echo match ip $item 0xffff
     done
