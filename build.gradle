@@ -29,9 +29,7 @@ dependencies {
 			'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
 			'org.slf4j:jcl-over-slf4j:1.7.7',
 			// Changelog
-			'org.apache.httpcomponents:httpclient:4.3.4',
-			'org.json:json:20140107',
-			'commons-codec:commons-codec:1.4'  // For HTTP Basic auth
+	        'com.prezi.changelog:changelog-client-java:0.0.1'
 }
 
 apply plugin: "application"
