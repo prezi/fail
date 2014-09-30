@@ -9,7 +9,7 @@ import com.prezi.fail.sarge.mercy.MercyFactory
 import kotlin.concurrent.thread
 import com.prezi.changelog.ChangelogClient
 import com.prezi.changelog.ChangelogClientConfig
-import com.prezi.fail.AnthroChangelogClientConfig
+import com.prezi.fail.FailChangelogClientConfig
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
                    scoutFactory: ScoutFactory = ScoutFactory(),
@@ -18,7 +18,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
     val logger = LoggerFactory.getLogger(this.javaClass)!!
     val scout = scoutFactory.build(config)
     val mercy = mercyFactory.build(config)
-    val changelog: ChangelogClient? = if (config.useChangelog()) ChangelogClient(AnthroChangelogClientConfig()) else null
+    val changelog: ChangelogClient? = if (config.useChangelog()) ChangelogClient(FailChangelogClientConfig()) else null
 
 
     fun charge(tag: String, sapper: String, runtime: String, args: List<String> = listOf()) {

@@ -2,7 +2,7 @@ package com.prezi.fail
 
 import com.prezi.changelog.DefaultChangelogClientConfig
 
-public class AnthroChangelogClientConfig() : DefaultChangelogClientConfig() {
+public class FailChangelogClientConfig() : DefaultChangelogClientConfig() {
     override fun defaultCriticality(): String {
         return "5"
     }

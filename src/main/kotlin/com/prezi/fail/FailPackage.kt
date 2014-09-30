@@ -5,7 +5,7 @@ import com.prezi.changelog.ChangelogClient
 import java.io.File
 import java.io.FileInputStream
 import org.slf4j.LoggerFactory
-import com.prezi.anthro.sarge.SargeConfig
+import com.prezi.fail.sarge.SargeConfig
 import java.util.Properties
 
 fun main(args: Array<String>) {
