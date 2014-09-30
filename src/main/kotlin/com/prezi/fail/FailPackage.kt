@@ -7,6 +7,8 @@ import java.io.FileInputStream
 import org.slf4j.LoggerFactory
 import com.prezi.fail.sarge.SargeConfig
 import java.util.Properties
+import org.slf4j.Logger
+import ch.qos.logback.classic.Level
 
 private fun usage(exitCode: Int = 0) {
     println("Usage: fail <tag> <sapper> <duration_seconds> [sapper_arg_1 [sapper_arg_2 ... ]]")
@@ -14,7 +16,6 @@ private fun usage(exitCode: Int = 0) {
 }
 
 fun main(args: Array<String>) {
-    loadUserProperties()
     if (args.count() < 3) {
         println("Not enough arguments.")
         usage(1)
@@ -22,6 +23,11 @@ fun main(args: Array<String>) {
     if (args.contains("--help")) {
         usage()
     }
+    if (args.contains("--verbose") || args.contains("debug")) {
+        (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(Level.DEBUG)
+        return main(args.filterNot({ it == "--verbose"}).filterNot({ it == "--debug" }).copyToArray())
+    }
+    loadUserProperties()
     // TODO: add logic for choosing action based on args[0] here
     Sarge().charge(args[0], args[1], args[2], args.drop(3))
 }
