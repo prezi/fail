@@ -1,4 +1,4 @@
-package com.prezi.anthro
+package com.prezi.fail
 
 import com.prezi.changelog.DefaultChangelogClientConfig
 

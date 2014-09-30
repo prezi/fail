@@ -1,6 +1,6 @@
-package com.prezi.anthro
+package com.prezi.fail
 
-import com.prezi.anthro.sarge.Sarge
+import com.prezi.fail.sarge.Sarge
 import com.prezi.changelog.ChangelogClient
 import java.io.File
 import java.io.FileInputStream

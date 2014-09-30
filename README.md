@@ -1,6 +1,6 @@
-# Anthropomorphic Battalion
+# Fail
 
-A light-weight implementation of the ideas behind Chaos Monkey. See the original: [Simian Army](https://github.com/Netflix/SimianArmy).
+A light-weight implementation of the ideas behind Chaos Monkey. See the original: [Simian Army](https://github.com/Netflix/SimianArmy). This project was originally called `anthropomorphic-battalion` but was renamed for obvious reasons.
 
 ## Getting started
 
@@ -14,9 +14,9 @@ Run:
 
 ```sh
 cd build/distributions/
-tar -xzf anthropomorphic-battalion.tgz
-cd anthropomorphic-battalion
-./bin/anthropomorphic-battalion $TAG $SAPPER $SECONDS [$ARG1 $ARG2 ...]
+tar -xzf fail.tgz
+cd fail
+./bin/fail $TAG $SAPPER $SECONDS [$ARG1 $ARG2 ...]
 ```
 
 Alternatively:
@@ -42,8 +42,8 @@ At startup the file `~/.fail.properties` is loaded as a properties file. The pre
 ### Scout: finding targets
 
 Scouts are pieces of code that figure out which hosts to hurt based on a string. The string passed to the Scout is the
-first command-line argument. You can choose which implementation to use by setting the `anthro.sarge.scoutType`
-system property; default: `TAG`. At the time of writing there are two implementations (in `src/kotlin/com/prezi/anthro/sarge/scout`),
+first command-line argument. You can choose which implementation to use by setting the `fail.sarge.scoutType`
+system property; default: `TAG`. At the time of writing there are two implementations (in `src/kotlin/com/prezi/fail/sarge/scout`),
 with the values to use here defined by the enum `ScoutType`:
 
  * `TAG` (class `TagScout`): finds instances on EC2 that have a tag. The input is the tag itself. For AWS authentication it uses
@@ -57,7 +57,7 @@ with the values to use here defined by the enum `ScoutType`:
 ### Mercy: choosing which targets to attack
 
 You can think of this component as a filter on the list of targets provided by the Scout. Choose an implementation by
-setting the system property `anthro.sarge.mercyType` to a value from the enum `MercyType` (the default is `HURT_JUST_ONE`):
+setting the system property `fail.sarge.mercyType` to a value from the enum `MercyType` (the default is `HURT_JUST_ONE`):
 
  * `HURT_JUST_ONE`: choose a random target from the list provided by the Scout.
  * `NO_MERCY`: attack all the targets found by the Scout.
@@ -70,7 +70,7 @@ under `sappers` for a list. `noop` deserves a special mention; you can use it to
 starting to actually hurt nodes. Note that all targets will be attacked _in parallel_. If you introduce
 critical failures on all your nodes, the service _will_ go down.
 
-More details can be found in the [sappers directory](https://github.com/prezi/anthropomorphic-battalion/tree/master/sappers)'s [README](https://github.com/prezi/anthropomorphic-battalion/blob/master/sappers/README.md).
+More details can be found in the [sappers directory](https://github.com/prezi/fail/tree/master/sappers)'s [README](https://github.com/prezi/fail/blob/master/sappers/README.md).
 
 ### PANIC! The army is causing an outage!
 
@@ -85,7 +85,7 @@ Anything done with this tool is inherently dangerous, and thus important to trac
 servers it's a very very good idea to automatically collect what exactly is happening. To this end
 [Changelog](https://github.com/prezi/changelog) integration can be enabled by setting a few system properties:
 
- * `anthro.useChangelog`: send events to Changelog? Defaults to `false`.
+ * `fail.useChangelog`: send events to Changelog? Defaults to `false`.
  * `changelog.endpoint`: the full URL where events will be posted, including `/api/events`.
  * `changelog.auth.providerType`: the authentication provider to use for authentication against the Changelog API.
    Possible values are defined in the enum `ChangelogAuthProviderType` (the default is `NOOP`):

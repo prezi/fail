@@ -1,13 +1,13 @@
-package com.prezi.anthro.sarge
+package com.prezi.fail.sarge
 
-import com.prezi.anthro.Config
+import com.prezi.fail.Config
 import java.security.InvalidParameterException
 
 enum class SargeConfigKey(val key: String) {
-    SAPPERS_TGZ_PATH : SargeConfigKey("anthro.sarge.targz")
-    SCOUT_TYPE      : SargeConfigKey("anthro.sarge.scoutType")
-    MERCY_TYPE      : SargeConfigKey("anthro.sarge.mercyType")
-    USE_CHANGELOG   : SargeConfigKey("anthro.useChangelog")
+    SAPPERS_TGZ_PATH : SargeConfigKey("fail.sarge.targz")
+    SCOUT_TYPE      : SargeConfigKey("fail.sarge.scoutType")
+    MERCY_TYPE      : SargeConfigKey("fail.sarge.mercyType")
+    USE_CHANGELOG   : SargeConfigKey("fail.useChangelog")
     override fun toString() = key
 }
 

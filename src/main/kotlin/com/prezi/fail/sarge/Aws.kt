@@ -1,4 +1,4 @@
-package com.prezi.anthro.sarge
+package com.prezi.fail.sarge
 
 import java.io.File
 import com.amazonaws.auth.AWSCredentials

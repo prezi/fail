@@ -1,7 +1,7 @@
-package com.prezi.anthro.sarge.scout
+package com.prezi.fail.sarge.scout
 
-import com.prezi.anthro.sarge.ScoutType
-import com.prezi.anthro.sarge.SargeConfig
+import com.prezi.fail.sarge.ScoutType
+import com.prezi.fail.sarge.SargeConfig
 
 class ScoutFactory {
     fun build(t: ScoutType, c: SargeConfig): Scout = when (t) {

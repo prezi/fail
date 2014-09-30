@@ -1,15 +1,15 @@
-package com.prezi.anthro.sarge
+package com.prezi.fail.sarge
 
 import java.util.Date
 
 import org.slf4j.LoggerFactory
 
-import com.prezi.anthro.sarge.scout.ScoutFactory
-import com.prezi.anthro.sarge.mercy.MercyFactory
+import com.prezi.fail.sarge.scout.ScoutFactory
+import com.prezi.fail.sarge.mercy.MercyFactory
 import kotlin.concurrent.thread
 import com.prezi.changelog.ChangelogClient
 import com.prezi.changelog.ChangelogClientConfig
-import com.prezi.anthro.AnthroChangelogClientConfig
+import com.prezi.fail.AnthroChangelogClientConfig
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
                    scoutFactory: ScoutFactory = ScoutFactory(),
@@ -22,7 +22,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
 
 
     fun charge(tag: String, sapper: String, runtime: String, args: List<String> = listOf()) {
-        val dir = "/tmp/anthro-${sapper}-${Date().getTime()}"
+        val dir = "/tmp/fail-${sapper}-${Date().getTime()}"
         val remoteTgz = "${dir}/sappers.tgz"
         logger.info("${config.getScoutType()} looking for victims by ${tag}...")
 

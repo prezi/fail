@@ -1,7 +1,7 @@
-package com.prezi.anthro.sarge.mercy
+package com.prezi.fail.sarge.mercy
 
-import com.prezi.anthro.sarge.SargeConfig
-import com.prezi.anthro.sarge.MercyType
+import com.prezi.fail.sarge.SargeConfig
+import com.prezi.fail.sarge.MercyType
 
 class MercyFactory {
     fun build(t: MercyType, c: SargeConfig): Mercy = when(t) {

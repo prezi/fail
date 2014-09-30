@@ -33,7 +33,7 @@ dependencies {
 }
 
 apply plugin: "application"
-mainClassName = "com.prezi.anthro.AnthroPackage"
+mainClassName = "com.prezi.fail.FailPackage"
 
 // Package application
 task packageSappers(type:Tar) {

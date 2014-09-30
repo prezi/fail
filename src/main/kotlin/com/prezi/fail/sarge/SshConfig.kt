@@ -1,10 +1,10 @@
-package com.prezi.anthro.sarge
+package com.prezi.fail.sarge
 
-import com.prezi.anthro.Config
+import com.prezi.fail.Config
 
 enum class SshConfigKey(key: String) {
-    AUTH_TYPE: SshConfigKey("anthro.sarge.ssh.auth_type")
-    DISABLE_STRICT_HOST_KEY_CHECKING: SshConfigKey("anthro.sarge.ssh.disable_strict_host_key_checking")
+    AUTH_TYPE: SshConfigKey("fail.sarge.ssh.auth_type")
+    DISABLE_STRICT_HOST_KEY_CHECKING: SshConfigKey("fail.sarge.ssh.disable_strict_host_key_checking")
 }
 
 enum class AuthType {

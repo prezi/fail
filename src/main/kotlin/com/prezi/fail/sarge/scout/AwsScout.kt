@@ -1,7 +1,7 @@
-package com.prezi.anthro.sarge.scout
+package com.prezi.fail.sarge.scout
 
-import com.prezi.anthro.sarge.SargeConfig
-import com.prezi.anthro.sarge.Aws
+import com.prezi.fail.sarge.SargeConfig
+import com.prezi.fail.sarge.Aws
 import com.amazonaws.services.ec2.model.Filter
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest
 

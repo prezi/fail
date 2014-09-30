@@ -1,6 +1,6 @@
-package com.prezi.anthro.sarge.scout
+package com.prezi.fail.sarge.scout
 
-import com.prezi.anthro.sarge.SargeConfig
+import com.prezi.fail.sarge.SargeConfig
 import com.amazonaws.services.ec2.model.Filter
 
 trait Scout {

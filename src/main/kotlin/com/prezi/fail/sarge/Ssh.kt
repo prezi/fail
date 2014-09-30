@@ -1,4 +1,4 @@
-package com.prezi.anthro.sarge
+package com.prezi.fail.sarge
 
 // Java stdlib
 import java.io.InputStream
@@ -17,7 +17,7 @@ import com.jcraft.jsch.SftpProgressMonitor
 import com.jcraft.jsch.agentproxy.ConnectorFactory
 import com.jcraft.jsch.agentproxy.RemoteIdentityRepository
 // Anthropomorphic Battalion
-import com.prezi.anthro.inHome
+import com.prezi.fail.inHome
 
 
 class Ssh(val host: String, val config: SshConfig = SshConfig()) {

@@ -2,4 +2,4 @@ include 'shared'
 include 'api'
 include 'services:webservice'
 
-rootProject.name = 'anthropomorphic-battalion'
+rootProject.name = 'fail'

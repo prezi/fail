@@ -1,4 +1,4 @@
-package com.prezi.anthro.sarge
+package com.prezi.fail.sarge
 
 import org.slf4j.LoggerFactory
 import com.jcraft.jsch.SftpProgressMonitor
