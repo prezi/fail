@@ -4,6 +4,7 @@ import com.prezi.fail.sarge.SargeConfig
 import com.prezi.fail.sarge.MercyType
 
 class MercyFactory {
+    [suppress("UNUSED_PARAMETER")]
     fun build(t: MercyType, c: SargeConfig): Mercy = when(t) {
         MercyType.NO_MERCY -> NoMercy()
         MercyType.HURT_JUST_ONE -> HurtJustOne()

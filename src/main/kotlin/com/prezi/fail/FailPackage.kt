@@ -22,8 +22,8 @@ private fun loadUserProperties() {
         val inputStream = FileInputStream(file)
         properties.load(inputStream)
         inputStream.close()
-        properties.forEach { entry ->
-            entry as Map.Entry<String, String>
+        properties.forEach { _entry ->
+            [suppress("UNCHECKED_CAST")] val entry = _entry as Map.Entry<String, String>
             if (System.getProperty(entry.key) == null) {
                 System.setProperty(entry.key, entry.value)
                 appliedProperties.put(entry.key, entry.value)

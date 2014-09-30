@@ -40,7 +40,7 @@ class Ssh(val host: String, val config: SshConfig = SshConfig()) {
     }
 
     fun overChannel<T : Channel>(channelName: String, beforeConnect: ((T) -> Unit)?, f: (T) -> Unit): Ssh {
-        val channel = session.openChannel(channelName) as T
+        [suppress("UNCHECKED_CAST")] val channel = session.openChannel(channelName) as T
         if (beforeConnect != null) beforeConnect(channel)
         channel.connect()
         f(channel)
