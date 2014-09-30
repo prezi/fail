@@ -16,7 +16,7 @@ import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.SftpProgressMonitor
 import com.jcraft.jsch.agentproxy.ConnectorFactory
 import com.jcraft.jsch.agentproxy.RemoteIdentityRepository
-// Anthropomorphic Battalion
+// Fail
 import com.prezi.fail.inHome
 
 
