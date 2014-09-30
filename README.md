@@ -28,6 +28,15 @@ Alternatively:
 These will choose a single EC2 node in us-east that has the tag $TAG (with any value), and run $SAPPER for $SECONDS
 seconds on it, optionally passing $ARG1 $ARG2 ... to the sapper. Details below.
 
+## Configuring
+
+At startup the file `~/.fail.properties` is loaded as a properties file. The precedence for configuration values
+(which are all system properties) looks like this (higher overrides lower):
+
+ - `-D` via `JAVA_OPTS`
+ - `~/.fail.properties`
+ - Default values hard-coded in `fail`
+
 ## How does this thing work?
 
 ### Scout: finding targets
