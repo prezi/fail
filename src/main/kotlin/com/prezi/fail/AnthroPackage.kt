@@ -32,5 +32,4 @@ private fun loadUserProperties() {
         logger.info("Loaded properties file ${file.canonicalPath}")
         appliedProperties.forEach { entry -> logger.debug("${file.canonicalPath}: ${entry.key} = ${entry.value}") }
     }
-    logger.info(SargeConfig().getMercyType().name())
 }
