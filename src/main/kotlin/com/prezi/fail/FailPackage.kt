@@ -8,8 +8,21 @@ import org.slf4j.LoggerFactory
 import com.prezi.fail.sarge.SargeConfig
 import java.util.Properties
 
+private fun usage(exitCode: Int = 0) {
+    println("Usage: fail <tag> <sapper> <duration_seconds> [sapper_arg_1 [sapper_arg_2 ... ]]")
+    System.exit(exitCode)
+}
+
 fun main(args: Array<String>) {
     loadUserProperties()
+    if (args.count() < 3) {
+        println("Not enough arguments.")
+        usage(1)
+    }
+    if (args.contains("--help")) {
+        usage()
+    }
+    // TODO: add logic for choosing action based on args[0] here
     Sarge().charge(args[0], args[1], args[2], args.drop(3))
 }
 
@@ -33,3 +46,4 @@ private fun loadUserProperties() {
         appliedProperties.forEach { entry -> logger.debug("${file.canonicalPath}: ${entry.key} = ${entry.value}") }
     }
 }
+
