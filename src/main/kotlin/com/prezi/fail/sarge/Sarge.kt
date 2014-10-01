@@ -34,26 +34,30 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
 
         val user = System.getProperty("user.name")
         changelog?.send("${user} starting ${sapper} against ${deathRow.join(", ")} for ${runtime} seconds")
-        deathRow forEach { thread(start = true, block = {
-            logger.info("Sapper '${sapper}' will hammer ${it} for ${runtime} seconds")
-            val killSwitch = object : Thread() {
-                override fun run() {
-                    logger.info("Terminating '${sapper}' on ${it}")
-                    Ssh(it).exec("pkill -f ' ./runner.sh '")
-                    logger.info("Terminated '${sapper}' on ${it}")
-                    changelog?.send("${user} terminated ${sapper} on ${it}")
+        if (config.isDryRun()) {
+            logger.info("Doing dry-run, not starting sappers.")
+        } else {
+            deathRow forEach { thread(start = true, block = {
+                logger.info("Sapper '${sapper}' will hammer ${it} for ${runtime} seconds")
+                val killSwitch = object : Thread() {
+                    override fun run() {
+                        logger.info("Terminating '${sapper}' on ${it}")
+                        Ssh(it).exec("pkill -f ' ./runner.sh '")
+                        logger.info("Terminated '${sapper}' on ${it}")
+                        changelog?.send("${user} terminated ${sapper} on ${it}")
+                    }
                 }
+                Runtime.getRuntime().addShutdownHook(killSwitch)
+                Ssh(it)
+                        .exec("echo \$HOSTNAME")
+                        .exec("mkdir ${dir}")
+                        .put(config.getSappersTargzPath(), remoteTgz)
+                        .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime} ${args.join(" ")}")
+                        .exec("rm -rf ${dir}")
+                        .close()
+                Runtime.getRuntime().removeShutdownHook(killSwitch)
+            })
             }
-            Runtime.getRuntime().addShutdownHook(killSwitch)
-            Ssh(it)
-                    .exec("echo \$HOSTNAME")
-                    .exec("mkdir ${dir}")
-                    .put(config.getSappersTargzPath(), remoteTgz)
-                    .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime} ${args.join(" ")}")
-                    .exec("rm -rf ${dir}")
-                    .close()
-            Runtime.getRuntime().removeShutdownHook(killSwitch)
-        })
         }
     }
 }

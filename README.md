@@ -36,6 +36,15 @@ At startup the file `~/.fail.properties` is loaded as a properties file. The pre
  - `-D` via `JAVA_OPTS`
  - `~/.fail.properties`
  - Default values hard-coded in `fail`
+ 
+### Supported configuration options
+
+------------------------------|-------------------------|-------------------------------------------------------------|
+| Property name               | Command-line argument   | Description                                                 |
+|-----------------------------|-------------------------|-------------------------------------------------------------|
+| `fail.dryRun`               | `-n`, `--dryrun`        | Skip running sappers |
+
+TODO: finish this table :)
 
 ## How does this thing work?
 

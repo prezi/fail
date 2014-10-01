@@ -5,13 +5,22 @@ import com.prezi.fail.sarge.Aws
 import com.amazonaws.services.ec2.model.Filter
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest
 
-abstract class AwsScout(config: SargeConfig) : Scout {
+abstract class AwsScout(val config: SargeConfig) : Scout {
     val aws = Aws(config)
+
+    fun availabilityZoneFilter(): List<Filter> {
+        val az = config.getAvailabilityZone()
+        return when (az) {
+            is String -> listOf(Filter("availability-zone", listOf(config.getAvailabilityZone()!!)))
+            else      -> listOf()
+        }
+    }
 
     abstract fun buildFilters(by: String): List<Filter>
 
     override fun findTargets(by: String) =
-            aws.ec2().describeInstances(DescribeInstancesRequest().withFilters(buildFilters(by)))
+            aws.ec2().describeInstances(DescribeInstancesRequest()
+                    .withFilters(buildFilters(by) + availabilityZoneFilter()))
                     ?.getReservations()!!.flatMap{ it.getInstances()!!}
                     .filter{ it.getState()?.getName() == "running" }.map{ it.getPublicDnsName()!!}
 }

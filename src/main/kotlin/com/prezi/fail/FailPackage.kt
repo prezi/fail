@@ -17,6 +17,7 @@ import org.apache.commons.cli.HelpFormatter
 import com.prezi.fail.sarge.Sarge
 import com.prezi.changelog.ChangelogClient
 import com.prezi.fail.sarge.SargeConfig
+import com.prezi.fail.sarge.SargeConfigKey
 
 
 private fun usage(exitCode: Int = 0) {
@@ -26,9 +27,11 @@ private fun usage(exitCode: Int = 0) {
 }
 
 object Cli {
-    public val help: Option = Option("h", "help", false, "Display this help message")
-    public val debug: Option = Option("v", "debug", false, "Set root logger to DEBUG level")
-    public val trace: Option = Option("vv", "trace", false, "Set root logger to TRACE level")
+    public val help:   Option = Option("h", "help", false, "Display this help message")
+    public val debug:  Option = Option("v", "debug", false, "Set root logger to DEBUG level")
+    public val trace:  Option = Option("vv", "trace", false, "Set root logger to TRACE level")
+    public val az:     Option = Option("z", "availability-zone", true, "Target only nodes from this availability zone")
+    public val dryRun: Option = Option("n", "dryrun", false, "Skip running sappers")
 
     public val options: Options = Options();
 
@@ -36,6 +39,8 @@ object Cli {
         options.addOption(help)
         options.addOption(debug)
         options.addOption(trace)
+        options.addOption(az)
+        options.addOption(dryRun)
     }
 
     public fun parseCliArguments(args: Array<String>): CommandLine {
@@ -75,6 +80,12 @@ fun main(args: Array<String>) {
     }
     if (commandLine.hasOption(Cli.trace.getOpt())) {
         (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(Level.TRACE)
+    }
+    if (commandLine.hasOption(Cli.az.getOpt())) {
+        System.setProperty(SargeConfigKey.AVAILABILITY_ZONE.key, commandLine.getOptionValue(Cli.az.getOpt())!!)
+    }
+    if (commandLine.hasOption(Cli.dryRun.getOpt())) {
+        System.setProperty(SargeConfigKey.DRY_RUN.key, "true")
     }
 
     val positionalArgs = commandLine.getArgs()!!
