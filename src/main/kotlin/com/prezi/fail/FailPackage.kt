@@ -16,12 +16,12 @@ private fun usage(exitCode: Int = 0) {
 }
 
 fun main(args: Array<String>) {
+    if (args.contains("--help")) {
+        usage()
+    }
     if (args.count() < 3) {
         println("Not enough arguments.")
         usage(1)
-    }
-    if (args.contains("--help")) {
-        usage()
     }
     if (args.contains("--verbose") || args.contains("debug")) {
         (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(Level.DEBUG)
