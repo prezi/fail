@@ -74,7 +74,7 @@ fun main(args: Array<String>) {
         (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(Level.DEBUG)
     }
     if (commandLine.hasOption(Cli.trace.getOpt())) {
-        (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(Level.DEBUG)
+        (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(Level.TRACE)
     }
 
     val positionalArgs = commandLine.getArgs()!!
