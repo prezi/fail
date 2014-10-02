@@ -39,30 +39,30 @@ At startup the file `~/.fail.properties` is loaded as a properties file. The pre
  
 ### Supported configuration options
 
-### `fail.dryRun` (`-n`, `--dryrun`)
+#### `fail.dryRun` (`-n`, `--dryrun`)
 Skips running sappers. Set to `true` or `false` if setting it via system properties.
 
-### `fail.sarge.targz`
+#### `fail.sarge.targz`
 Path to the tarball containing sappers; lets you provide your own. The default points to the sappers shipped with fail.
 
-### `fail.sarge.scoutType`
+#### `fail.sarge.scoutType`
 Defines how the first argument to `fail` is used when choosing target servers. See below for supported values.
 
-### `fail.sarge.mercyType`
+#### `fail.sarge.mercyType`
 Defines how the list of servers provided by the Scout is filtered. See below for supported values.
 
-### `fail.sarge.ssh.auth_type`
+#### `fail.sarge.ssh.auth_type`
 Authentication method used when connecting to target servers.
  * `NONE` uses whatever is provided by the environment
  * `SSH_AGENT` uses the ssh agent if one is available. This is the default.
  
-### `fail.sarge.ssh.disable_strict_host_key_checking`
+#### `fail.sarge.ssh.disable_strict_host_key_checking`
 What the title says. Set to `true` or `false` if setting it via system properties. Defaults to `true`.
 
-### `fail.awsScout.availabilityZone` (`-z`, `--availability-zone`)
+#### `fail.awsScout.availabilityZone` (`-z`, `--availability-zone`)
 When using the `TAG` scout type, choose servers only from this availability zone. If not specified, use all AZs.
 
-### `fail.useChangelog`
+#### `fail.useChangelog`
 Send data to a [https://github.com/prezi/changelog](Changelog) server about sapper runs. See 
 [https://github.com/prezi/changelog-client-java](the documentation of `changelog-client-java`) for how to configure
 the Changelog client.
