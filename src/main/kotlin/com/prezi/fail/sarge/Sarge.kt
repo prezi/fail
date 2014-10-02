@@ -20,6 +20,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
     val mercy = mercyFactory.build(config)
     val changelog: ChangelogClient? = if (config.useChangelog()) ChangelogClient(FailChangelogClientConfig()) else null
 
+    val user = System.getProperty("user.name")
 
     fun charge(tag: String, sapper: String, runtime: String, args: List<String> = listOf()) {
         val dir = "/tmp/fail-${sapper}-${Date().getTime()}"
@@ -32,32 +33,42 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
         val deathRow = mercy.deny(targets)
         logger.info("Targets on death row after ${config.getMercyType()}: ${deathRow}")
 
-        val user = System.getProperty("user.name")
-        changelog?.send("${user} starting ${sapper} against ${deathRow.join(", ")} for ${runtime} seconds")
         if (config.isDryRun()) {
             logger.info("Doing dry-run, not starting sappers.")
         } else {
-            deathRow forEach { thread(start = true, block = {
+            charge(args, deathRow, dir, remoteTgz, runtime, sapper, user)
+        }
+    }
+
+    private fun charge(args: List<String>, deathRow: List<String>, dir: String, remoteTgz: String, runtime: String, sapper: String, user: String?) {
+        changelog?.send("${user} starting ${sapper} against ${deathRow.join(", ")} for ${runtime} seconds")
+        deathRow forEach {
+            thread(start = true, block = {
                 logger.info("Sapper '${sapper}' will hammer ${it} for ${runtime} seconds")
-                val killSwitch = object : Thread() {
-                    override fun run() {
-                        logger.info("Terminating '${sapper}' on ${it}")
-                        Ssh(it).exec("pkill -f ' ./runner.sh '")
-                        logger.info("Terminated '${sapper}' on ${it}")
-                        changelog?.send("${user} terminated ${sapper} on ${it}")
-                    }
-                }
+                val killSwitch = KillSwitch(sapper, it)
                 Runtime.getRuntime().addShutdownHook(killSwitch)
-                Ssh(it)
-                        .exec("echo \$HOSTNAME")
-                        .exec("mkdir ${dir}")
-                        .put(config.getSappersTargzPath(), remoteTgz)
-                        .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime} ${args.join(" ")}")
-                        .exec("rm -rf ${dir}")
-                        .close()
+                runSapper(args, dir, it, remoteTgz, runtime, sapper)
                 Runtime.getRuntime().removeShutdownHook(killSwitch)
             })
-            }
+        }
+    }
+
+    private fun runSapper(args: List<String>, dir: String, it: String, remoteTgz: String, runtime: String, sapper: String) {
+        Ssh(it)
+                .exec("echo \$HOSTNAME")
+                .exec("mkdir ${dir}")
+                .put(config.getSappersTargzPath(), remoteTgz)
+                .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime} ${args.join(" ")}")
+                .exec("rm -rf ${dir}")
+                .close()
+    }
+
+    inner class KillSwitch(val sapper: String, val host: String): Thread() {
+        override fun run() {
+            logger.info("Terminating '${sapper}' on ${host}")
+            Ssh(host).exec("pkill -f ' ./runner.sh '")
+            logger.info("Terminated '${sapper}' on ${host}")
+            changelog?.send("${user} terminated ${sapper} on ${host}")
         }
     }
 }
