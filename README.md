@@ -63,8 +63,8 @@ What the title says. Set to `true` or `false` if setting it via system propertie
 When using the `TAG` scout type, choose servers only from this availability zone. If not specified, use all AZs.
 
 #### `fail.useChangelog`
-Send data to a [https://github.com/prezi/changelog](Changelog) server about sapper runs. See 
-[https://github.com/prezi/changelog-client-java](the documentation of `changelog-client-java`) for how to configure
+Send data to a [Changelog](https://github.com/prezi/changelog) server about sapper runs. See 
+[the documentation of `changelog-client-java`](https://github.com/prezi/changelog-client-java) for how to configure
 the Changelog client.
 
 ## How does this thing work?
