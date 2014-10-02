@@ -7,15 +7,13 @@ A light-weight implementation of the ideas behind Chaos Monkey. See the original
 Build:
 
 ```sh
-./gradlew distTar
+./gradlew installApp
 ```
 
 Run:
 
 ```sh
-cd build/distributions/
-tar -xzf fail.tgz
-cd fail
+cd build/install/fail
 ./bin/fail $TAG $SAPPER $SECONDS [$ARG1 $ARG2 ...]
 ```
 
