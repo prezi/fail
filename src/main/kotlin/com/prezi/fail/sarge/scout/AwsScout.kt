@@ -4,15 +4,20 @@ import com.prezi.fail.sarge.SargeConfig
 import com.prezi.fail.sarge.Aws
 import com.amazonaws.services.ec2.model.Filter
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest
+import org.slf4j.LoggerFactory
 
 abstract class AwsScout(val config: SargeConfig) : Scout {
+    val logger = LoggerFactory.getLogger(this.javaClass)!!
     val aws = Aws(config)
 
     fun availabilityZoneFilter(): List<Filter> {
         val az = config.getAvailabilityZone()
         return when (az) {
-            is String -> listOf(Filter("availability-zone", listOf(config.getAvailabilityZone()!!)))
-            else      -> listOf()
+            is String -> {
+                logger.info("Selecting instances only from availability zone ${az}")
+                listOf(Filter("availability-zone", listOf(config.getAvailabilityZone()!!)))
+            }
+            else -> listOf()
         }
     }
 
