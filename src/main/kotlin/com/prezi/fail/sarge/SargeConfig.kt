@@ -9,7 +9,7 @@ enum class SargeConfigKey(val key: String) {
     SAPPERS_TGZ_PATH  : SargeConfigKey("fail.sarge.targz")
     SCOUT_TYPE        : SargeConfigKey("fail.sarge.scoutType")
     MERCY_TYPE        : SargeConfigKey("fail.sarge.mercyType")
-    AVAILABILITY_ZONE : SargeConfigKey("fail.scout.availabilityZone")
+    AVAILABILITY_ZONE : SargeConfigKey("fail.awsScout.availabilityZone")
     override fun toString() = key
 }
 
