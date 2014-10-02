@@ -39,12 +39,16 @@ At startup the file `~/.fail.properties` is loaded as a properties file. The pre
  
 ### Supported configuration options
 
-------------------------------|-------------------------|-------------------------------------------------------------|
-| Property name               | Command-line argument   | Description                                                 |
-|-----------------------------|-------------------------|-------------------------------------------------------------|
-| `fail.dryRun`               | `-n`, `--dryrun`        | Skip running sappers |
-
-TODO: finish this table :)
+Property name  | Command-line argument | Description                                                
+---------------|-----------------------|------------
+`fail.dryRun` | `-n`, `--dryrun`  | Skip running sappers
+`fail.useChangelog`|N/A|Send data to a [https://github.com/prezi/changelog](Changelog) server about runs
+`fail.sarge.targz`|N/A|Path to the tarball containing sappers; lets you provide your own. By default uses the sappers shipped with fail.
+`fail.sarge.scoutType`|N/A|Defines how the first argument to `fail` is used when choosing target servers. See below for supported values.
+`fail.sarge.mercyType`|N/A|Defines how the list of servers provided by the Scout is filtered. See below for supported values.
+`fail.sarge.ssh.auth_type`|N/A|Authentication method used when connecting to target servers. `NONE` uses whatever is provided by the environment, `SSH_AGENT` uses the ssh agent if one is available. Default: `SSH_AGENT`.
+`fail.sarge.ssh.disable_strict_host_key_checking`|N/A|What the title says. Defaults to `true`.
+`fail.awsScout.availabilityZone`|`-z`, `--availability-zone` (takes one argument)|When using the `TAG` scout type, choose servers only from this availability zone. If not specified, use all AZs.
 
 ## How does this thing work?
 
