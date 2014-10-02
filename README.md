@@ -37,7 +37,7 @@ At startup the file `~/.fail.properties` is loaded as a properties file. The pre
  - `~/.fail.properties`
  - Default values hard-coded in `fail`
  
-### Supported configuration options
+### Full list of supported configuration options
 
 #### `fail.dryRun` (`-n`, `--dryrun`)
 Skips running sappers. Set to `true` or `false` if setting it via system properties.
@@ -64,7 +64,7 @@ When using the `TAG` scout type, choose servers only from this availability zone
 
 #### `fail.useChangelog`
 Send data to a [Changelog](https://github.com/prezi/changelog) server about sapper runs. See 
-[the documentation of `changelog-client-java`](https://github.com/prezi/changelog-client-java) for how to configure
+[the documentation of `changelog-client-java`](https://github.com/prezi/changelog-client-java#configuration) for how to configure
 the Changelog client.
 
 ## How does this thing work?
@@ -102,7 +102,7 @@ critical failures on all your nodes, the service _will_ go down.
 
 More details can be found in the [sappers directory](https://github.com/prezi/fail/tree/master/sappers)'s [README](https://github.com/prezi/fail/blob/master/sappers/README.md).
 
-### PANIC! The army is causing an outage!
+### PANIC! `fail` is causing an outage!
 
 Your first reflex reaction is correct: it you kill the process (for example with Ctrl-C), then before going down, we'll
 stop hurting the server (assuming we can communicate with it) by running the `stop` script of the active Sapper on
@@ -113,15 +113,8 @@ each node under attack. This event also gets a separate event in Changelog if Ch
 
 Anything done with this tool is inherently dangerous, and thus important to track. When running against production
 servers it's a very very good idea to automatically collect what exactly is happening. To this end
-[Changelog](https://github.com/prezi/changelog) integration can be enabled by setting a few system properties:
-
- * `fail.useChangelog`: send events to Changelog? Defaults to `false`.
- * `changelog.endpoint`: the full URL where events will be posted, including `/api/events`.
- * `changelog.auth.providerType`: the authentication provider to use for authentication against the Changelog API.
-   Possible values are defined in the enum `ChangelogAuthProviderType` (the default is `NOOP`):
-   * `NOOP`: no authentication
-   * `HTTP_BASIC_AUTH`: HTTP Basic authentication. The username and password to use are configured with the
-     `changelog.auth.httpBasic.username` and `changelog.auth.httpBasic.password` system properties.
+[Changelog](https://github.com/prezi/changelog) integration can be enabled by setting `fail.useChangelog=true`, and
+configuring the client as described in [here](https://github.com/prezi/changelog-client-java#configuration).
 
 ## Kotlin vs. IntelliJ
 
