@@ -5,7 +5,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.7.1217'
+		classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.8.11'
 	}
 }
 apply plugin: "kotlin"
@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-	compile 'org.jetbrains.kotlin:kotlin-stdlib:0.7.1217',
+	compile 'org.jetbrains.kotlin:kotlin-stdlib:0.8.11',
 			// AWS
 			'com.amazonaws:aws-java-sdk:1.8.0',
 			// SSH
