@@ -6,7 +6,7 @@ import com.amazonaws.services.ec2.AmazonEC2
 import com.amazonaws.services.ec2.AmazonEC2Client
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 
-class Aws(val config: SargeConfig) {
+open class Aws(val config: SargeConfig) {
     protected fun buildCredentials() : AWSCredentials? = ProfileCredentialsProvider().getCredentials()
-    fun ec2() : AmazonEC2 = AmazonEC2Client(buildCredentials())
+    open fun ec2() : AmazonEC2 = AmazonEC2Client(buildCredentials())
 }

@@ -23,7 +23,7 @@ enum class MercyType {
     HURT_JUST_ONE
 }
 
-class SargeConfig : Config<SargeConfigKey>() {
+open class SargeConfig : Config<SargeConfigKey>() {
     val DEFAULT_SCOUT_TYPE = ScoutType.TAG
     val DEFAULT_SAPPERS_TGZ_PATH = "sappers.tgz"
     val DEFAULT_MERCY_TYPE = MercyType.HURT_JUST_ONE
@@ -31,10 +31,10 @@ class SargeConfig : Config<SargeConfigKey>() {
     val DEFAULT_AVAILABILITY_ZONE = null
     val DEFAULT_DRY_RUN = false
 
-    fun getSappersTargzPath() = getString(SargeConfigKey.SAPPERS_TGZ_PATH) ?: DEFAULT_SAPPERS_TGZ_PATH
-    fun getScoutType() = ScoutType.valueOf(getString(SargeConfigKey.SCOUT_TYPE) ?: DEFAULT_SCOUT_TYPE.toString())
-    fun getMercyType() = MercyType.valueOf(getString(SargeConfigKey.MERCY_TYPE) ?: DEFAULT_MERCY_TYPE.toString())
-    fun useChangelog() = getBool(SargeConfigKey.USE_CHANGELOG, DEFAULT_USE_CHANGELOG)
-    fun getAvailabilityZone() = getString(SargeConfigKey.AVAILABILITY_ZONE) ?: DEFAULT_AVAILABILITY_ZONE
-    fun isDryRun() = getBool(SargeConfigKey.DRY_RUN, DEFAULT_DRY_RUN)
+    open fun getSappersTargzPath() = getString(SargeConfigKey.SAPPERS_TGZ_PATH) ?: DEFAULT_SAPPERS_TGZ_PATH
+    open fun getScoutType() = ScoutType.valueOf(getString(SargeConfigKey.SCOUT_TYPE) ?: DEFAULT_SCOUT_TYPE.toString())
+    open fun getMercyType() = MercyType.valueOf(getString(SargeConfigKey.MERCY_TYPE) ?: DEFAULT_MERCY_TYPE.toString())
+    open fun useChangelog() = getBool(SargeConfigKey.USE_CHANGELOG, DEFAULT_USE_CHANGELOG)
+    open fun getAvailabilityZone() = getString(SargeConfigKey.AVAILABILITY_ZONE) ?: DEFAULT_AVAILABILITY_ZONE
+    open fun isDryRun() = getBool(SargeConfigKey.DRY_RUN, DEFAULT_DRY_RUN)
 }

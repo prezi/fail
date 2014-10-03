@@ -32,6 +32,9 @@ dependencies {
 			'commons-cli:commons-cli:1.2',
 			// Changelog
 	        'com.prezi.changelog:changelog-client-java:0.0.1'
+
+	testCompile 'junit:junit:4.11',
+			'org.mockito:mockito-core:1.+'
 }
 
 apply plugin: "application"

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 
 abstract class AwsScout(val config: SargeConfig) : Scout {
     val logger = LoggerFactory.getLogger(this.javaClass)!!
-    val aws = Aws(config)
+    open val aws = Aws(config)
 
     fun availabilityZoneFilter(): List<Filter> {
         val az = config.getAvailabilityZone()
@@ -24,8 +24,11 @@ abstract class AwsScout(val config: SargeConfig) : Scout {
     abstract fun buildFilters(by: String): List<Filter>
 
     override fun findTargets(by: String) =
-            aws.ec2().describeInstances(DescribeInstancesRequest()
-                    .withFilters(buildFilters(by) + availabilityZoneFilter()))
-                    ?.getReservations()!!.flatMap{ it.getInstances()!!}
-                    .filter{ it.getState()?.getName() == "running" }.map{ it.getPublicDnsName()!!}
+            aws.ec2().describeInstances(
+                    DescribeInstancesRequest().withFilters(buildFilters(by) + availabilityZoneFilter())
+            )
+                    ?.getReservations()!!
+                    .flatMap{ it.getInstances()!!}
+                    .filter{ it.getState()?.getName() == "running" }
+                    .map{ it.getPublicDnsName()!!}
 }
