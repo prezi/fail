@@ -18,6 +18,7 @@ import com.jcraft.jsch.agentproxy.ConnectorFactory
 import com.jcraft.jsch.agentproxy.RemoteIdentityRepository
 // Fail
 import com.prezi.fail.inHome
+import org.slf4j.Logger
 
 
 class Ssh(val host: String, val config: SshConfig = SshConfig()) {
@@ -56,8 +57,8 @@ class Ssh(val host: String, val config: SshConfig = SshConfig()) {
 
     fun overSftpChannel(f: (ChannelSftp) -> Unit): Ssh = overChannel("sftp", null, f)
 
-    fun exec(cmd: String, loggerFun: (String) -> Unit): Ssh {
-        loggerFun("${host} < ${cmd}")
+    fun exec(cmd: String, level: Logger.(String) -> Unit): Ssh {
+        logger.level("${host} < ${cmd}")
         return overExecChannel(cmd, { input, output, channel ->
             val reader = input.buffered().reader()
             reader.forEachLine { line -> logger.info("${host} > ${line}") }

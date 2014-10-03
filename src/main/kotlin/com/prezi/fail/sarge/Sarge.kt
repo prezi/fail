@@ -55,18 +55,18 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
 
     private fun runSapper(args: List<String>, dir: String, it: String, remoteTgz: String, runtime: String, sapper: String) {
         Ssh(it)
-                .exec("echo \$HOSTNAME", {logger.debug(it)})
-                .exec("mkdir ${dir}", {logger.debug(it)})
+                .exec("echo \$HOSTNAME", {this.debug(it)})
+                .exec("mkdir ${dir}", {this.debug(it)})
                 .put(config.getSappersTargzPath()!!, remoteTgz)
                 .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime} ${args.join(" ")}", {logger.info(it)} )
-                .exec("rm -rf ${dir}", {logger.debug(it)})
+                .exec("rm -rf ${dir}", {this.debug(it)})
                 .close()
     }
 
     inner class KillSwitch(val sapper: String, val host: String): Thread() {
         override fun run() {
             logger.info("Terminating '${sapper}' on ${host}")
-            Ssh(host).exec("pkill -f ' ./runner.sh '", {logger.debug(it)})
+            Ssh(host).exec("pkill -f ' ./runner.sh '", {this.debug(it)})
             logger.info("Terminated '${sapper}' on ${host}")
             changelog?.send("${user} terminated ${sapper} on ${host}")
         }
