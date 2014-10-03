@@ -1,5 +1,7 @@
 # Fail
 
+[![Build Status](https://travis-ci.org/prezi/fail.svg?branch=master)](https://travis-ci.org/prezi/fail)
+
 A light-weight implementation of the ideas behind Chaos Monkey. See the original: [Simian Army](https://github.com/Netflix/SimianArmy). This project was originally called `anthropomorphic-battalion` but was renamed for obvious reasons.
 
 ## Getting started
