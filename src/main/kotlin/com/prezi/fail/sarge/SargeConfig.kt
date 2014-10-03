@@ -25,7 +25,7 @@ enum class MercyType {
 
 open class SargeConfig : Config<SargeConfigKey>() {
     val DEFAULT_SCOUT_TYPE = ScoutType.TAG
-    val DEFAULT_SAPPERS_TGZ_PATH = "sappers.tgz"
+    val DEFAULT_SAPPERS_TGZ_PATH = javaClass.getProtectionDomain()?.getCodeSource()?.getLocation()?.toURI()?.resolve("../sappers.tgz")?.getPath()
     val DEFAULT_MERCY_TYPE = MercyType.HURT_JUST_ONE
     val DEFAULT_USE_CHANGELOG = false
     val DEFAULT_AVAILABILITY_ZONE = null

@@ -57,7 +57,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
         Ssh(it)
                 .exec("echo \$HOSTNAME")
                 .exec("mkdir ${dir}")
-                .put(config.getSappersTargzPath(), remoteTgz)
+                .put(config.getSappersTargzPath()!!, remoteTgz)
                 .exec("cd ${dir} && tar -xzf sappers.tgz && ./runner.sh ${sapper} ${runtime} ${args.join(" ")}")
                 .exec("rm -rf ${dir}")
                 .close()
