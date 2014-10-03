@@ -4,9 +4,11 @@ import java.util.Collections
 import java.util.ArrayList
 
 public class HurtJustOne : Mercy {
-    override fun deny(targets: List<String>): List<String> {
+    override fun deny(targets: List<String>): List<String> = if (targets.empty) {
+        listOf()
+    } else {
         val targetsCopy: MutableList<String> = targets.toArrayList()
         Collections.shuffle(targetsCopy)
-        return listOf(targetsCopy[0])
+        listOf(targetsCopy[0])
     }
 }
