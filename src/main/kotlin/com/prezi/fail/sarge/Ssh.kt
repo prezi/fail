@@ -56,8 +56,8 @@ class Ssh(val host: String, val config: SshConfig = SshConfig()) {
 
     fun overSftpChannel(f: (ChannelSftp) -> Unit): Ssh = overChannel("sftp", null, f)
 
-    fun exec(cmd: String): Ssh {
-        logger.info("${host} < ${cmd}")
+    fun exec(cmd: String, loggerFun: (String) -> Unit): Ssh {
+        loggerFun("${host} < ${cmd}")
         return overExecChannel(cmd, { input, output, channel ->
             val reader = input.buffered().reader()
             reader.forEachLine { line -> logger.info("${host} > ${line}") }

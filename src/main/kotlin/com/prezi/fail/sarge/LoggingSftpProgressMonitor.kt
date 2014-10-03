@@ -18,7 +18,7 @@ class LoggingSftpProgressMonitor(val host: String) : SftpProgressMonitor {
     }
 
     fun log(msg: String) {
-        logger.info("${host} ${opToString(op)} ${src} ${dest} ${msg}")
+        logger.debug("${host} ${opToString(op)} ${src} ${dest} ${msg}")
     }
 
     override fun init(op: Int, src: String?, dest: String?, max: Long) {

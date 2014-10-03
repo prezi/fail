@@ -1,10 +1,7 @@
-statusListener(OnConsoleStatusListener)
-
 appender("CONSOLE", ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
-        pattern = "%d{HH:mm:ss.SSS} [%thread] %-5level %msg%n"
+        pattern = "%d{HH:mm:ss.SSS} %.-1level %msg%n"
     }
 }
 
 root(INFO, ["CONSOLE"])
-
