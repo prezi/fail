@@ -117,11 +117,5 @@ servers it's a very very good idea to automatically collect what exactly is happ
 [Changelog](https://github.com/prezi/changelog) integration can be enabled by setting `fail.useChangelog=true`, and
 configuring the client as described in [here](https://github.com/prezi/changelog-client-java#configuration).
 
-## Kotlin vs. IntelliJ
-
-At the time of writing this project uses the latest Kotlin version, which is not supported by the latest stable Kotlin IntelliJ plugin. Use the
-nightly, available by adding http://teamcity.jetbrains.com/guestAuth/repository/download/bt345/.lastSuccessful/updatePlugins.xml
-in Settings -> Plugins -> Browse Repositories.
-
 ------------
 ![cat](https://i.chzbgr.com/maxW500/3576064768/h35FCCB8D/)
