@@ -19,12 +19,6 @@ cd build/install/fail
 ./bin/fail $TAG $SAPPER $SECONDS [$ARG1 $ARG2 ...]
 ```
 
-Alternatively:
-
-```sh
-./gradlew run -PappArgs=$TAG,$SAPPER,$SECONDS,$ARG1,$ARG2
-```
-
 These will choose a single EC2 node in us-east that has the tag $TAG (with any value), and run $SAPPER for $SECONDS
 seconds on it, optionally passing $ARG1 $ARG2 ... to the sapper. Details below.
 
