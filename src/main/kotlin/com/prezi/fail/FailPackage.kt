@@ -70,6 +70,20 @@ private fun loadUserProperties() {
     }
 }
 
+private fun verifySappersTgzExists() {
+    val path = SargeConfig().getSappersTargzPath()
+    if (path == null) {
+        println("${SargeConfigKey.SAPPERS_TGZ_PATH.key} is null. This probably means I'm running in some strange environment.")
+        println("Please specify the path to sappers.tgz explicitly.")
+        System.exit(1)
+    } else {
+        if (!File(path).canRead()) {
+            println("Failed to open ${path} for reading, bailing out.")
+            System.exit(1)
+        }
+    }
+}
+
 fun main(args: Array<String>) {
     val commandLine = Cli.parseCliArguments(args)
     if (commandLine.hasOption(Cli.help.getOpt())) {
@@ -95,6 +109,7 @@ fun main(args: Array<String>) {
     }
 
     loadUserProperties()
+    verifySappersTgzExists()
     // TODO: add logic for choosing action based on args[0] here
     Sarge().charge(positionalArgs[0], positionalArgs[1], positionalArgs[2], positionalArgs.drop(3))
 }
