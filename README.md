@@ -31,37 +31,40 @@ seconds on it, optionally passing $ARG1 $ARG2 ... to the sapper. Details below.
 At startup the file `~/.fail.properties` is loaded as a properties file. The precedence for configuration values
 (which are all system properties) looks like this (higher overrides lower):
 
+ - command line options
  - `-D` via `JAVA_OPTS`
  - `~/.fail.properties`
  - Default values hard-coded in `fail`
- 
+
 ### Full list of supported configuration options
 
-#### `fail.dryRun` (`-n`, `--dryrun`)
+#### `fail.dryRun` (`-n`, `--dry-run`)
 Skips running sappers. Set to `true` or `false` if setting it via system properties.
 
-#### `fail.sarge.targz`
+#### `fail.sarge.targz` (`-p`, `--sappers`)
 Path to the tarball containing sappers; lets you provide your own. The default points to the sappers shipped with fail.
 
-#### `fail.sarge.scoutType`
+#### `fail.sarge.scoutType` (`-s`, `--scout-type`)
 Defines how the first argument to `fail` is used when choosing target servers. See below for supported values.
 
-#### `fail.sarge.mercyType`
+#### `fail.sarge.mercyType` (`-a`, `--all`)
 Defines how the list of servers provided by the Scout is filtered. See below for supported values.
+
+If given via a command line argument (`-a`, `--all`) then NO_MERCY is used, which means there will be no filtering on the list provided by the Scout.
 
 #### `fail.sarge.ssh.auth_type`
 Authentication method used when connecting to target servers.
  * `NONE` uses whatever is provided by the environment
  * `SSH_AGENT` uses the ssh agent if one is available. This is the default.
- 
+
 #### `fail.sarge.ssh.disable_strict_host_key_checking`
 What the title says. Set to `true` or `false` if setting it via system properties. Defaults to `true`.
 
 #### `fail.awsScout.availabilityZone` (`-z`, `--availability-zone`)
 When using the `TAG` scout type, choose servers only from this availability zone. If not specified, use all AZs.
 
-#### `fail.useChangelog`
-Send data to a [Changelog](https://github.com/prezi/changelog) server about sapper runs. See 
+#### `fail.useChangelog` (`-c`, `--use-changelog`)
+Send data to a [Changelog](https://github.com/prezi/changelog) server about sapper runs. See
 [the documentation of `changelog-client-java`](https://github.com/prezi/changelog-client-java#configuration) for how to configure
 the Changelog client.
 

@@ -22,7 +22,7 @@ import com.prezi.fail.sarge.SargeConfigKey
 
 private fun usage(exitCode: Int = 0) {
     val formatter = HelpFormatter()
-    formatter.printHelp("fail tag sapper duration-seconds [sapper-arg [sapper-arg ...]]", Cli.options)
+    formatter.printHelp("fail [options] tag sapper duration-seconds [sapper-arg ...]", Cli.options)
     System.exit(exitCode)
 }
 
@@ -30,18 +30,8 @@ object Cli {
     public val help:   Option = Option("h", "help", false, "Display this help message")
     public val debug:  Option = Option("v", "debug", false, "Set root logger to DEBUG level")
     public val trace:  Option = Option("vv", "trace", false, "Set root logger to TRACE level")
-    public val az:     Option = Option("z", "availability-zone", true, "Target only nodes from this availability zone")
-    public val dryRun: Option = Option("n", "dryrun", false, "Skip running sappers")
 
     public val options: Options = Options();
-
-    {
-        options.addOption(help)
-        options.addOption(debug)
-        options.addOption(trace)
-        options.addOption(az)
-        options.addOption(dryRun)
-    }
 
     public fun parseCliArguments(args: Array<String>): CommandLine {
         val parser = GnuParser()
@@ -85,6 +75,12 @@ private fun verifySappersTgzExists() {
 }
 
 fun main(args: Array<String>) {
+    Cli.options.addOption(Cli.help)
+    Cli.options.addOption(Cli.debug)
+    Cli.options.addOption(Cli.trace)
+    SargeConfigKey.values().forEach { conf ->
+        Cli.options.addOption(conf.opt)
+    }
     val commandLine = Cli.parseCliArguments(args)
     if (commandLine.hasOption(Cli.help.getOpt())) {
         usage()
@@ -95,11 +91,11 @@ fun main(args: Array<String>) {
     if (commandLine.hasOption(Cli.trace.getOpt())) {
         (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(Level.TRACE)
     }
-    if (commandLine.hasOption(Cli.az.getOpt())) {
-        System.setProperty(SargeConfigKey.AVAILABILITY_ZONE.key, commandLine.getOptionValue(Cli.az.getOpt())!!)
-    }
-    if (commandLine.hasOption(Cli.dryRun.getOpt())) {
-        System.setProperty(SargeConfigKey.DRY_RUN.key, "true")
+    SargeConfigKey.values().forEach { conf ->
+        if (commandLine.hasOption(conf.opt.getOpt())) {
+            val commandLineValue = commandLine.getOptionValue(conf.opt.getOpt()) ?: SargeConfig.getToggledValue(conf)
+            System.setProperty(conf.key, commandLineValue)
+        }
     }
 
     val positionalArgs = commandLine.getArgs()!!
