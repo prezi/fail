@@ -1,11 +1,13 @@
 // -*- mode: groovy; c-basic-offset: 4; indent-tabs-mode: t -*-
-// Kotlin plugin
+
+ext.pegasusVersion = "1.20.0"
 buildscript {
 	repositories {
 		mavenCentral()
 	}
 	dependencies {
 		classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.8.11'
+		classpath group: 'com.linkedin.pegasus', name: 'gradle-plugins', version: '1.20.0'
 	}
 }
 subprojects {
@@ -67,3 +69,58 @@ project(":cli") {
 		dependsOn packageSappers
 	}
 }
+
+// rest.li api definition
+project(":api:data") {
+	apply plugin: 'pegasus'
+	apply plugin: 'java'
+
+	dependencies {
+		compile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
+		dataTemplateCompile "com.linkedin.pegasus:data:${pegasusVersion}"
+		dataTemplateGenerator "com.linkedin.pegasus:generator:${pegasusVersion}"
+		restTools "com.linkedin.pegasus:restli-tools:${pegasusVersion}"
+		restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
+	}
+}
+
+/*
+// rest.li server module
+project(":api:server") {
+	apply plugin: 'pegasus'
+	dependencies {
+		dataTemplateCompile spec.product.pegasus.data
+		restClientCompile spec.product.pegasus.restliClient
+		restClientCompile spec.product.pegasus.restliCommon
+	}
+
+
+	dependencies {
+		compile project(path: ':api:data', configuration: 'dataTemplate')
+		compile spec.product.pegasus.restliServer
+		compile spec.product.pegasus.restliNettyStandalone
+	}
+
+	task startFortunesServer(type: JavaExec) {
+		main = 'com.linkedin.restli.server.NettyStandaloneLauncher'
+		args = ['-port', '8080', '-packages', 'com.prezi.fail.api.impl']
+		classpath = sourceSets.main.runtimeClasspath
+		standardInput = System.in
+	}
+}
+
+// rest.li client module
+project(":api:client") {
+	apply plugin: 'java'
+
+	dependencies {
+		compile project(path: ':api:data', configuration: 'restClient')
+	}
+
+	task startFortunesClient(type: JavaExec) {
+		main = 'com.prezi.fail.api.FailApiClient'
+		// jvmArgs = ["-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"] // uncomment to enable remote debugging on port 5005
+		classpath = sourceSets.main.runtimeClasspath
+	}
+}
+*/
