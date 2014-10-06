@@ -1,0 +1,9 @@
+subprojects {
+	apply plugin: 'pegasus'
+
+	dependencies {
+		compile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
+		dataTemplateCompile "com.linkedin.pegasus:data:${pegasusVersion}"
+		restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
+	}
+}

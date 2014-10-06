@@ -1,13 +1,15 @@
 // -*- mode: groovy; c-basic-offset: 4; indent-tabs-mode: t -*-
 
 ext.pegasusVersion = "1.20.0"
+ext.kotlinVersion = "0.8.11"
+
 buildscript {
 	repositories {
 		mavenCentral()
 	}
 	dependencies {
 		classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.8.11'
-		classpath group: 'com.linkedin.pegasus', name: 'gradle-plugins', version: '1.20.0'
+		classpath group: 'com.linkedin.pegasus', name: 'gradle-plugins', version: "1.20.0"
 	}
 }
 
@@ -16,88 +18,6 @@ subprojects {
 
 	repositories {
 		mavenCentral()
-	}
-
-	dependencies {
-		compile 'org.jetbrains.kotlin:kotlin-stdlib:0.8.11',
-				// Logging
-				'org.slf4j:slf4j-api:1.7.7',
-				'ch.qos.logback:logback-classic:1.1.2',
-				'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
-				'org.slf4j:jcl-over-slf4j:1.7.7'
-
-		testCompile 'junit:junit:4.11',
-				'org.mockito:mockito-core:1.+'
-	}
-}
-
-project(":cli") {
-	apply plugin: "kotlin"
-	apply plugin: "application"
-	mainClassName = "com.prezi.fail.FailPackage"
-	applicationName = "fail"
-
-	dependencies {
-		compile 'commons-cli:commons-cli:1.2',
-				// Changelog
-				'com.prezi.changelog:changelog-client-java:0.0.1',
-				// AWS
-				'com.amazonaws:aws-java-sdk:1.8.0',
-				// SSH
-				'com.jcraft:jsch:0.1.51',
-				'com.jcraft:jsch.agentproxy.jsch:0.0.7',
-				'com.jcraft:jsch.agentproxy.sshagent:0.0.7',
-				'com.jcraft:jsch.agentproxy.connector-factory:0.0.7'
-	}
-
-	// Package application
-	task packageSappers(type: Tar) {
-		baseName "sappers"
-		from "sappers"
-		compression Compression.GZIP
-	}
-	applicationDistribution.from(packageSappers)
-	distTar { compression Compression.GZIP }
-
-	// Run with gradle run
-	run {
-		// Pass system properties when using `gradle run`
-		systemProperties = System.properties
-		// pass -PappArgs=foo,bar to main when using `gradle run`
-		if (project.hasProperty("appArgs")) {
-			args(appArgs.split(","))
-		}
-		// Make sure we have the sappers.tgz ready
-		dependsOn packageSappers
-	}
-}
-
-// rest.li api definition
-project(":api:data") {
-	apply plugin: 'pegasus'
-
-	dependencies {
-		compile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
-		dataTemplateCompile "com.linkedin.pegasus:data:${pegasusVersion}"
-		restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
-	}
-}
-
-// rest.li server module
-project(":api:server") {
-	apply plugin: 'pegasus'
-	apply plugin: 'kotlin'
-
-	apply plugin: "application"
-	mainClassName = "com.prezi.fail.api.ApiPackage"
-	applicationName = "fail-api"
-
-	dependencies {
-		compile project(path: ':api:data', configuration: 'dataTemplate'),
-		        "com.linkedin.pegasus:restli-client:${pegasusVersion}",
-				"com.linkedin.pegasus:restli-server:${pegasusVersion}",
-				"com.linkedin.pegasus:restli-netty-standalone:${pegasusVersion}"
-		restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
 	}
 }
 
