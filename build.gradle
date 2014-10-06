@@ -79,8 +79,6 @@ project(":api:data") {
 	dependencies {
 		compile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
 		dataTemplateCompile "com.linkedin.pegasus:data:${pegasusVersion}"
-		dataTemplateGenerator "com.linkedin.pegasus:generator:${pegasusVersion}"
-		restTools "com.linkedin.pegasus:restli-tools:${pegasusVersion}"
 		restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
 	}
 }
@@ -90,21 +88,16 @@ project(":api:server") {
 	apply plugin: 'pegasus'
 	apply plugin: 'kotlin'
 
+	apply plugin: "application"
+	mainClassName = "com.prezi.fail.api.ApiPackage"
+	applicationName = "fail-api"
+
 	dependencies {
 		compile project(path: ':api:data', configuration: 'dataTemplate'),
 		        "com.linkedin.pegasus:restli-client:${pegasusVersion}",
 				"com.linkedin.pegasus:restli-server:${pegasusVersion}",
 				"com.linkedin.pegasus:restli-netty-standalone:${pegasusVersion}"
-		dataTemplateGenerator "com.linkedin.pegasus:generator:${pegasusVersion}"
-		restTools "com.linkedin.pegasus:restli-tools:${pegasusVersion}"
 		restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
-	}
-
-	task startServer(type: JavaExec) {
-		main = 'com.linkedin.restli.server.NettyStandaloneLauncher'
-		args = ['-port', '8080', '-packages', 'com.prezi.fail.api.impl']
-		classpath = sourceSets.main.runtimeClasspath
-		standardInput = System.in
 	}
 }
 
