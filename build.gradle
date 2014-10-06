@@ -10,12 +10,13 @@ buildscript {
 		classpath group: 'com.linkedin.pegasus', name: 'gradle-plugins', version: '1.20.0'
 	}
 }
+
 subprojects {
+	apply plugin: "java"
+
 	repositories {
 		mavenCentral()
 	}
-
-	apply plugin: "kotlin"
 
 	dependencies {
 		compile 'org.jetbrains.kotlin:kotlin-stdlib:0.8.11',
@@ -31,6 +32,7 @@ subprojects {
 }
 
 project(":cli") {
+	apply plugin: "kotlin"
 	apply plugin: "application"
 	mainClassName = "com.prezi.fail.FailPackage"
 	applicationName = "fail"
@@ -73,7 +75,6 @@ project(":cli") {
 // rest.li api definition
 project(":api:data") {
 	apply plugin: 'pegasus'
-	apply plugin: 'java'
 
 	dependencies {
 		compile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
