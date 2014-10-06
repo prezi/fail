@@ -93,7 +93,7 @@ setting the system property `fail.sarge.mercyType` to a value from the enum `Mer
 ### Sapper: bring the pain to the servers
 
 A Sapper is a pair of scripts that start and stop a specific kind of malfunction on a target server. See the directories
-under `sappers` for a list. `noop` deserves a special mention; you can use it to check that everything is in order before
+under `cli/sappers` for a list. `noop` deserves a special mention; you can use it to check that everything is in order before
 starting to actually hurt nodes. Note that all targets will be attacked _in parallel_. If you introduce
 critical failures on all your nodes, the service _will_ go down.
 

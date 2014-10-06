@@ -8,56 +8,61 @@ buildscript {
 		classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.8.11'
 	}
 }
-apply plugin: "kotlin"
-
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	compile 'org.jetbrains.kotlin:kotlin-stdlib:0.8.11',
-			// AWS
-			'com.amazonaws:aws-java-sdk:1.8.0',
-			// SSH
-			'com.jcraft:jsch:0.1.51',
-			'com.jcraft:jsch.agentproxy.jsch:0.0.7',
-			'com.jcraft:jsch.agentproxy.sshagent:0.0.7',
-			'com.jcraft:jsch.agentproxy.connector-factory:0.0.7',
-			// Logging
-			'org.slf4j:slf4j-api:1.7.7',
-			'ch.qos.logback:logback-classic:1.1.2',
-			'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
-			'org.slf4j:jcl-over-slf4j:1.7.7',
-			// CLI
-			'commons-cli:commons-cli:1.2',
-			// Changelog
-	        'com.prezi.changelog:changelog-client-java:0.0.1'
-
-	testCompile 'junit:junit:4.11',
-			'org.mockito:mockito-core:1.+'
-}
-
-apply plugin: "application"
-mainClassName = "com.prezi.fail.FailPackage"
-
-// Package application
-task packageSappers(type:Tar) {
-	baseName "sappers"
-	from "sappers"
-	compression Compression.GZIP
-}
-applicationDistribution.from(packageSappers)
-distTar { compression Compression.GZIP }
-
-// Run with gradle run
-run {
-	// Pass system properties when using `gradle run`
-	systemProperties = System.properties
-	// pass -PappArgs=foo,bar to main when using `gradle run`
-	if (project.hasProperty("appArgs")) {
-		args(appArgs.split(","))
+subprojects {
+	repositories {
+		mavenCentral()
 	}
-	// Make sure we have the sappers.tgz ready
-	dependsOn packageSappers
+
+	apply plugin: "kotlin"
+
+	dependencies {
+		compile 'org.jetbrains.kotlin:kotlin-stdlib:0.8.11',
+				// Logging
+				'org.slf4j:slf4j-api:1.7.7',
+				'ch.qos.logback:logback-classic:1.1.2',
+				'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
+				'org.slf4j:jcl-over-slf4j:1.7.7'
+
+		testCompile 'junit:junit:4.11',
+				'org.mockito:mockito-core:1.+'
+	}
 }
 
+project(":cli") {
+	apply plugin: "application"
+	mainClassName = "com.prezi.fail.FailPackage"
+
+	dependencies {
+		compile 'commons-cli:commons-cli:1.2',
+				// Changelog
+				'com.prezi.changelog:changelog-client-java:0.0.1',
+				// AWS
+				'com.amazonaws:aws-java-sdk:1.8.0',
+				// SSH
+				'com.jcraft:jsch:0.1.51',
+				'com.jcraft:jsch.agentproxy.jsch:0.0.7',
+				'com.jcraft:jsch.agentproxy.sshagent:0.0.7',
+				'com.jcraft:jsch.agentproxy.connector-factory:0.0.7'
+	}
+
+	// Package application
+	task packageSappers(type: Tar) {
+		baseName "sappers"
+		from "sappers"
+		compression Compression.GZIP
+	}
+	applicationDistribution.from(packageSappers)
+	distTar { compression Compression.GZIP }
+
+	// Run with gradle run
+	run {
+		// Pass system properties when using `gradle run`
+		systemProperties = System.properties
+		// pass -PappArgs=foo,bar to main when using `gradle run`
+		if (project.hasProperty("appArgs")) {
+			args(appArgs.split(","))
+		}
+		// Make sure we have the sappers.tgz ready
+		dependsOn packageSappers
+	}
+}
