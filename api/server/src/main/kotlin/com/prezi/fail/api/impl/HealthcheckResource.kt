@@ -5,9 +5,6 @@ import com.linkedin.restli.server.resources.CollectionResourceTemplate
 import java.util.HashMap
 import com.prezi.fail.api.Healthcheck
 
-/**
- * Very simple Rest.li Resource that serves up a fortune cookie.
- */
 [RestLiCollection(name="healthcheck", namespace="com.prezi.fail")]
 public class FortunesResource: CollectionResourceTemplate<Long, Healthcheck>()
 {
