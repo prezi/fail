@@ -85,24 +85,22 @@ project(":api:data") {
 	}
 }
 
-/*
 // rest.li server module
 project(":api:server") {
 	apply plugin: 'pegasus'
-	dependencies {
-		dataTemplateCompile spec.product.pegasus.data
-		restClientCompile spec.product.pegasus.restliClient
-		restClientCompile spec.product.pegasus.restliCommon
-	}
-
+	apply plugin: 'kotlin'
 
 	dependencies {
-		compile project(path: ':api:data', configuration: 'dataTemplate')
-		compile spec.product.pegasus.restliServer
-		compile spec.product.pegasus.restliNettyStandalone
+		compile project(path: ':api:data', configuration: 'dataTemplate'),
+		        "com.linkedin.pegasus:restli-client:${pegasusVersion}",
+				"com.linkedin.pegasus:restli-server:${pegasusVersion}",
+				"com.linkedin.pegasus:restli-netty-standalone:${pegasusVersion}"
+		dataTemplateGenerator "com.linkedin.pegasus:generator:${pegasusVersion}"
+		restTools "com.linkedin.pegasus:restli-tools:${pegasusVersion}"
+		restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
 	}
 
-	task startFortunesServer(type: JavaExec) {
+	task startServer(type: JavaExec) {
 		main = 'com.linkedin.restli.server.NettyStandaloneLauncher'
 		args = ['-port', '8080', '-packages', 'com.prezi.fail.api.impl']
 		classpath = sourceSets.main.runtimeClasspath
@@ -110,6 +108,7 @@ project(":api:server") {
 	}
 }
 
+/*
 // rest.li client module
 project(":api:client") {
 	apply plugin: 'java'
