@@ -31,6 +31,7 @@ subprojects {
 project(":cli") {
 	apply plugin: "application"
 	mainClassName = "com.prezi.fail.FailPackage"
+	applicationName = "fail"
 
 	dependencies {
 		compile 'commons-cli:commons-cli:1.2',
