@@ -15,8 +15,6 @@ root=$(dirname $0 | xargs dirname)
 
 package=$(${root}/scripts/package "${RELEASE_ID}")
 uploaded_package=$(${root}/scripts/upload "${package}")
-${root}/scripts/deploy_to_preprod ${RELEASE_ID}
-
 ${root}/scripts/release ${RELEASE_ID} "${uploaded_package}"
 
 echo "Released ${PROJECT_NAME} version ${RELEASE_ID}"
