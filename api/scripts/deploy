@@ -1,0 +1,15 @@
+#!/bin/bash -ex
+
+revno=$1; shift
+
+basedir=$(./meta_base_dir $revno)
+currentlink=$(echo $basedir | xargs dirname | xargs dirname)/current
+
+mkdir -p $basedir
+cp -rf ../* $basedir/
+
+cd $basedir
+ln -s $basedir ${currentlink}_tmp && mv -Tf ${currentlink}{_tmp,}
+echo "Restarting fail-api"
+sudo /usr/bin/supervisorctl restart fail-api
+

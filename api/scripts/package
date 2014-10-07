@@ -1,0 +1,18 @@
+#!/bin/sh -ex
+
+set -e
+
+. $(dirname $0)/common
+
+RELEASE_ID=$1; shift
+
+[ -z "$RELEASE_ID" ] && exit 1
+
+tarball=$PROJECT_NAME-$RELEASE_ID.tar.bz2
+
+(
+  cd ${root}
+  ./gradlew api:server:distTar -PpreziReleaseDir="$(pwd)" -PpreziReleaseTarball="${tarball}"
+) >& 2
+
+echo $tarball

@@ -1,0 +1,6 @@
+#!/bin/sh -x
+
+. $(dirname $0)/common
+
+revno=$1; shift
+echo /opt/prezi/$PROJECT_NAME/versions/$revno

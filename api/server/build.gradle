@@ -4,6 +4,23 @@ apply plugin: "application"
 mainClassName = "com.prezi.fail.api.ApiPackage"
 applicationName = "fail-api"
 
+distTar {
+	compression Compression.BZIP2
+	extension "tar.bz2"
+}
+
+// Integration with the Prezi CI system
+if (hasProperty("preziReleaseTarball")) {
+	distTar {
+		from("${parent.projectDir}/scripts") {
+			into "${applicationName}/scripts"
+		}
+		destinationDir new File(preziReleaseDir)
+		archiveName preziReleaseTarball
+	}
+	print preziReleaseTarball
+}
+
 dependencies {
 	compile project(path: ':api:data', configuration: 'dataTemplate'),
 			"org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
