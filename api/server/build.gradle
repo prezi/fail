@@ -10,15 +10,14 @@ distTar {
 }
 
 // Integration with the Prezi CI system
-if (hasProperty("preziReleaseTarball")) {
+if (hasProperty("preziReleaseTarballBasename")) {
 	distTar {
 		from("${parent.projectDir}/scripts") {
-			into "${applicationName}/scripts"
+			into "${preziReleaseTarballBasename}/scripts"
 		}
 		destinationDir new File(preziReleaseDir)
-		archiveName preziReleaseTarball
+		baseName preziReleaseTarballBasename
 	}
-	print preziReleaseTarball
 }
 
 dependencies {

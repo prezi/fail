@@ -8,11 +8,12 @@ RELEASE_ID=$1; shift
 
 [ -z "$RELEASE_ID" ] && exit 1
 
-tarball=$PROJECT_NAME-$RELEASE_ID.tar.bz2
+tarball_basename=$PROJECT_NAME-$RELEASE_ID
+tarball=${tarball_basename}.tar.bz2
 
 (
   cd ${root}
-  ./gradlew api:server:distTar -PpreziReleaseDir="$(pwd)" -PpreziReleaseTarball="${tarball}"
+  ./gradlew api:server:distTar -PpreziReleaseDir="$(pwd)" -PpreziReleaseTarballBasename="${tarball_basename}"
 ) >& 2
 
 echo $tarball
