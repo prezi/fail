@@ -1,15 +1,14 @@
 package com.prezi.fail.api.impl
 
-import com.linkedin.restli.server.annotations.RestLiCollection
-import com.linkedin.restli.server.resources.CollectionResourceTemplate
-import java.util.HashMap
 import com.prezi.fail.api.Healthcheck
+import com.linkedin.restli.server.annotations.RestLiSimpleResource
+import com.linkedin.restli.server.resources.SimpleResourceTemplate
 
-[RestLiCollection(name="healthcheck", namespace="com.prezi.fail")]
-public class HealthcheckResource: CollectionResourceTemplate<Long, Healthcheck>()
+[RestLiSimpleResource(name="healthcheck", namespace="com.prezi.fail")]
+public class HealthcheckResource: SimpleResourceTemplate<Healthcheck>()
 {
-    override public fun get(key: Long?): Healthcheck?
+    override public fun get(): Healthcheck?
     {
-        return Healthcheck().setOk("Such OK!")
+        return Healthcheck().setRunning(true)
     }
 }
