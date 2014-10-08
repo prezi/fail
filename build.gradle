@@ -21,19 +21,4 @@ subprojects {
 	}
 }
 
-/*
-// rest.li client module
-project(":api:client") {
-	apply plugin: 'java'
 
-	dependencies {
-		compile project(path: ':api:data', configuration: 'restClient')
-	}
-
-	task startFortunesClient(type: JavaExec) {
-		main = 'com.prezi.fail.api.FailApiClient'
-		// jvmArgs = ["-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"] // uncomment to enable remote debugging on port 5005
-		classpath = sourceSets.main.runtimeClasspath
-	}
-}
-*/

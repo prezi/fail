@@ -18,11 +18,17 @@ import com.prezi.fail.sarge.Sarge
 import com.prezi.changelog.ChangelogClient
 import com.prezi.fail.sarge.SargeConfig
 import com.prezi.fail.sarge.SargeConfigKey
+import com.linkedin.restli.client.RestClient
+import com.linkedin.restli.client.ParSeqRestClient
+import com.linkedin.r2.transport.http.client.HttpClientFactory
+import com.linkedin.r2.transport.common.bridge.client.TransportClientAdapter
+import com.prezi.fail.api.HealthcheckBuilders
 
 
 private fun usage(exitCode: Int = 0) {
     val formatter = HelpFormatter()
-    formatter.printHelp("fail [options] tag sapper duration-seconds [sapper-arg ...]", Cli.options)
+    formatter.printHelp("""fail [options] tag sapper duration-seconds [sapper-arg ...]
+                                [options] api-test""", Cli.options)
     System.exit(exitCode)
 }
 
@@ -30,6 +36,7 @@ object Cli {
     public val help:   Option = Option("h", "help", false, "Display this help message")
     public val debug:  Option = Option("v", "debug", false, "Set root logger to DEBUG level")
     public val trace:  Option = Option("vv", "trace", false, "Set root logger to TRACE level")
+    public val api:    Option = Option(null, "api", true, "URL prefix to the Fail API")
 
     public val options: Options = Options();
 
@@ -78,6 +85,8 @@ fun main(args: Array<String>) {
     Cli.options.addOption(Cli.help)
     Cli.options.addOption(Cli.debug)
     Cli.options.addOption(Cli.trace)
+    Cli.options.addOption(Cli.api)
+
     SargeConfigKey.values().forEach { conf ->
         Cli.options.addOption(conf.opt)
     }
@@ -99,6 +108,34 @@ fun main(args: Array<String>) {
     }
 
     val positionalArgs = commandLine.getArgs()!!
+
+    if (positionalArgs.size > 0 && positionalArgs[0] == "api-test") {
+        val http = HttpClientFactory()
+        val r2Client = TransportClientAdapter(http.getClient(mapOf()))
+        val urlPrefix = if (commandLine.hasOption(Cli.api.getOpt())) {
+            val arg = commandLine.getOptionValue(Cli.api.getOpt())!!
+            if (!arg.endsWith('/')) {
+                arg + '/'
+            } else {
+                arg
+            }
+        } else {
+            "http://localhost:8080/"
+        }
+        val restClient = RestClient(r2Client, urlPrefix)
+        println("Checking if API is running at ${urlPrefix}")
+        try {
+            println(
+                    "Healthcheck.isRunning(): " +
+                    restClient.sendRequest(HealthcheckBuilders().get()?.build())?.getResponse()?.getEntity()?.isRunning()
+            )
+        } catch (e: Exception) {
+            println("Healthcheck request failed, the API is probably not running / healthy")
+            println("The exception was: ${e.getMessage()}")
+        }
+        System.exit(0)
+    }
+
     if (positionalArgs.count() < 3) {
         println("Not enough arguments.")
         usage(1)

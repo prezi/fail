@@ -1,6 +1,7 @@
 {
     "type": "record",
     "name": "Healthcheck",
+    "doc": "Service status",
     "namespace": "com.prezi.fail.api",
     "fields": [
         {"name": "running","type": "boolean"}

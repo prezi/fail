@@ -1,4 +1,5 @@
 apply plugin: 'kotlin'
+apply plugin: 'pegasus'
 
 apply plugin: "application"
 mainClassName = "com.prezi.fail.api.ApiPackage"
@@ -20,12 +21,17 @@ if (hasProperty("preziReleaseTarballBasename")) {
 	}
 }
 
+ext.apiProject = project(":api:data")
+pegasus.main.idlOptions.addIdlItem(['com.prezi.fail.api.impl'])
+
 dependencies {
 	compile project(path: ':api:data', configuration: 'dataTemplate'),
 			"org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
 			"com.linkedin.pegasus:restli-server:${pegasusVersion}",
 			"com.linkedin.pegasus:restli-netty-standalone:${pegasusVersion}"
+	restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
 }
+
 
 
 

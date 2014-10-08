@@ -1,5 +1,7 @@
-apply plugin: "kotlin"
 apply plugin: "application"
+apply plugin: "pegasus"
+apply plugin: "kotlin"
+
 mainClassName = "com.prezi.fail.FailPackage"
 applicationName = "fail"
 
@@ -20,7 +22,9 @@ dependencies {
 			'org.slf4j:slf4j-api:1.7.7',
 			'ch.qos.logback:logback-classic:1.1.2',
 			'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
-			'org.slf4j:jcl-over-slf4j:1.7.7'
+			'org.slf4j:jcl-over-slf4j:1.7.7',
+			// API client
+			project(path: ':api:data', configuration: 'restClient')
 
 	testCompile 'junit:junit:4.11',
 			'org.mockito:mockito-core:1.+'
