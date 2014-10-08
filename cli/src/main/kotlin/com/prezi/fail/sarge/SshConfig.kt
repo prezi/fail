@@ -1,6 +1,6 @@
 package com.prezi.fail.sarge
 
-import com.prezi.fail.Config
+import com.prezi.fail.config.Config
 
 enum class SshConfigKey(key: String) {
     AUTH_TYPE: SshConfigKey("fail.sarge.ssh.auth_type")
@@ -18,4 +18,8 @@ class SshConfig : Config<SshConfigKey>() {
 
     fun getAuthType() =  AuthType.valueOf(getString(SshConfigKey.AUTH_TYPE) ?: DEFAULT_AUTH_TYPE.toString())
     fun shouldDisableHostKeyChecking() = getBool(SshConfigKey.DISABLE_STRICT_HOST_KEY_CHECKING, DEFAULT_DISABLE_STRICT_HOST_KEY_CHECKING)
+
+    override fun getToggledValue(key: SshConfigKey): String {
+        throw UnsupportedOperationException()
+    }
 }

@@ -1,6 +1,6 @@
 package com.prezi.fail.sarge
 
-import com.prezi.fail.Config
+import com.prezi.fail.config.Config
 import org.apache.commons.cli.Option
 
 enum class SargeConfigKey(val key: String, val opt: Option) {
@@ -24,6 +24,13 @@ enum class MercyType {
 }
 
 open class SargeConfig : Config<SargeConfigKey>() {
+    val DEFAULT_SCOUT_TYPE = ScoutType.TAG
+    val DEFAULT_SAPPERS_TGZ_PATH = javaClass.getProtectionDomain()?.getCodeSource()?.getLocation()?.toURI()?.resolve("../sappers.tgz")?.getPath()
+    val DEFAULT_MERCY_TYPE = MercyType.HURT_JUST_ONE
+    val DEFAULT_USE_CHANGELOG = false
+    val DEFAULT_AVAILABILITY_ZONE = null
+    val DEFAULT_DRY_RUN = false
+
     open fun getSappersTargzPath() = getString(SargeConfigKey.SAPPERS_TGZ_PATH) ?: DEFAULT_SAPPERS_TGZ_PATH
     open fun getScoutType() = ScoutType.valueOf(getString(SargeConfigKey.SCOUT_TYPE) ?: DEFAULT_SCOUT_TYPE.toString())
     open fun getMercyType() = MercyType.valueOf(getString(SargeConfigKey.MERCY_TYPE) ?: DEFAULT_MERCY_TYPE.toString())
@@ -31,21 +38,12 @@ open class SargeConfig : Config<SargeConfigKey>() {
     open fun getAvailabilityZone() = getString(SargeConfigKey.AVAILABILITY_ZONE) ?: DEFAULT_AVAILABILITY_ZONE
     open fun isDryRun() = getBool(SargeConfigKey.DRY_RUN, DEFAULT_DRY_RUN)
 
-    class object {
-        val DEFAULT_SCOUT_TYPE = ScoutType.TAG
-        val DEFAULT_SAPPERS_TGZ_PATH = javaClass.getProtectionDomain()?.getCodeSource()?.getLocation()?.toURI()?.resolve("../sappers.tgz")?.getPath()
-        val DEFAULT_MERCY_TYPE = MercyType.HURT_JUST_ONE
-        val DEFAULT_USE_CHANGELOG = false
-        val DEFAULT_AVAILABILITY_ZONE = null
-        val DEFAULT_DRY_RUN = false
-
-        public fun getToggledValue(key: SargeConfigKey): String {
-            return when (key) {
-                SargeConfigKey.DRY_RUN -> (!DEFAULT_DRY_RUN).toString()
-                SargeConfigKey.MERCY_TYPE -> MercyType.NO_MERCY.toString()
-                SargeConfigKey.USE_CHANGELOG -> (!DEFAULT_USE_CHANGELOG).toString()
-                else -> throw RuntimeException("SargeConfig.getToggledValue called with invalid key ${key}")
-            }
+    override public fun getToggledValue(key: SargeConfigKey): String {
+        return when (key) {
+            SargeConfigKey.DRY_RUN -> (!DEFAULT_DRY_RUN).toString()
+            SargeConfigKey.MERCY_TYPE -> MercyType.NO_MERCY.toString()
+            SargeConfigKey.USE_CHANGELOG -> (!DEFAULT_USE_CHANGELOG).toString()
+            else -> throw RuntimeException("SargeConfig.getToggledValue called with invalid key ${key}")
         }
     }
 }
