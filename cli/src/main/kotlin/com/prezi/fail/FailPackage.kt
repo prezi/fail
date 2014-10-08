@@ -56,12 +56,13 @@ private fun verifySappersTgzExists() {
 }
 
 
-private fun setRootLoggerLevel(level: Level) {
+private fun setLogLevel(level: Level) {
     (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(level)
+    (LoggerFactory.getLogger("com.linkedin") as ch.qos.logback.classic.Logger).setLevel(level)
 }
 private fun updateRootLoggerLevel(config: CliConfig) {
-    if (config.isDebug()) { setRootLoggerLevel(Level.DEBUG) }
-    if (config.isTrace()) { setRootLoggerLevel(Level.TRACE) }
+    if (config.isDebug()) { setLogLevel(Level.DEBUG) }
+    if (config.isTrace()) { setLogLevel(Level.TRACE) }
 }
 
 
