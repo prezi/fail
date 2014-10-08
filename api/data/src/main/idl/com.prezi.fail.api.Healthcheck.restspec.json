@@ -1,0 +1,16 @@
+{
+  "name" : "Healthcheck",
+  "namespace" : "com.prezi.fail.api",
+  "path" : "/Healthcheck",
+  "schema" : "com.prezi.fail.api.Healthcheck",
+  "doc" : "generated from: com.prezi.fail.api.impl.HealthcheckResource",
+  "simple" : {
+    "supports" : [ "get" ],
+    "methods" : [ {
+      "method" : "get"
+    } ],
+    "entity" : {
+      "path" : "/Healthcheck"
+    }
+  }
+}
