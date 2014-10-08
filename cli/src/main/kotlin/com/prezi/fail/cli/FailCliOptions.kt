@@ -6,6 +6,7 @@ import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.GnuParser
 import com.prezi.fail.sarge.SargeConfigKey
 import org.apache.commons.cli.HelpFormatter
+import org.apache.commons.cli.ParseException
 
 public class FailCliOptions : Options() {
     public val help: Option = Option("h", "help", false, "Display this help message");
@@ -16,10 +17,13 @@ public class FailCliOptions : Options() {
         CliConfigKey.values().forEach { addOption(it.opt) }
     }
 
-    public fun parse(args: Array<String>): CommandLine {
-        val parser = GnuParser()
-        return parser.parse(this, args)!!
-    }
+    public fun parse(args: Array<String>): CommandLine? =
+        try {
+            GnuParser().parse(this, args)!!
+        } catch (e: ParseException) {
+            println(e.getMessage())
+            null
+        }
 
     public fun printHelp(cmdLineSyntax: String) {
         val formatter = HelpFormatter()

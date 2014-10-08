@@ -76,29 +76,35 @@ private fun <T> applyOptionsToSystemProperties(commandLine: CommandLine, config:
 fun main(args: Array<String>) {
     val options = FailCliOptions()
     val actions = Actions()
+
     val commandLine = options.parse(args)
-
-    val cliConfig = CliConfig()
-    val sargeConfig = SargeConfig()
-
-    if (commandLine.hasOption(options.help)) {
-        options.printHelp(actions.cmdLineSyntax)
-        System.exit(0)
-    }
-
-    SargeConfigKey.values().forEach {applyOptionsToSystemProperties(commandLine, sargeConfig, it, it.opt)}
-    CliConfigKey.values().forEach {applyOptionsToSystemProperties(commandLine, cliConfig, it, it.opt)}
-    updateRootLoggerLevel(cliConfig)
-    loadUserProperties()
-    updateRootLoggerLevel(cliConfig)
-
-    val action = Actions().parsePositionalArgs(commandLine.getArgs()!!)
-    if (action == null) {
+    if (commandLine == null) {
         options.printHelp(actions.cmdLineSyntax)
         System.exit(1)
+
     } else {
-        verifySappersTgzExists()
-        action.run()
+        val cliConfig = CliConfig()
+        val sargeConfig = SargeConfig()
+
+        if (commandLine.hasOption(options.help)) {
+            options.printHelp(actions.cmdLineSyntax)
+            System.exit(0)
+        }
+
+        SargeConfigKey.values().forEach { applyOptionsToSystemProperties(commandLine, sargeConfig, it, it.opt) }
+        CliConfigKey.values().forEach { applyOptionsToSystemProperties(commandLine, cliConfig, it, it.opt) }
+        updateRootLoggerLevel(cliConfig)
+        loadUserProperties()
+        updateRootLoggerLevel(cliConfig)
+
+        val action = Actions().parsePositionalArgs(commandLine.getArgs()!!)
+        if (action == null) {
+            options.printHelp(actions.cmdLineSyntax)
+            System.exit(1)
+        } else {
+            verifySappersTgzExists()
+            action.run()
+        }
     }
 }
 
