@@ -1,0 +1,20 @@
+{
+    "type": "record",
+    "name": "ScheduledFailure",
+    "namespace": "com.prezi.fail.api",
+    "fields": [
+        {"name": "interval", "type": "string", "doc": "string is probably not specific enough, type TBD when we flesh out interval formats"},
+        {"name": "searchTerm", "type": "string"},
+        {"name": "sapper", "type": "string"},
+        {"name": "length", "type": "int", "doc": "how long to hurt targets, in seconds"},
+        {"name": "scheduledAt", "type": "int", "doc": "unix timestamp"},
+        {"name": "scheduledBy", "type": "string"},
+        {
+            "name": "configuration", "doc": "all the config values affecting a run, indexed with the system property name",
+            "type": {
+                "type": "map",
+                "values": "string"
+            }
+        }
+    ]
+}

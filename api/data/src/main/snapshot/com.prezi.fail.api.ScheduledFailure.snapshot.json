@@ -1,0 +1,53 @@
+{
+  "models" : [ {
+    "type" : "record",
+    "name" : "ScheduledFailure",
+    "namespace" : "com.prezi.fail.api",
+    "fields" : [ {
+      "name" : "interval",
+      "type" : "string",
+      "doc" : "string is probably not specific enough, type TBD when we flesh out interval formats"
+    }, {
+      "name" : "searchTerm",
+      "type" : "string"
+    }, {
+      "name" : "sapper",
+      "type" : "string"
+    }, {
+      "name" : "length",
+      "type" : "int",
+      "doc" : "how long to hurt targets, in seconds"
+    }, {
+      "name" : "scheduledAt",
+      "type" : "int",
+      "doc" : "unix timestamp"
+    }, {
+      "name" : "scheduledBy",
+      "type" : "string"
+    }, {
+      "name" : "configuration",
+      "type" : {
+        "type" : "map",
+        "values" : "string"
+      },
+      "doc" : "all the config values affecting a run, indexed with the system property name"
+    } ]
+  } ],
+  "schema" : {
+    "schema" : "com.prezi.fail.api.ScheduledFailure",
+    "name" : "ScheduledFailure",
+    "doc" : "generated from: com.prezi.fail.api.impl.ScheduledFailureResource",
+    "path" : "/ScheduledFailure",
+    "collection" : {
+      "entity" : {
+        "path" : "/ScheduledFailure/{ScheduledFailureId}"
+      },
+      "supports" : [ ],
+      "identifier" : {
+        "name" : "ScheduledFailureId",
+        "type" : "long"
+      }
+    },
+    "namespace" : "com.prezi.fail.api"
+  }
+}

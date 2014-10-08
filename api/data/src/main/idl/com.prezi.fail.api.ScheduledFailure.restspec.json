@@ -1,0 +1,17 @@
+{
+  "name" : "ScheduledFailure",
+  "namespace" : "com.prezi.fail.api",
+  "path" : "/ScheduledFailure",
+  "schema" : "com.prezi.fail.api.ScheduledFailure",
+  "doc" : "generated from: com.prezi.fail.api.impl.ScheduledFailureResource",
+  "collection" : {
+    "identifier" : {
+      "name" : "ScheduledFailureId",
+      "type" : "long"
+    },
+    "supports" : [ ],
+    "entity" : {
+      "path" : "/ScheduledFailure/{ScheduledFailureId}"
+    }
+  }
+}
