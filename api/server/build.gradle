@@ -25,10 +25,18 @@ ext.apiProject = project(":api:data")
 pegasus.main.idlOptions.addIdlItem(['com.prezi.fail.api.impl'])
 
 dependencies {
-	compile project(path: ':api:data', configuration: 'dataTemplate'),
-			"org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
+	compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
+			// Data definitions
+			project(path: ':api:data', configuration: 'dataTemplate'),
+			// Rest.Li
 			"com.linkedin.pegasus:restli-server:${pegasusVersion}",
-			"com.linkedin.pegasus:restli-netty-standalone:${pegasusVersion}"
+			"com.linkedin.pegasus:restli-netty-standalone:${pegasusVersion}",
+			// Logging
+			'org.slf4j:slf4j-api:1.7.7',
+			'ch.qos.logback:logback-classic:1.1.2',
+			'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
+			'org.slf4j:jcl-over-slf4j:1.7.7'
+
 	restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
 }
 
