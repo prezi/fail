@@ -3,8 +3,9 @@ package com.prezi.fail.cli
 public class Actions {
     public val cmdLineSyntax: String =
             """fail [options] ${ActionCharge.cmdLineSyntax}
+                    [options] ${ActionApiTest.cmdLineSyntax}
                     [options] ${ActionScheduleFailure.cmdLineSyntax}
-                    [options] ${ActionApiTest.cmdLineSyntax}"""
+                    """
 
     protected fun ensuringArgCount(n: Int, args: Array<String>, createAction: () -> Action): Action? =
         if (args.size < n) {
@@ -23,6 +24,7 @@ public class Actions {
         return when (verb) {
             ActionApiTest.verb         -> ActionApiTest()
             ActionScheduleFailure.verb -> ensuringArgCount(ActionScheduleFailure.requiredArgCount, tail, { ActionScheduleFailure(tail) })
+            ActionListJobs.verb        -> ActionListJobs(tail)
             else                       -> ensuringArgCount(ActionCharge.requiredArgCount, args, { ActionCharge(args) })
         }
     }

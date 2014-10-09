@@ -51,6 +51,25 @@
       "entity" : {
         "path" : "/ScheduledFailure/{ScheduledFailureId}"
       },
+      "finders" : [ {
+        "name" : "time",
+        "parameters" : [ {
+          "name" : "at",
+          "type" : "long"
+        }, {
+          "optional" : true,
+          "name" : "before",
+          "type" : "string"
+        }, {
+          "optional" : true,
+          "name" : "after",
+          "type" : "string"
+        }, {
+          "optional" : true,
+          "name" : "context",
+          "type" : "string"
+        } ]
+      } ],
       "supports" : [ "create" ],
       "identifier" : {
         "name" : "ScheduledFailureId",

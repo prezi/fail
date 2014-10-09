@@ -13,11 +13,11 @@ import org.apache.commons.cli.CommandLine
 
 import com.prezi.fail.sarge.SargeConfig
 import com.prezi.fail.sarge.SargeConfigKey
-import com.prezi.fail.cli.FailCliOptions
+import com.prezi.fail.config.Config
 import com.prezi.fail.cli.Actions
 import com.prezi.fail.cli.CliConfig
-import com.prezi.fail.config.Config
 import com.prezi.fail.cli.CliConfigKey
+import com.prezi.fail.cli.FailCliOptions
 
 
 private fun loadUserProperties() {

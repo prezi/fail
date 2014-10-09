@@ -1,12 +1,7 @@
 package com.prezi.fail.cli
 
-import com.linkedin.r2.transport.http.client.HttpClientFactory
-import com.linkedin.r2.transport.common.bridge.client.TransportClientAdapter
 import com.linkedin.restli.client.RestClient
 import com.prezi.fail.api.HealthcheckBuilders
-import com.prezi.fail.endingWith
-import com.linkedin.common.util.None
-import com.linkedin.common.callback.FutureCallback
 
 
 public class ActionApiTest(config: CliConfig = CliConfig()) : ActionApiBase(config) {
