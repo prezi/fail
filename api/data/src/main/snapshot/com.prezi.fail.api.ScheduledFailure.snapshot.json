@@ -47,6 +47,8 @@
     "collection" : {
       "methods" : [ {
         "method" : "create"
+      }, {
+        "method" : "get_all"
       } ],
       "entity" : {
         "path" : "/ScheduledFailure/{ScheduledFailureId}"
@@ -70,7 +72,7 @@
           "type" : "string"
         } ]
       } ],
-      "supports" : [ "create" ],
+      "supports" : [ "create", "get_all" ],
       "identifier" : {
         "name" : "ScheduledFailureId",
         "type" : "long"

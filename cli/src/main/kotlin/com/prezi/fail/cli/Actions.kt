@@ -5,6 +5,8 @@ public class Actions {
             """fail [options] ${ActionCharge.cmdLineSyntax}
                     [options] ${ActionApiTest.cmdLineSyntax}
                     [options] ${ActionScheduleFailure.cmdLineSyntax}
+                    [options] ${ActionListJobs.cmdLineSyntax}
+                    [options] ${ActionList.cmdLineSyntax}
                     """
 
     protected fun ensuringArgCount(n: Int, args: Array<String>, createAction: () -> Action): Action? =
@@ -24,7 +26,8 @@ public class Actions {
         return when (verb) {
             ActionApiTest.verb         -> ActionApiTest()
             ActionScheduleFailure.verb -> ensuringArgCount(ActionScheduleFailure.requiredArgCount, tail, { ActionScheduleFailure(tail) })
-            ActionListJobs.verb        -> ActionListJobs(tail)
+            ActionList.verb            -> ActionList()
+            ActionListJobs.verb        -> ActionListJobs()
             else                       -> ensuringArgCount(ActionCharge.requiredArgCount, args, { ActionCharge(args) })
         }
     }

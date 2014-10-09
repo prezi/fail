@@ -9,9 +9,11 @@
       "name" : "ScheduledFailureId",
       "type" : "long"
     },
-    "supports" : [ "create" ],
+    "supports" : [ "create", "get_all" ],
     "methods" : [ {
       "method" : "create"
+    }, {
+      "method" : "get_all"
     } ],
     "finders" : [ {
       "name" : "time",

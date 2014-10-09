@@ -34,4 +34,12 @@ public class ScheduledFailureResource : CollectionResourceTemplate<Long, Schedul
             ScheduledFailure().setSapper("example2")!!
         )
     }
+
+    override fun getAll([Context] pagingContext: PagingContext?): MutableList<ScheduledFailure>? {
+        logger.info("Listing all scheduled jobs")
+        return arrayListOf(
+                ScheduledFailure().setSapper("example1")!!,
+                ScheduledFailure().setSapper("example2")!!
+        )
+    }
 }
