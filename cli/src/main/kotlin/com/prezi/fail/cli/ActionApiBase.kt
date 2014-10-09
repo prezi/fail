@@ -7,6 +7,7 @@ import com.prezi.fail.api.HealthcheckBuilders
 import com.prezi.fail.endingWith
 import com.linkedin.common.util.None
 import com.linkedin.common.callback.FutureCallback
+import javax.net.ssl.SSLContext
 
 
 public abstract class ActionApiBase(val config: CliConfig = CliConfig()) : Action {
@@ -16,7 +17,9 @@ public abstract class ActionApiBase(val config: CliConfig = CliConfig()) : Actio
 
     override fun run() {
         val http = HttpClientFactory()
-        val r2Client = TransportClientAdapter(http.getClient(mapOf()))
+        val r2Client = TransportClientAdapter(http.getClient(mapOf(
+                HttpClientFactory.HTTP_SSL_CONTEXT to SSLContext.getDefault()
+        )))
         val restClient = RestClient(r2Client, urlPrefix)
 
         try {
