@@ -11,8 +11,11 @@
     },
     "supports" : [ ],
     "finders" : [ {
-      "name" : "time",
+      "name" : "timeAndRegex",
       "parameters" : [ {
+        "name" : "regex",
+        "type" : "string"
+      }, {
         "name" : "at",
         "type" : "long"
       }, {

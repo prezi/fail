@@ -15,15 +15,16 @@ import com.prezi.fail.api.Charge
 public class ChargeResource : CollectionResourceTemplate<Long, Charge>() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
-    [Finder("time")]
+    [Finder("timeAndRegex")]
     public fun listChargesByTime(
             [Context] paging: PagingContext,
+            [QueryParam("regex")] regex: String,
             [QueryParam("at")] at: Long,
             [Optional][QueryParam("before")] before: String,
             [Optional][QueryParam("after")] after: String,
             [Optional][QueryParam("context")] context: String
     ): List<Charge> {
-        logger.info("Listing scheduled jobs at=${at} before=${before} after=${after} context=${context}")
+        logger.info("Listing scheduled jobs at=${at} before=${before} after=${after} context=${context} regex=${regex}")
         return listOf(
                 Charge().setLog("example1 log")?.setScheduledFailure(ScheduledFailure().setSapper("example1"))!!,
                 Charge().setLog("example2 log")?.setScheduledFailure(ScheduledFailure().setSapper("example2"))!!

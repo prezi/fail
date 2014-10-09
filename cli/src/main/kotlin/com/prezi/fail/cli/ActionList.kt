@@ -6,16 +6,17 @@ import com.prezi.fail.api.ChargeBuilders
 import org.slf4j.LoggerFactory
 
 
-public class ActionList : ActionApiBase() {
+public class ActionList(val regex: String) : ActionApiBase() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     class object {
-        val verb = "list-jobs"
-        val cmdLineSyntax = verb
+        val verb = "list"
+        val cmdLineSyntax = "${verb} regex"
     }
 
     override fun doApiCallAndProcessResponse(client: RestClient) {
-        val request = ChargeBuilders().findByTime()!!
+        val request = ChargeBuilders().findByTimeAndRegex()!!
+            .regexParam(regex)!!
             .beforeParam(config.getListBefore())!!
             .afterParam(config.getListAfter())!!
             .contextParam(config.getListContext())!!

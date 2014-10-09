@@ -1,0 +1,106 @@
+{
+  "models" : [ {
+    "type" : "enum",
+    "name" : "ChargeStatus",
+    "namespace" : "com.prezi.fail.api",
+    "symbols" : [ "FUTURE", "RUNNING", "DONE", "FAILED" ]
+  }, {
+    "type" : "record",
+    "name" : "ScheduledFailure",
+    "namespace" : "com.prezi.fail.api",
+    "fields" : [ {
+      "name" : "interval",
+      "type" : "string",
+      "doc" : "when to hurt servers. string is probably not specific enough, type TBD when we flesh out interval formats"
+    }, {
+      "name" : "searchTerm",
+      "type" : "string"
+    }, {
+      "name" : "sapper",
+      "type" : "string"
+    }, {
+      "name" : "duration",
+      "type" : "int",
+      "doc" : "how long to hurt targets, in seconds"
+    }, {
+      "name" : "sapperArgs",
+      "type" : {
+        "type" : "array",
+        "items" : "string"
+      }
+    }, {
+      "name" : "scheduledAt",
+      "type" : "long",
+      "doc" : "unix timestamp"
+    }, {
+      "name" : "scheduledBy",
+      "type" : "string"
+    }, {
+      "name" : "configuration",
+      "type" : {
+        "type" : "map",
+        "values" : "string"
+      },
+      "doc" : "all the config values affecting a run, indexed with the system property name"
+    } ]
+  }, {
+    "type" : "record",
+    "name" : "Charge",
+    "namespace" : "com.prezi.fail.api",
+    "doc" : "One specific failure injection run",
+    "fields" : [ {
+      "name" : "at",
+      "type" : "long",
+      "doc" : "unix timestamp when this run happens"
+    }, {
+      "name" : "status",
+      "type" : "ChargeStatus"
+    }, {
+      "name" : "log",
+      "type" : "string"
+    }, {
+      "name" : "scheduledFailure",
+      "type" : "ScheduledFailure",
+      "doc" : "the ScheduledFailure causing this run"
+    } ]
+  } ],
+  "schema" : {
+    "schema" : "com.prezi.fail.api.Charge",
+    "name" : "Charge",
+    "doc" : "generated from: com.prezi.fail.api.impl.ChargeResource",
+    "path" : "/Charge",
+    "collection" : {
+      "entity" : {
+        "path" : "/Charge/{ChargeId}"
+      },
+      "finders" : [ {
+        "name" : "timeAndRegex",
+        "parameters" : [ {
+          "name" : "regex",
+          "type" : "string"
+        }, {
+          "name" : "at",
+          "type" : "long"
+        }, {
+          "optional" : true,
+          "name" : "before",
+          "type" : "string"
+        }, {
+          "optional" : true,
+          "name" : "after",
+          "type" : "string"
+        }, {
+          "optional" : true,
+          "name" : "context",
+          "type" : "string"
+        } ]
+      } ],
+      "supports" : [ ],
+      "identifier" : {
+        "name" : "ChargeId",
+        "type" : "long"
+      }
+    },
+    "namespace" : "com.prezi.fail.api"
+  }
+}

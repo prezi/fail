@@ -9,8 +9,8 @@ public class ActionListJobs() : ActionApiBase() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     class object {
-        val verb = "list"
-        val cmdLineSyntax = "${verb} [list-jobs-options]"
+        val verb = "list-jobs"
+        val cmdLineSyntax = verb
     }
 
     override fun doApiCallAndProcessResponse(client: RestClient) {
