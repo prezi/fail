@@ -26,6 +26,7 @@ public abstract class ActionApiBase(val config: CliConfig = CliConfig()) : Actio
             doApiCallAndProcessResponse(restClient)
         } catch (e: Exception) {
             println("API call failed. The exception was: ${e.getMessage()}")
+            if (config.isDebug() || config.isTrace()) { println(e.getStackTrace()) }
         } finally {
             restClient.shutdown(FutureCallback<None>())
             http.shutdown(FutureCallback<None>())
