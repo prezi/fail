@@ -20,21 +20,6 @@ public class ScheduledFailureResource : CollectionResourceTemplate<Long, Schedul
         return CreateResponse(42)
     }
 
-    [Finder("time")]
-    public fun listJobsByTime(
-            [Context] paging: PagingContext,
-            [QueryParam("at")] at: Long,
-            [Optional][QueryParam("before")] before: String,
-            [Optional][QueryParam("after")] after: String,
-            [Optional][QueryParam("context")] context: String
-    ): List<ScheduledFailure> {
-        logger.info("Listing scheduled jobs at=${at} before=${before} after=${after} context=${context}")
-        return listOf(
-            ScheduledFailure().setSapper("example1")!!,
-            ScheduledFailure().setSapper("example2")!!
-        )
-    }
-
     override fun getAll([Context] pagingContext: PagingContext?): MutableList<ScheduledFailure>? {
         logger.info("Listing all scheduled jobs")
         return arrayListOf(

@@ -15,25 +15,6 @@
     }, {
       "method" : "get_all"
     } ],
-    "finders" : [ {
-      "name" : "time",
-      "parameters" : [ {
-        "name" : "at",
-        "type" : "long"
-      }, {
-        "name" : "before",
-        "type" : "string",
-        "optional" : true
-      }, {
-        "name" : "after",
-        "type" : "string",
-        "optional" : true
-      }, {
-        "name" : "context",
-        "type" : "string",
-        "optional" : true
-      } ]
-    } ],
     "entity" : {
       "path" : "/ScheduledFailure/{ScheduledFailureId}"
     }
