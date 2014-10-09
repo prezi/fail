@@ -27,6 +27,7 @@ public class FailCliOptions : Options() {
 
     public fun printHelp(cmdLineSyntax: String) {
         val formatter = HelpFormatter()
+        formatter.setWidth(120)
         formatter.printHelp(cmdLineSyntax, this)
     }
 }
