@@ -2,8 +2,16 @@ package com.prezi.fail.cli
 
 import com.prezi.fail.sarge.Sarge
 
-public class ActionCharge(val searchTerm: String, val sapper: String, val duration: String, val args: List<String>) : Action {
+public class ActionCharge(val args: Array<String>) : Action {
+    class object {
+        val cmdLineSyntax = "tag sapper duration-seconds [sapper-arg ...]"
+        val requiredArgCount = 3
+    }
+
     override fun run() {
-        Sarge().charge(searchTerm, sapper, duration, args)
+        val searchTerm = args[0]
+        val sapper = args[1]
+        val duration = args[2]
+        Sarge().charge(searchTerm, sapper, duration, args.drop(ActionCharge.requiredArgCount))
     }
 }

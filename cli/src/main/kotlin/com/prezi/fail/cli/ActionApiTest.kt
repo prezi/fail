@@ -10,6 +10,11 @@ import com.linkedin.common.callback.FutureCallback
 
 
 public class ActionApiTest(config: CliConfig = CliConfig()) : ActionApiBase(config) {
+    class object {
+        val verb = "api-test"
+        val cmdLineSyntax = verb
+    }
+
     override fun doApiCallAndProcessResponse(client: RestClient) {
         println("Checking if API is running at ${urlPrefix}")
         println(

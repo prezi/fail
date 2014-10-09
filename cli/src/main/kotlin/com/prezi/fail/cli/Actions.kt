@@ -1,31 +1,29 @@
 package com.prezi.fail.cli
 
 public class Actions {
-    val apiTest = "api-test"
-    val schedule = "schedule"
-
     public val cmdLineSyntax: String =
-            """fail [options] tag sapper duration-seconds [sapper-arg ...]
-                    [options] schedule tag sapper duration-seconds [sapper-arg ...]
-                    [options] ${apiTest}"""
+            """fail [options] ${ActionCharge.cmdLineSyntax}
+                    [options] ${ActionScheduleFailure.cmdLineSyntax}
+                    [options] ${ActionApiTest.cmdLineSyntax}"""
+
+    protected fun ensuringArgCount(n: Int, args: Array<String>, createAction: () -> Action): Action? =
+        if (args.size < n) {
+            println("Not enough arguments.")
+            null
+        } else {
+            createAction()
+        }
 
     public fun parsePositionalArgs(args: Array<String>): Action? {
-        if (args.size == 0) { return null }
-        val name = args[0]
-
-        if (name == apiTest) {
-            return ActionApiTest()
-        }
-
-        if (name == schedule) {
-            return ActionScheduleFailure()
-        }
-
-        if (args.count() < 3) {
-            println("Not enough arguments for starting a sapper, or unknown action.")
+        if (args.size == 0) {
             return null
         }
-
-        return ActionCharge(args[0], args[1], args[2], args.drop(3))
+        val verb = args[0]
+        val tail = args.drop(1).copyToArray()
+        return when (verb) {
+            ActionApiTest.verb         -> ActionApiTest()
+            ActionScheduleFailure.verb -> ensuringArgCount(ActionScheduleFailure.requiredArgCount, tail, { ActionScheduleFailure(tail) })
+            else                       -> ensuringArgCount(ActionCharge.requiredArgCount, args, { ActionCharge(args) })
+        }
     }
 }
