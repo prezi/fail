@@ -57,7 +57,11 @@
       "identifier" : {
         "name" : "ScheduledFailureId",
         "type" : "long"
-      }
+      },
+      "actions" : [ {
+        "name" : "panic",
+        "returns" : "{ \"type\" : \"map\", \"values\" : \"long\" }"
+      } ]
     },
     "namespace" : "com.prezi.fail.api"
   }

@@ -7,6 +7,7 @@ public class Actions {
                     [options] ${ActionScheduleFailure.cmdLineSyntax}
                     [options] ${ActionListJobs.cmdLineSyntax}
                     [options] ${ActionList.cmdLineSyntax}
+                    [options] ${ActionPanic.cmdLineSyntax}
                     """
 
     protected fun ensuringArgCount(n: Int, args: Array<String>, createAction: () -> Action): Action? =
@@ -28,6 +29,7 @@ public class Actions {
             ActionScheduleFailure.verb -> ensuringArgCount(ActionScheduleFailure.requiredArgCount, tail, { ActionScheduleFailure(tail) })
             ActionList.verb            -> ActionList()
             ActionListJobs.verb        -> ActionListJobs()
+            ActionPanic.verb           -> ActionPanic()
             else                       -> ensuringArgCount(ActionCharge.requiredArgCount, args, { ActionCharge(args) })
         }
     }

@@ -7,9 +7,8 @@ import com.linkedin.restli.server.CreateResponse
 import org.slf4j.LoggerFactory
 import com.linkedin.restli.server.PagingContext
 import com.linkedin.restli.server.annotations.Context
-import com.linkedin.restli.server.annotations.Finder
-import com.linkedin.restli.server.annotations.QueryParam
-import com.linkedin.restli.server.annotations.Optional
+import com.linkedin.restli.server.annotations.Action
+import com.linkedin.data.template.LongMap
 
 [RestLiCollection(name="ScheduledFailure", namespace="com.prezi.fail.api")]
 public class ScheduledFailureResource : CollectionResourceTemplate<Long, ScheduledFailure>() {
@@ -26,5 +25,14 @@ public class ScheduledFailureResource : CollectionResourceTemplate<Long, Schedul
                 ScheduledFailure().setSapper("example1")!!,
                 ScheduledFailure().setSapper("example2")!!
         )
+    }
+
+    [Action(name="panic")]
+    public fun panic(): LongMap {
+        logger.info("Panic command received. Aborting charges and pausing further scheduled failures.")
+        val retval = LongMap()
+        retval.set("abortedCharges", 5)
+        retval.set("pausedSchedules", 42)
+        return retval
     }
 }

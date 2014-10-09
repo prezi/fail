@@ -11,7 +11,7 @@ public class ActionList : ActionApiBase() {
 
     class object {
         val verb = "list-jobs"
-        val cmdLineSyntax = "${verb} [list-jobs-options]"
+        val cmdLineSyntax = verb
     }
 
     override fun doApiCallAndProcessResponse(client: RestClient) {
