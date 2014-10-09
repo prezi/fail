@@ -1,0 +1,16 @@
+{
+    "type": "record",
+    "name": "Charge",
+    "doc": "One specific failure injection run",
+    "namespace": "com.prezi.fail.api",
+    "fields": [
+        {"name": "at", "type": "long", "doc": "unix timestamp when this run happens"},
+        {"name": "status", "type": {
+            "type": "enum",
+            "name": "ChargeStatus",
+            "symbols": ["FUTURE", "RUNNING", "DONE", "FAILED"]
+        }},
+        {"name": "log", "type": "string"},
+        {"name": "scheduledFailure", "type": "ScheduledFailure", "doc": "the ScheduledFailure causing this run"}
+    ]
+}
