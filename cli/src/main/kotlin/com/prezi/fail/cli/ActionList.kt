@@ -7,14 +7,14 @@ import org.slf4j.LoggerFactory
 
 
 public class ActionList(val regex: String) : ActionApiBase() {
-    val logger = LoggerFactory.getLogger(javaClass)!!
+    override val logger = LoggerFactory.getLogger(javaClass)!!
 
     class object {
         val verb = "list"
         val cmdLineSyntax = "${verb} regex"
     }
 
-    override fun doApiCallAndProcessResponse(client: RestClient) {
+    override fun run() {
         val request = ChargeBuilders().findByTimeAndRegex()!!
             .regexParam(regex)!!
             .beforeParam(config.getListBefore())!!
@@ -24,8 +24,10 @@ public class ActionList(val regex: String) : ActionApiBase() {
             .build()!!
 
         logger.info("Requesting scheduled charges: ${request.getQueryParamsObjects()}")
-        client.sendRequest(request)?.getResponseEntity()?.getElements()?.forEach {
-            println(it)
+        withClient {
+            it.sendRequest(request)?.getResponseEntity()?.getElements()?.forEach {
+                println(it)
+            }
         }
     }
 }

@@ -6,19 +6,21 @@ import com.prezi.fail.api.ScheduledFailureBuilders
 
 
 public class ActionListJobs() : ActionApiBase() {
-    val logger = LoggerFactory.getLogger(javaClass)!!
+    override val logger = LoggerFactory.getLogger(javaClass)!!
 
     class object {
         val verb = "list-jobs"
         val cmdLineSyntax = verb
     }
 
-    override fun doApiCallAndProcessResponse(client: RestClient) {
+    override public fun run() {
         val request = ScheduledFailureBuilders().getAll()!!.build()!!
 
         logger.info("Requesting all scheduled jobs")
-        client.sendRequest(request)?.getResponseEntity()?.getElements()?.forEach {
-            println(it)
+        withClient {
+            it.sendRequest(request)?.getResponseEntity()?.getElements()?.forEach {
+                println(it)
+            }
         }
     }
 }

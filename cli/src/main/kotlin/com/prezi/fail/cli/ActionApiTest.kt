@@ -10,11 +10,13 @@ public class ActionApiTest(config: CliConfig = CliConfig()) : ActionApiBase(conf
         val cmdLineSyntax = verb
     }
 
-    override fun doApiCallAndProcessResponse(client: RestClient) {
-        println("Checking if API is running at ${urlPrefix}")
-        println(
-                "Healthcheck.isRunning(): " +
-                        client.sendRequest(HealthcheckBuilders().get()?.build())?.getResponse()?.getEntity()?.isRunning()
-        )
+    override public fun run() {
+        withClient({ client ->
+            println("Checking if API is running at ${urlPrefix}")
+            println(
+                    "Healthcheck.isRunning(): " +
+                            client.sendRequest(HealthcheckBuilders().get()?.build())?.getResponse()?.getEntity()?.isRunning()
+            )
+        })
     }
 }

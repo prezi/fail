@@ -9,7 +9,7 @@ import com.prezi.fail.sarge.SargeConfigKey
 import org.slf4j.LoggerFactory
 
 public class ActionScheduleFailure(val args: Array<String>) : ActionApiBase() {
-    val logger = LoggerFactory.getLogger(javaClass)!!
+    override val logger = LoggerFactory.getLogger(javaClass)!!
 
     class object {
         val requiredArgCount = 4
@@ -29,7 +29,7 @@ public class ActionScheduleFailure(val args: Array<String>) : ActionApiBase() {
         return conf
     }
 
-    override fun doApiCallAndProcessResponse(client: RestClient) {
+    override public fun run() {
         println("Note: this is just a placeholder for now, no failures are actually being scheduled.")
         val interval = args[0]
         val searchTerm = args[1]
@@ -47,9 +47,15 @@ public class ActionScheduleFailure(val args: Array<String>) : ActionApiBase() {
                         .setConfiguration(configurationSystemProperties())
         logger.info("Scheduling failure: ${scheduledFailure.toString()}")
 
-        val request = ScheduledFailureBuilders().create()?.input(scheduledFailure)
-        val response = client.sendRequest(request)?.getResponse()!!
-        println("Response code: ${response.getStatus()}")
-        println("Location: ${response.getLocation()}")
+        if (config.isDryRun()) {
+            logger.info("Except I'm not, since this is a dry-run.")
+        } else {
+            val request = ScheduledFailureBuilders().create()?.input(scheduledFailure)
+            withClient { client ->
+                val response = client.sendRequest(request)?.getResponse()!!
+                println("Response code: ${response.getStatus()}")
+                println("Location: ${response.getLocation()}")
+            }
+        }
     }
 }

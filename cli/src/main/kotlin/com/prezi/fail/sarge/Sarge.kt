@@ -10,10 +10,12 @@ import kotlin.concurrent.thread
 import com.prezi.changelog.ChangelogClient
 import com.prezi.changelog.ChangelogClientConfig
 import com.prezi.fail.FailChangelogClientConfig
+import com.prezi.fail.cli.CliConfig
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
                    scoutFactory: ScoutFactory = ScoutFactory(),
-                   mercyFactory: MercyFactory = MercyFactory())
+                   mercyFactory: MercyFactory = MercyFactory(),
+                   val cliConfig: CliConfig = CliConfig())
 {
     val logger = LoggerFactory.getLogger(this.javaClass)!!
     val scout = scoutFactory.build(config)
@@ -33,7 +35,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
         val deathRow = mercy.deny(targets)
         logger.info("Targets on death row after ${config.getMercyType()}: ${deathRow}")
 
-        if (config.isDryRun()) {
+        if (cliConfig.isDryRun()) {
             logger.info("Doing dry-run, not starting sappers.")
         } else {
             charge(args, deathRow, dir, remoteTgz, runtime, sapper, user)
