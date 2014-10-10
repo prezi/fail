@@ -1,0 +1,10 @@
+{
+    "type": "record",
+    "name": "CliResult",
+    "namespace": "com.prezi.fail.api",
+    "fields": [
+        {"name": "validCommandLine", "type": "boolean"},
+        {"name": "exitCode", "type": "int"},
+        {"name": "output", "type": "string"}
+    ]
+}

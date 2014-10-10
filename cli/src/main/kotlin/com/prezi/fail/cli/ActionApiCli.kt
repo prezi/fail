@@ -12,11 +12,25 @@ public class ActionApiCli(val args: Array<String>) : ActionApiBase() {
             System.getProperties()
                     ?.filter{(it.key as String).startsWith("fail.")}
                     ?.forEach{ systemProperties.set(it.key as String, it.value as String) }
+
             val request = CliBuilders().actionRunCli()!!
                     .paramArgs(StringArray(args.toList()))!!
                     .paramSystemProperties(systemProperties)!!
-                    .build()
-            println(client.sendRequest(request)?.getResponseEntity())
+                    .build()!!
+            logger.debug("Request: ${request.getInputRecord()}")
+
+            val response = client.sendRequest(request)?.getResponseEntity()!!
+            if (response.isValidCommandLine()!!) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Response: \n${response.getOutput()}")
+                } else {
+                    println(response.getOutput())
+                }
+            } else {
+                println(response.getOutput())
+                println()
+                ActionHelp().run()
+            }
         })
     }
 }

@@ -9,7 +9,7 @@ import org.apache.commons.cli.ParseException
 import java.io.PrintWriter
 import java.io.ByteArrayOutputStream
 
-public class FailApiCliOptions : Options() {
+public class ApiCliOptions : Options() {
     public val help: Option = Option("h", "help", false, "Display this help message");
 
     {
@@ -17,13 +17,8 @@ public class FailApiCliOptions : Options() {
         ApiCliConfigKey.values().forEach { addOption(it.opt) }
     }
 
-    public fun parse(args: Array<String>): CommandLine? =
-        try {
-            GnuParser().parse(this, args)!!
-        } catch (e: ParseException) {
-            println(e.getMessage())
-            null
-        }
+    public fun parse(args: Array<String>): CommandLine =
+        GnuParser().parse(this, args)!!
 
     public fun printHelp(cmdLineSyntax: String): String {
         val ostream = ByteArrayOutputStream()

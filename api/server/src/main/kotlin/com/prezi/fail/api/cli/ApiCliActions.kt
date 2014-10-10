@@ -6,17 +6,17 @@ import com.linkedin.data.template.StringMap
 import com.prezi.fail.Config
 
 
-public class ApiCliActions(val systemProperties: StringMap): BaseActions<LoggingApiAction>() {
+public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>() {
     class object {
         public val cmdLineSyntax: String =
-                """fail ${ActionScheduleFailure.cmdLineSyntax} [options]
-                        ${ActionListJobs.cmdLineSyntax} [options]
-                        ${ActionList.cmdLineSyntax} [options]
-                        ${ActionPanic.cmdLineSyntax} [options]
+                """fail [options] ${ActionScheduleFailure.cmdLineSyntax}
+                        [options] ${ActionListJobs.cmdLineSyntax}
+                        [options] ${ActionList.cmdLineSyntax}
+                        [options] ${ActionPanic.cmdLineSyntax}
                         """
     }
 
-    override fun doParse(verb: String, args: Array<String>, tail: Array<String>): LoggingApiAction? = when (verb) {
+    override fun doParse(verb: String, args: Array<String>, tail: Array<String>): Action? = when (verb) {
         ActionScheduleFailure.verb -> ensuringArgCount(ActionScheduleFailure.requiredArgCount, tail, { ActionScheduleFailure(tail, systemProperties) })
         ActionListJobs.verb -> ActionListJobs()
         ActionList.verb -> ensuringArgCount(1, tail, { ActionList(tail[0], systemProperties) })

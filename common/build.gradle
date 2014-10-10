@@ -3,5 +3,7 @@ apply plugin: "kotlin"
 dependencies {
 	compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
 			// CLI
-			'commons-cli:commons-cli:1.2'
+			'commons-cli:commons-cli:1.2',
+			// Logging
+			'org.slf4j:slf4j-api:1.7.7'
 }

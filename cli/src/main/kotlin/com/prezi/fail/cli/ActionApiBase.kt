@@ -8,6 +8,7 @@ import com.linkedin.common.util.None
 import com.linkedin.common.callback.FutureCallback
 import javax.net.ssl.SSLContext
 import org.slf4j.LoggerFactory
+import com.linkedin.restli.client.RestLiResponseException
 
 
 public abstract class ActionApiBase(val config: CliConfig = CliConfig()) : Action {
@@ -24,9 +25,10 @@ public abstract class ActionApiBase(val config: CliConfig = CliConfig()) : Actio
         try {
             f(restClient)
         } catch (e: Exception) {
-            println("API call failed. The exception was: ${e.getMessage()}")
             if (config.isDebug() || config.isTrace()) {
-                e.printStackTrace()
+                logger.error("API call failed.", e)
+            } else {
+                logger.error("API call failed: ${e.getMessage()}. Run with -v to get more details.")
             }
         } finally {
             restClient.shutdown(FutureCallback<None>())

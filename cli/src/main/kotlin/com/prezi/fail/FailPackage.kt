@@ -14,9 +14,12 @@ import org.apache.commons.cli.CommandLine
 import com.prezi.fail.Config
 import com.prezi.fail.cli.CliConfig
 import com.prezi.fail.cli.CliConfigKey
-import com.prezi.fail.cli.FailCliOptions
+import com.prezi.fail.cli.CliOptions
 import com.prezi.fail.cli.CliActions
 import com.prezi.fail.extensions.*
+import com.prezi.fail.cli.Action
+import com.prezi.fail.cli.ActionApiCli
+import com.prezi.fail.cli.ActionHelp
 
 
 private fun loadUserProperties() {
@@ -40,21 +43,6 @@ private fun loadUserProperties() {
     }
 }
 
-private fun verifySappersTgzExists() {
-    val path = SargeConfig().getSappersTargzPath()
-    if (path == null) {
-        println("${SargeConfigKey.SAPPERS_TGZ_PATH.key} is null. This probably means I'm running in some strange environment.")
-        println("Please specify the path to sappers.tgz explicitly.")
-        System.exit(1)
-    } else {
-        if (!File(path).canRead()) {
-            println("Failed to open ${path} for reading, bailing out.")
-            System.exit(1)
-        }
-    }
-}
-
-
 private fun setLogLevel(level: Level) {
     (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(level)
     (LoggerFactory.getLogger("com.linkedin") as ch.qos.logback.classic.Logger).setLevel(level)
@@ -64,39 +52,34 @@ private fun updateRootLoggerLevel(config: CliConfig) {
     if (config.isTrace()) { setLogLevel(Level.TRACE) }
 }
 
-
 fun main(args: Array<String>) {
-    val options = FailCliOptions()
+    val options = CliOptions()
     val actions = CliActions()
-
+    var action: Action
     val commandLine = options.parse(args)
-    if (commandLine == null) {
-        // TODO: send to api instead. if api fails too, print full help.
-        options.printHelp(actions.cmdLineSyntax)
-        System.exit(1)
-    } else {
-        val cliConfig = CliConfig()
-        val sargeConfig = SargeConfig()
 
+    if (args.size == 0) {
+        action = ActionHelp()
+    } else if (commandLine == null) {
+        action = ActionApiCli(args)
+    } else if (commandLine.hasOption(options.help)) {
+        action = ActionHelp()
+    } else {
+        action = actions.parsePositionalArgs(commandLine.getArgs()!!) ?: ActionApiCli(args)
+    }
+
+    val cliConfig = CliConfig()
+    val sargeConfig = SargeConfig()
+
+    if (commandLine != null) {
         SargeConfigKey.values().forEach { Config.applyOptionsToSystemProperties(commandLine, sargeConfig, it, it.opt) }
         CliConfigKey.values().forEach { Config.applyOptionsToSystemProperties(commandLine, cliConfig, it, it.opt) }
-        updateRootLoggerLevel(cliConfig)
-        loadUserProperties()
-        updateRootLoggerLevel(cliConfig)
-
-        if (commandLine.hasOption(options.help)) {
-            options.printHelp(actions.cmdLineSyntax)
-            System.exit(0)
-        }
-
-        val action = actions.parsePositionalArgs(commandLine.getArgs()!!)
-        if (action == null) {
-            options.printHelp(actions.cmdLineSyntax)
-            System.exit(1)
-        } else {
-            verifySappersTgzExists()
-            action.run()
-        }
     }
+
+    updateRootLoggerLevel(cliConfig)
+    loadUserProperties()
+    updateRootLoggerLevel(cliConfig)
+
+    action.run()
 }
 

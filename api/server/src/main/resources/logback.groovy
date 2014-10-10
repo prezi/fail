@@ -5,5 +5,3 @@ appender("CONSOLE", ConsoleAppender) {
 }
 
 root(INFO, ["CONSOLE"])
-
-logger("com.linkedin", WARN)

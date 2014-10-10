@@ -8,7 +8,7 @@ import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.ParseException
 import com.prezi.fail.SargeConfigKey
 
-public class FailCliOptions : Options() {
+public class CliOptions : Options() {
     public val help: Option = Option("h", "help", false, "Display this help message");
 
     {
@@ -19,19 +19,14 @@ public class FailCliOptions : Options() {
 
     public fun parse(args: Array<String>): CommandLine? =
         try {
-            GnuParser().parse(this, args)!!
+            LenientGnuParser().parse(this, args)!!
         } catch (e: ParseException) {
-            println(e.getMessage())
             null
         }
 
     public fun printHelp(cmdLineSyntax: String) {
         val formatter = HelpFormatter()
         formatter.setWidth(120)
-        println("Offline:")
         formatter.printHelp(cmdLineSyntax, this)
-
-        println("\nOnline:")
-        ActionApiCli(array("--help")).run()
     }
 }

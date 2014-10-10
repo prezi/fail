@@ -3,8 +3,12 @@ package com.prezi.fail.api.cli
 import com.prezi.fail.api.ScheduledFailure
 import com.linkedin.data.template.StringArray
 import com.linkedin.data.template.StringMap
+import com.prezi.fail.cli.Action
+import org.slf4j.LoggerFactory
 
-public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : LoggingApiAction() {
+public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : Action {
+    val logger = LoggerFactory.getLogger(javaClass)!!
+
     class object {
         val requiredArgCount = 4
         val verb = "schedule"
@@ -12,7 +16,10 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
     }
 
     override public fun run() {
-        println("Note: this is just a placeholder for now, no failures are actually being scheduled.")
+        logger.info("Note: this is just a placeholder for now, no failures are actually being scheduled.")
+        val config = ApiCliConfig()
+        config.configMap = systemProperties
+
         val interval = args[0]
         val searchTerm = args[1]
         val sapper = args[2]
@@ -29,8 +36,7 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
                 .setConfiguration(systemProperties)
         logger.info("Scheduling failure: ${scheduledFailure.toString()}")
 
-        // TODO: config reading should be more general
-        if (systemProperties.get(ApiCliConfigKey.DRY_RUN.key) == "true") {
+        if (config.isDryRun()) {
             logger.info("Except I'm not, since this is a dry-run.")
         } else {
             logger.info("This is where I'd schedule ${scheduledFailure.toString()}")

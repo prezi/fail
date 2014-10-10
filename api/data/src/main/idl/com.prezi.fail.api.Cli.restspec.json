@@ -1,0 +1,19 @@
+{
+  "name" : "Cli",
+  "namespace" : "com.prezi.fail.api",
+  "path" : "/Cli",
+  "doc" : "generated from: com.prezi.fail.api.impl.CliResource",
+  "actionsSet" : {
+    "actions" : [ {
+      "name" : "RunCli",
+      "parameters" : [ {
+        "name" : "args",
+        "type" : "{ \"type\" : \"array\", \"items\" : \"string\" }"
+      }, {
+        "name" : "systemProperties",
+        "type" : "{ \"type\" : \"map\", \"values\" : \"string\" }"
+      } ],
+      "returns" : "com.prezi.fail.api.CliResult"
+    } ]
+  }
+}

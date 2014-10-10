@@ -1,10 +1,8 @@
 package com.prezi.fail
 
-import org.apache.commons.cli.Option
 import org.apache.commons.cli.CommandLine
-
+import org.apache.commons.cli.Option
 import com.prezi.fail.extensions.*
-
 
 abstract class Config<KeyType> {
     class object {

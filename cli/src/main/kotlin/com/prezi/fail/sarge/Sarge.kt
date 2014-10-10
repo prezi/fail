@@ -12,6 +12,8 @@ import com.prezi.changelog.ChangelogClientConfig
 import com.prezi.fail.FailChangelogClientConfig
 import com.prezi.fail.cli.CliConfig
 import com.prezi.fail.SargeConfig
+import com.prezi.fail.SargeConfigKey
+import java.io.File
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
                    scoutFactory: ScoutFactory = ScoutFactory(),
@@ -26,6 +28,8 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
     val user = System.getProperty("user.name")
 
     fun charge(tag: String, sapper: String, runtime: String, args: List<String> = listOf()) {
+        verifySappersTgzExists()
+
         val dir = "/tmp/fail-${sapper}-${Date().getTime()}"
         val remoteTgz = "${dir}/sappers.tgz"
         logger.info("${config.getScoutType()} looking for victims by ${tag}...")
@@ -53,6 +57,20 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
                 runSapper(args, dir, it, remoteTgz, runtime, sapper)
                 Runtime.getRuntime().removeShutdownHook(killSwitch)
             })
+        }
+    }
+
+    private fun verifySappersTgzExists() {
+        val path = SargeConfig().getSappersTargzPath()
+        if (path == null) {
+            logger.error("${SargeConfigKey.SAPPERS_TGZ_PATH.key} is null. This probably means I'm running in some strange environment.")
+            logger.error("Please specify the path to sappers.tgz explicitly.")
+            System.exit(1)
+        } else {
+            if (!File(path).canRead()) {
+                logger.error("Failed to open ${path} for reading, bailing out.")
+                System.exit(1)
+            }
         }
     }
 

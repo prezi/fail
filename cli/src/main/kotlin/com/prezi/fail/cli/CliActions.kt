@@ -2,8 +2,8 @@ package com.prezi.fail.cli
 
 public class CliActions: BaseActions<Action>() {
     public val cmdLineSyntax: String =
-            """fail ${ActionCharge.cmdLineSyntax} [options]
-                    ${ActionApiTest.cmdLineSyntax} [options]
+            """fail [options] ${ActionCharge.cmdLineSyntax}
+                    [options] ${ActionApiTest.cmdLineSyntax}
             """
 
     override fun doParse(verb: String, args: Array<String>, tail: Array<String>): Action? = when (verb) {
