@@ -8,10 +8,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import ch.qos.logback.classic.Level
 
-import org.apache.commons.cli.Option
-import org.apache.commons.cli.CommandLine
-
-import com.prezi.fail.Config
 import com.prezi.fail.cli.CliConfig
 import com.prezi.fail.cli.CliConfigKey
 import com.prezi.fail.cli.CliOptions
@@ -20,6 +16,8 @@ import com.prezi.fail.extensions.*
 import com.prezi.fail.cli.Action
 import com.prezi.fail.cli.ActionApiCli
 import com.prezi.fail.cli.ActionHelp
+import com.prezi.fail.sarge.SargeConfigKey
+import com.prezi.fail.sarge.SargeConfig
 
 
 private fun loadUserProperties() {

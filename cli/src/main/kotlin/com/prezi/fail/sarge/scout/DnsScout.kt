@@ -1,6 +1,6 @@
 package com.prezi.fail.sarge.scout
 
-import com.prezi.fail.SargeConfig
+import com.prezi.fail.sarge.SargeConfig
 
 /**
  * Useful when targeting a specific hosts.

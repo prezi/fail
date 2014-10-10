@@ -1,7 +1,7 @@
 package com.prezi.fail.sarge.mercy
 
-import com.prezi.fail.MercyType
-import com.prezi.fail.SargeConfig
+import com.prezi.fail.sarge.MercyType
+import com.prezi.fail.sarge.SargeConfig
 
 class MercyFactory {
     [suppress("UNUSED_PARAMETER")]

@@ -1,4 +1,4 @@
-package com.prezi.fail
+package com.prezi.fail.sarge
 
 import com.prezi.fail.Config
 import org.apache.commons.cli.Option

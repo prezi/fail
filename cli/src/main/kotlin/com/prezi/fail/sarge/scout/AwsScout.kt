@@ -4,7 +4,7 @@ import com.prezi.fail.sarge.Aws
 import com.amazonaws.services.ec2.model.Filter
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest
 import org.slf4j.LoggerFactory
-import com.prezi.fail.SargeConfig
+import com.prezi.fail.sarge.SargeConfig
 
 abstract class AwsScout(val config: SargeConfig) : Scout {
     val logger = LoggerFactory.getLogger(this.javaClass)!!

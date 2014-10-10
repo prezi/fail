@@ -6,7 +6,7 @@ import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.GnuParser
 import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.ParseException
-import com.prezi.fail.SargeConfigKey
+import com.prezi.fail.sarge.SargeConfigKey
 
 public class CliOptions : Options() {
     public val help: Option = Option("h", "help", false, "Display this help message");
