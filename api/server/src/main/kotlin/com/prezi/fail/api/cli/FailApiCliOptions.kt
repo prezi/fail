@@ -1,4 +1,4 @@
-package com.prezi.fail.cli
+package com.prezi.fail.api.cli
 
 import org.apache.commons.cli.Options
 import org.apache.commons.cli.Option
@@ -6,15 +6,15 @@ import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.GnuParser
 import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.ParseException
-import com.prezi.fail.SargeConfigKey
+import java.io.PrintWriter
+import java.io.ByteArrayOutputStream
 
-public class FailCliOptions : Options() {
+public class FailApiCliOptions : Options() {
     public val help: Option = Option("h", "help", false, "Display this help message");
 
     {
         addOption(help)
-        SargeConfigKey.values().forEach { addOption(it.opt) }
-        CliConfigKey.values().forEach { addOption(it.opt) }
+        ApiCliConfigKey.values().forEach { addOption(it.opt) }
     }
 
     public fun parse(args: Array<String>): CommandLine? =
@@ -25,13 +25,12 @@ public class FailCliOptions : Options() {
             null
         }
 
-    public fun printHelp(cmdLineSyntax: String) {
+    public fun printHelp(cmdLineSyntax: String): String {
+        val ostream = ByteArrayOutputStream()
+        val pw = PrintWriter(ostream)
         val formatter = HelpFormatter()
-        formatter.setWidth(120)
-        println("Offline:")
-        formatter.printHelp(cmdLineSyntax, this)
-
-        println("\nOnline:")
-        ActionApiCli(array("--help")).run()
+        formatter.printHelp(pw, 120, cmdLineSyntax, "", this, 0, 0, "", false)
+        pw.flush()
+        return ostream.toString().trim()
     }
 }

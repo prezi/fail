@@ -11,6 +11,7 @@ import com.prezi.changelog.ChangelogClient
 import com.prezi.changelog.ChangelogClientConfig
 import com.prezi.fail.FailChangelogClientConfig
 import com.prezi.fail.cli.CliConfig
+import com.prezi.fail.SargeConfig
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
                    scoutFactory: ScoutFactory = ScoutFactory(),

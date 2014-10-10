@@ -4,7 +4,8 @@ import com.prezi.fail.sarge.Sarge
 
 public class ActionCharge(val args: Array<String>) : Action {
     class object {
-        val cmdLineSyntax = "tag sapper duration-seconds [sapper-arg ...]"
+        val verb = "charge"
+        val cmdLineSyntax = "${verb} tag sapper duration-seconds [sapper-arg ...]"
         val requiredArgCount = 3
     }
 

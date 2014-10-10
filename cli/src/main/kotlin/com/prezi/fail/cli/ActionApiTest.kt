@@ -4,7 +4,7 @@ import com.linkedin.restli.client.RestClient
 import com.prezi.fail.api.HealthcheckBuilders
 
 
-public class ActionApiTest(config: CliConfig = CliConfig()) : ActionApiBase(config) {
+public class ActionApiTest : ActionApiBase() {
     class object {
         val verb = "api-test"
         val cmdLineSyntax = verb

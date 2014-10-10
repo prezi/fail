@@ -1,6 +1,6 @@
 package com.prezi.fail.sarge.scout
 
-import com.prezi.fail.sarge.SargeConfig
+import com.prezi.fail.SargeConfig
 import com.amazonaws.services.ec2.model.Filter
 
 /**

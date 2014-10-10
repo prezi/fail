@@ -11,13 +11,12 @@ import ch.qos.logback.classic.Level
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.CommandLine
 
-import com.prezi.fail.sarge.SargeConfig
-import com.prezi.fail.sarge.SargeConfigKey
-import com.prezi.fail.config.Config
-import com.prezi.fail.cli.Actions
+import com.prezi.fail.Config
 import com.prezi.fail.cli.CliConfig
 import com.prezi.fail.cli.CliConfigKey
 import com.prezi.fail.cli.FailCliOptions
+import com.prezi.fail.cli.CliActions
+import com.prezi.fail.extensions.*
 
 
 private fun loadUserProperties() {
@@ -66,39 +65,31 @@ private fun updateRootLoggerLevel(config: CliConfig) {
 }
 
 
-private fun <T> applyOptionsToSystemProperties(commandLine: CommandLine, config: Config<T>, key: T, opt: Option) {
-    if (commandLine.hasOption(opt)) {
-        val commandLineValue = commandLine.getOptionValue(opt) ?: config.getToggledValue(key)
-        System.setProperty(key.toString(), commandLineValue)
-    }
-}
-
-
 fun main(args: Array<String>) {
     val options = FailCliOptions()
-    val actions = Actions()
+    val actions = CliActions()
 
     val commandLine = options.parse(args)
     if (commandLine == null) {
+        // TODO: send to api instead. if api fails too, print full help.
         options.printHelp(actions.cmdLineSyntax)
         System.exit(1)
-
     } else {
         val cliConfig = CliConfig()
         val sargeConfig = SargeConfig()
+
+        SargeConfigKey.values().forEach { Config.applyOptionsToSystemProperties(commandLine, sargeConfig, it, it.opt) }
+        CliConfigKey.values().forEach { Config.applyOptionsToSystemProperties(commandLine, cliConfig, it, it.opt) }
+        updateRootLoggerLevel(cliConfig)
+        loadUserProperties()
+        updateRootLoggerLevel(cliConfig)
 
         if (commandLine.hasOption(options.help)) {
             options.printHelp(actions.cmdLineSyntax)
             System.exit(0)
         }
 
-        SargeConfigKey.values().forEach { applyOptionsToSystemProperties(commandLine, sargeConfig, it, it.opt) }
-        CliConfigKey.values().forEach { applyOptionsToSystemProperties(commandLine, cliConfig, it, it.opt) }
-        updateRootLoggerLevel(cliConfig)
-        loadUserProperties()
-        updateRootLoggerLevel(cliConfig)
-
-        val action = Actions().parsePositionalArgs(commandLine.getArgs()!!)
+        val action = actions.parsePositionalArgs(commandLine.getArgs()!!)
         if (action == null) {
             options.printHelp(actions.cmdLineSyntax)
             System.exit(1)

@@ -24,7 +24,9 @@ dependencies {
 			'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
 			'org.slf4j:jcl-over-slf4j:1.7.7',
 			// API client
-			project(path: ':api:data', configuration: 'restClient')
+			project(path: ':api:data', configuration: 'restClient'),
+			// Shared code
+			project(':common')
 
 	testCompile 'junit:junit:4.11',
 			'org.mockito:mockito-core:1.+'

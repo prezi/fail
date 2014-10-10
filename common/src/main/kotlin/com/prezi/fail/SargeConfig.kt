@@ -1,6 +1,6 @@
-package com.prezi.fail.sarge
+package com.prezi.fail
 
-import com.prezi.fail.config.Config
+import com.prezi.fail.Config
 import org.apache.commons.cli.Option
 
 enum class SargeConfigKey(val key: String, val opt: Option) {
