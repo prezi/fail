@@ -43,7 +43,7 @@ public class CliResource {
 
         val result = try {
             val cmdLine = options.parse(args)
-            ApiCliConfigKey.values().forEach { Config.applyOptionsToSystemProperties(cmdLine, cliConfig, it, it.opt, systemProperties) }
+            ApiCliConfigKey.values().forEach { cliConfig.applyOptionsToSystemProperties(cmdLine, it, it.opt, systemProperties) }
             if (cmdLine.hasOption(options.help)) {
                 clientShouldPrintHelp(validCommand = true, output = options.printHelp(ApiCliActions.cmdLineSyntax))
             } else {

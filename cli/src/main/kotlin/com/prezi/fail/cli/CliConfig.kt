@@ -17,11 +17,6 @@ open class CliConfig : Config<CliConfigKey>() {
     val DEFAULT_TRACE = false
     val DEFAULT_DRY_RUN = false
 
-    val DEFAULT_LIST_BEFORE = null
-    val DEFAULT_LIST_AFTER = null
-    val DEFAULT_LIST_CONTEXT = null
-    val DEFAULT_LIST_AT = { System.currentTimeMillis() / 1000 }
-
     open fun getApiEndpoint(): String = getString(CliConfigKey.API_ENDPOINT) ?: DEFAULT_API_ENDPOINT
     open fun isDebug(): Boolean = getBool(CliConfigKey.DEBUG, DEFAULT_DEBUG)
     open fun isTrace(): Boolean = getBool(CliConfigKey.TRACE, DEFAULT_TRACE)

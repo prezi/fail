@@ -72,8 +72,8 @@ fun main(args: Array<String>) {
     val sargeConfig = SargeConfig()
 
     if (commandLine != null) {
-        SargeConfigKey.values().forEach { Config.applyOptionsToSystemProperties(commandLine, sargeConfig, it, it.opt) }
-        CliConfigKey.values().forEach { Config.applyOptionsToSystemProperties(commandLine, cliConfig, it, it.opt) }
+        SargeConfigKey.values().forEach { sargeConfig.applyOptionsToSystemProperties(commandLine, it, it.opt) }
+        CliConfigKey.values().forEach { cliConfig.applyOptionsToSystemProperties(commandLine, it, it.opt) }
     }
 
     updateRootLoggerLevel(cliConfig)
