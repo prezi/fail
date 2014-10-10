@@ -7,7 +7,7 @@
   "collection" : {
     "identifier" : {
       "name" : "ChargeId",
-      "type" : "long"
+      "type" : "string"
     },
     "supports" : [ ],
     "finders" : [ {

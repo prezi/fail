@@ -12,7 +12,7 @@ import com.linkedin.restli.server.annotations.Optional
 import com.prezi.fail.api.Charge
 
 [RestLiCollection(name="Charge", namespace="com.prezi.fail.api")]
-public class ChargeResource : CollectionResourceTemplate<Long, Charge>() {
+public class ChargeResource : CollectionResourceTemplate<String, Charge>() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     [Finder("timeAndRegex")]

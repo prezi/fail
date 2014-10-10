@@ -56,7 +56,7 @@
       "supports" : [ "create", "get_all" ],
       "identifier" : {
         "name" : "ScheduledFailureId",
-        "type" : "long"
+        "type" : "string"
       },
       "actions" : [ {
         "name" : "panic",

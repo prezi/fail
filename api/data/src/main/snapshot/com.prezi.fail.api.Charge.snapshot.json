@@ -98,7 +98,7 @@
       "supports" : [ ],
       "identifier" : {
         "name" : "ChargeId",
-        "type" : "long"
+        "type" : "string"
       }
     },
     "namespace" : "com.prezi.fail.api"
