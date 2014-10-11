@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import com.prezi.fail.cli.Action
 
 
-public class ActionPanic: Action {
+public class ActionPanic: Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     class object {

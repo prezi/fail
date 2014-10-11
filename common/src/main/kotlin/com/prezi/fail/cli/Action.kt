@@ -1,5 +1,6 @@
 package com.prezi.fail.cli
 
-public trait Action {
-    public fun run()
+abstract public class Action {
+    abstract public fun run()
+    public var exitCode: Int = 0
 }

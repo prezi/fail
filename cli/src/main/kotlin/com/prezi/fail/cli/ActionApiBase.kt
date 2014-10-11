@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 import com.linkedin.restli.client.RestLiResponseException
 
 
-public abstract class ActionApiBase(val config: CliConfig = CliConfig()) : Action {
+public abstract class ActionApiBase(val config: CliConfig = CliConfig()) : Action() {
     open val logger = LoggerFactory.getLogger(javaClass)!!
     val urlPrefix = config.getApiEndpoint().endingWith('/')
 

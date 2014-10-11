@@ -5,7 +5,7 @@ import com.prezi.fail.cli.Action
 import org.slf4j.LoggerFactory
 
 
-public class ActionList(val regex: String, val systemProperties: StringMap) : Action {
+public class ActionList(val regex: String, val systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     class object {

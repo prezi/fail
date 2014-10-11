@@ -79,5 +79,6 @@ fun main(args: Array<String>) {
     updateRootLoggerLevel(cliConfig)
 
     action.run()
+    System.exit(action.exitCode)
 }
 

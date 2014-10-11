@@ -31,6 +31,7 @@ public class ActionApiCli(val args: Array<String>) : ActionApiBase() {
                 println()
                 ActionHelp().run()
             }
+            exitCode = response.getExitCode()!!
         })
     }
 }

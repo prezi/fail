@@ -52,7 +52,7 @@ public class CliResource {
                     clientShouldPrintHelp(validCommand = false)
                 } else {
                     action.run()
-                    CliResult().setExitCode(0)!!.setValidCommandLine(true)!!.setOutput("")!!
+                    CliResult().setExitCode(action.exitCode)!!.setValidCommandLine(true)!!.setOutput("")!!
                 }
             }
         } catch(e: ParseException) {

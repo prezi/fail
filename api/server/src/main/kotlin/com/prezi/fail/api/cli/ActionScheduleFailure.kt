@@ -6,7 +6,7 @@ import com.linkedin.data.template.StringMap
 import com.prezi.fail.cli.Action
 import org.slf4j.LoggerFactory
 
-public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : Action {
+public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     class object {

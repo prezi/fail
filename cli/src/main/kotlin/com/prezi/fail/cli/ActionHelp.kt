@@ -1,7 +1,7 @@
 package com.prezi.fail.cli
 
 
-public class ActionHelp: Action {
+public class ActionHelp: Action() {
     override fun run() {
         println("Offline")
         println("-------")
