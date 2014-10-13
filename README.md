@@ -15,12 +15,23 @@ Build:
 Run:
 
 ```sh
-cd build/install/fail
-./bin/fail $TAG $SAPPER $SECONDS [$ARG1 $ARG2 ...]
+cd cli/build/install/fail
+./bin/fail charge $TAG $SAPPER $SECONDS [$ARG1 $ARG2 ...]
 ```
 
 These will choose a single EC2 node in us-east that has the tag $TAG (with any value), and run $SAPPER for $SECONDS
 seconds on it, optionally passing $ARG1 $ARG2 ... to the sapper. Details below.
+
+### Server side
+
+The so called "online" commands will only be available once there is a running fail server. After building with `./gradlew installApp` you can run a local server like this:
+
+```sh
+cd api/server/build/install/fail-api
+./bin/fail-api
+```
+
+If you'd like to connect to a server running elsewhere, you can use the `--api` command line flag to the cli app described below, or the `fail.cli.apiEndpoint` java system property.
 
 ## Configuring
 
@@ -32,10 +43,10 @@ At startup the file `~/.fail.properties` is loaded as a properties file. The pre
  - `~/.fail.properties`
  - Default values hard-coded in `fail`
 
-### Full list of supported configuration options
+### Full list of supported configuration options for the client
 
 #### `fail.dryRun` (`-n`, `--dry-run`)
-Skips running sappers. Set to `true` or `false` if setting it via system properties.
+Skips running sappers. Set to `true` or `false` if setting it via system properties. Works for online commands, too.
 
 #### `fail.sarge.targz` (`-p`, `--sappers`)
 Path to the tarball containing sappers; lets you provide your own. The default points to the sappers shipped with fail.
@@ -63,6 +74,15 @@ When using the `TAG` scout type, choose servers only from this availability zone
 Send data to a [Changelog](https://github.com/prezi/changelog) server about sapper runs. See
 [the documentation of `changelog-client-java`](https://github.com/prezi/changelog-client-java#configuration) for how to configure
 the Changelog client.
+
+#### `fail.cli.apiEndpoint` (`--api`)
+Set the base url of the server side, for online commands. You can check if the remote works by issuing `fail --api https://yourendpoint api-check`. The default is `http://localhost:8080`.
+
+#### `fail.cli.debug` (`-v`, `--debug`)
+Sets up debug logging on both the client and the server (for this request).
+
+#### `fail.cli.trace` (`-vv`, `--trace`)
+Sets up trace logging on both the client and the server (for this request).
 
 ## How does this thing work?
 
