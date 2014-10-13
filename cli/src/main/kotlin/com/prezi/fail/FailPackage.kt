@@ -55,6 +55,13 @@ fun main(args: Array<String>) {
     val actions = CliActions()
     var action: Action
     val commandLine = options.parse(args)
+    val cliConfig = CliConfig()
+    val sargeConfig = SargeConfig()
+
+    if (commandLine != null) {
+        SargeConfigKey.values().forEach { sargeConfig.applyOptionsToSystemProperties(commandLine, it, it.opt) }
+        CliConfigKey.values().forEach { cliConfig.applyOptionsToSystemProperties(commandLine, it, it.opt) }
+    }
 
     if (args.size == 0) {
         action = ActionHelp()
@@ -64,14 +71,6 @@ fun main(args: Array<String>) {
         action = ActionHelp()
     } else {
         action = actions.parsePositionalArgs(commandLine.getArgs()!!) ?: ActionApiCli(args)
-    }
-
-    val cliConfig = CliConfig()
-    val sargeConfig = SargeConfig()
-
-    if (commandLine != null) {
-        SargeConfigKey.values().forEach { sargeConfig.applyOptionsToSystemProperties(commandLine, it, it.opt) }
-        CliConfigKey.values().forEach { cliConfig.applyOptionsToSystemProperties(commandLine, it, it.opt) }
     }
 
     updateRootLoggerLevel(cliConfig)
