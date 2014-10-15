@@ -13,7 +13,7 @@ tarball=${tarball_basename}.tar.bz2
 
 (
   cd ${root}
-  ./gradlew api:server:distTar -PpreziReleaseDir="$(pwd)" -PpreziReleaseTarballBasename="${tarball_basename}"
+  ./gradlew scheduler:distTar -PpreziReleaseDir="$(pwd)" -PpreziReleaseTarballBasename="${tarball_basename}"
 ) >& 2
 
 echo $tarball
