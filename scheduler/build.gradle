@@ -16,3 +16,19 @@ dependencies {
 apply plugin: "application"
 mainClassName = "com.prezi.fail.scheduler.SchedulerPackage"
 applicationName = "fail-scheduler"
+
+distTar {
+	compression Compression.BZIP2
+	extension "tar.bz2"
+}
+
+// Integration with the Prezi CI system
+if (hasProperty("preziReleaseTarballBasename")) {
+	distTar {
+		from("${parent.projectDir}/scripts") {
+			into "${preziReleaseTarballBasename}/scripts"
+		}
+		destinationDir new File(preziReleaseDir)
+		baseName preziReleaseTarballBasename
+	}
+}
