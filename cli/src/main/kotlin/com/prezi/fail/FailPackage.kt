@@ -20,26 +20,7 @@ import com.prezi.fail.sarge.SargeConfigKey
 import com.prezi.fail.sarge.SargeConfig
 
 
-private fun loadUserProperties() {
-    val logger = LoggerFactory.getLogger("main")!!
-    val file = File("${System.getenv("HOME")}/.fail.properties")
-    if (file.exists()) {
-        val appliedProperties: MutableMap<String, String> = hashMapOf()
-        val properties = Properties()
-        val inputStream = FileInputStream(file)
-        properties.load(inputStream)
-        inputStream.close()
-        properties.forEach { _entry ->
-            [suppress("UNCHECKED_CAST")] val entry = _entry as Map.Entry<String, String>
-            if (System.getProperty(entry.key) == null) {
-                System.setProperty(entry.key, entry.value)
-                appliedProperties.put(entry.key, entry.value)
-            }
-        }
-        logger.debug("Loaded properties file ${file.canonicalPath}")
-        appliedProperties.forEach { entry -> logger.debug("${file.canonicalPath}: ${entry.key} = ${entry.value}") }
-    }
-}
+
 
 private fun setLogLevel(level: Level) {
     (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(level)
@@ -74,7 +55,7 @@ fun main(args: Array<String>) {
     }
 
     updateRootLoggerLevel(cliConfig)
-    loadUserProperties()
+    loadUserProperties("${System.getenv("HOME")}/.fail.properties")
     updateRootLoggerLevel(cliConfig)
 
     action.run()

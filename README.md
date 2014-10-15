@@ -35,13 +35,18 @@ If you'd like to connect to a server running elsewhere, you can use the `--api` 
 
 ## Configuring
 
-At startup the file `~/.fail.properties` is loaded as a properties file. The precedence for configuration values
+At startup the file a properties file is optionally loaded. The precedence for configuration values
 (which are all system properties) looks like this (higher overrides lower):
 
  - command line options
  - `-D` via `JAVA_OPTS`
- - `~/.fail.properties`
+ - properties file
  - Default values hard-coded in `fail`
+ 
+ The properties file to load, if it exists:
+  - the path defined in the system property `fail.propertiesFile`, or if that isn't set: 
+  - in the CLI `~/.fail.properties`
+  - in the server `/etc/prezi/fail-api/fail-api.properties`
 
 ### Full list of supported configuration options for the client
 
