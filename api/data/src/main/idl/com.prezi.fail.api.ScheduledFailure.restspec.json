@@ -7,7 +7,7 @@
   "collection" : {
     "identifier" : {
       "name" : "ScheduledFailureId",
-      "type" : "long"
+      "type" : "string"
     },
     "supports" : [ "create", "get_all" ],
     "methods" : [ {

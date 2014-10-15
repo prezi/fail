@@ -11,7 +11,7 @@ import com.linkedin.restli.server.annotations.Action
 import com.linkedin.data.template.LongMap
 
 [RestLiCollection(name="ScheduledFailure", namespace="com.prezi.fail.api")]
-public class ScheduledFailureResource : CollectionResourceTemplate<Long, ScheduledFailure>() {
+public class ScheduledFailureResource : CollectionResourceTemplate<String, ScheduledFailure>() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     override public fun create(entity: ScheduledFailure?): CreateResponse {
