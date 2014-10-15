@@ -18,8 +18,7 @@ import com.prezi.fail.cli.ActionApiCli
 import com.prezi.fail.cli.ActionHelp
 import com.prezi.fail.sarge.SargeConfigKey
 import com.prezi.fail.sarge.SargeConfig
-
-
+import com.prezi.fail.loadUserProperties
 
 
 private fun setLogLevel(level: Level) {
