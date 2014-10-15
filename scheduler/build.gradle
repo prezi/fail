@@ -25,7 +25,7 @@ distTar {
 // Integration with the Prezi CI system
 if (hasProperty("preziReleaseTarballBasename")) {
 	distTar {
-		from("${parent.projectDir}/scripts") {
+		from("${projectDir}/scripts") {
 			into "${preziReleaseTarballBasename}/scripts"
 		}
 		destinationDir new File(preziReleaseDir)
