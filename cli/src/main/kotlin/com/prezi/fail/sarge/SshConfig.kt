@@ -1,6 +1,6 @@
 package com.prezi.fail.sarge
 
-import com.prezi.fail.Config
+import com.prezi.fail.config.Config
 
 enum class SshConfigKey(key: String) {
     AUTH_TYPE: SshConfigKey("fail.sarge.ssh.auth_type")

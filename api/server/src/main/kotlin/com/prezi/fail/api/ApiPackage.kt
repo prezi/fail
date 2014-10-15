@@ -2,7 +2,7 @@ package com.prezi.fail.api
 
 import com.linkedin.restli.server.NettyStandaloneLauncher
 import com.prezi.fail.api.db.DBUsageExample
-import com.prezi.fail.loadUserProperties
+import com.prezi.fail.config.loadUserProperties
 
 fun main(args: Array<String>) {
     loadUserProperties("/etc/prezi/fail-api/fail-api.properties")

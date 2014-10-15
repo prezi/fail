@@ -3,7 +3,7 @@ package com.prezi.fail.api.cli
 import com.prezi.fail.cli.BaseActions
 import com.prezi.fail.cli.Action
 import com.linkedin.data.template.StringMap
-import com.prezi.fail.Config
+import com.prezi.fail.config.Config
 
 
 public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>() {

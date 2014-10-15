@@ -1,7 +1,7 @@
 package com.prezi.fail.api.cli
 
 import org.apache.commons.cli.Option
-import com.prezi.fail.Config
+import com.prezi.fail.config.Config
 
 enum class ApiCliConfigKey(val key: String, val opt: Option) {
     API_ENDPOINT : ApiCliConfigKey("fail.cli.apiEndpoint", Option(null, "api", true, "URL prefix to the Fail API"))
