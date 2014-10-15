@@ -1,0 +1,8 @@
+#!/bin/sh -x
+
+. $(dirname $0)/common
+
+fail() { echo "BAD $(date +%s) $@"; exit 0; }
+ok() { echo "OK $(date +%s) $@"; exit 0; }
+
+ok "meta_stats not yet implemented"

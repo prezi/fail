@@ -1,4 +1,3 @@
 rootProject.name = 'fail'
 
-include 'common', 'cli', 'api:data', 'api:server'
-
+include 'common', 'cli', 'api:data', 'api:server', 'scheduler'
