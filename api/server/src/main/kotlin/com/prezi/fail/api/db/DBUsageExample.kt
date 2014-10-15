@@ -14,7 +14,7 @@ import com.prezi.fail.api.ChargeStatus
 
 object DBUsageExample {
     fun run() {
-        val client = AmazonDynamoDBClient(ProfileCredentialsProvider())
+        val client = AmazonDynamoDBClient()
         val mapper = DynamoDBMapper(client)
 
         val conf = StringMap()
