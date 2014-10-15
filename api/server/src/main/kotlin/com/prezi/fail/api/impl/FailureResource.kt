@@ -9,9 +9,9 @@ import com.linkedin.restli.server.annotations.Context
 import com.linkedin.restli.server.annotations.Finder
 import com.linkedin.restli.server.annotations.QueryParam
 import com.linkedin.restli.server.annotations.Optional
-import com.prezi.fail.api.Charge
+import com.prezi.fail.api.Failure
 import com.prezi.fail.api.db.DB
-import com.prezi.fail.api.db.DBCharge
+import com.prezi.fail.api.db.DBFailure
 import com.amazonaws.services.dynamodbv2.model.Condition
 import org.joda.time.DateTime
 import org.joda.time.Interval
@@ -25,18 +25,18 @@ import com.amazonaws.services.dynamodbv2.datamodeling.KeyPair
 import java.util.HashMap
 import java.util.LinkedList
 
-[RestLiCollection(name="Charge", namespace="com.prezi.fail.api")]
-public class ChargeResource : CollectionResourceTemplate<String, Charge>() {
+[RestLiCollection(name="Failure", namespace="com.prezi.fail.api")]
+public class FailureResource : CollectionResourceTemplate<String, Failure>() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     [Finder("time")]
-    public fun listChargesByTime(
+    public fun listFailuresByTime(
             [Context] paging: PagingContext,
             [QueryParam("at")] atTimestamp: Long,
             [Optional][QueryParam("before")] secondsBefore: Int?,
             [Optional][QueryParam("after")] secondsAfter: Int?,
             [Optional][QueryParam("context")] secondsContext: Int?
-    ): List<Charge> {
+    ): List<Failure> {
         val at = DateTime(atTimestamp * 1000)
         val interval = Interval(
                 at.minusSeconds(secondsBefore ?: secondsContext ?: 0),
@@ -53,7 +53,7 @@ public class ChargeResource : CollectionResourceTemplate<String, Charge>() {
         return (runsFromDb + additionalRuns).map{it.model}
     }
 
-    private fun loadRunsBetween(interval: Interval): List<DBCharge> {
+    private fun loadRunsBetween(interval: Interval): List<DBFailure> {
         val condition = Condition()
                 .withComparisonOperator(ComparisonOperator.BETWEEN)
                 .withAttributeValueList(
@@ -64,13 +64,13 @@ public class ChargeResource : CollectionResourceTemplate<String, Charge>() {
 
         val scanExp = DynamoDBScanExpression()
         scanExp.addFilterCondition("At", condition)
-        return DB.mapper.scan(javaClass<DBCharge>(), scanExp).toList()
+        return DB.mapper.scan(javaClass<DBFailure>(), scanExp).toList()
     }
 
     fun loadAllScheduledFailures(): List<DBScheduledFailure> =
         DB.mapper.scan(javaClass<DBScheduledFailure>(), DynamoDBScanExpression()).toList()
 
-    fun generateAdditionalRuns(interval: Interval, runsFromDb: List<DBCharge>, scheduledFailures: List<DBScheduledFailure>): List<DBCharge> =
+    fun generateAdditionalRuns(interval: Interval, runsFromDb: List<DBFailure>, scheduledFailures: List<DBScheduledFailure>): List<DBFailure> =
         scheduledFailures.flatMap { scheduledFailure ->
             scheduledFailure.model.nextRuns(
                     interval.withStartMillis(
@@ -79,10 +79,10 @@ public class ChargeResource : CollectionResourceTemplate<String, Charge>() {
                                 .maxBy{it.getAt()!!}
                                 ?.getAtMillis() ?: interval.getStart().getMillis()
                     )
-            ).map{DBCharge(it).setScheduledFailureId(scheduledFailure.id)!!}
+            ).map{DBFailure(it).setScheduledFailureId(scheduledFailure.id)!!}
         }
 
-    fun populateScheduledFailuresIntoRuns(runs: List<DBCharge>) {
+    fun populateScheduledFailuresIntoRuns(runs: List<DBFailure>) {
         if (runs.empty) {
             return
         }
@@ -106,11 +106,11 @@ public class ChargeResource : CollectionResourceTemplate<String, Charge>() {
             [Optional][QueryParam("before")] before: String,
             [Optional][QueryParam("after")] after: String,
             [Optional][QueryParam("context")] context: String
-    ): List<Charge> {
+    ): List<Failure> {
         logger.info("Listing scheduled jobs at=${at} before=${before} after=${after} context=${context} regex=${regex}")
         return listOf(
-                Charge().setLog("example1 log")?.setScheduledFailure(ScheduledFailure().setSapper("example1"))!!,
-                Charge().setLog("example2 log")?.setScheduledFailure(ScheduledFailure().setSapper("example2"))!!
+                Failure().setLog("example1 log")?.setScheduledFailure(ScheduledFailure().setSapper("example1"))!!,
+                Failure().setLog("example2 log")?.setScheduledFailure(ScheduledFailure().setSapper("example2"))!!
         )
     }
 }

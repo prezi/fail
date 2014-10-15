@@ -4,7 +4,7 @@ import com.prezi.fail.api.ScheduledFailure
 import org.slf4j.LoggerFactory
 import com.prezi.fail.cli.Action
 import com.linkedin.data.template.StringMap
-import com.prezi.fail.api.impl.ChargeResource
+import com.prezi.fail.api.impl.FailureResource
 import com.linkedin.restli.server.PagingContext
 import org.joda.time.Period
 import org.joda.time.DateTimeConstants
@@ -30,7 +30,7 @@ public class ActionListRuns(systemProperties: StringMap) : Action() {
 
     override public fun run() {
         logger.info("Listing all scheduled runs")
-        ChargeResource().listChargesByTime(
+        FailureResource().listFailuresByTime(
                 paging=PagingContext(0, 1000),
                 atTimestamp=config.getListAt(),
                 secondsBefore=strToSeconds(config.getListBefore()),

@@ -1,7 +1,7 @@
 {
   "models" : [ {
     "type" : "enum",
-    "name" : "ChargeStatus",
+    "name" : "FailureStatus",
     "namespace" : "com.prezi.fail.api",
     "symbols" : [ "FUTURE", "RUNNING", "DONE", "FAILED" ]
   }, {
@@ -45,7 +45,7 @@
     } ]
   }, {
     "type" : "record",
-    "name" : "Charge",
+    "name" : "Failure",
     "namespace" : "com.prezi.fail.api",
     "doc" : "One specific failure injection run",
     "fields" : [ {
@@ -54,7 +54,7 @@
       "doc" : "unix timestamp when this run happens"
     }, {
       "name" : "status",
-      "type" : "ChargeStatus"
+      "type" : "FailureStatus"
     }, {
       "name" : "log",
       "type" : "string"
@@ -65,13 +65,13 @@
     } ]
   } ],
   "schema" : {
-    "schema" : "com.prezi.fail.api.Charge",
-    "name" : "Charge",
-    "doc" : "generated from: com.prezi.fail.api.impl.ChargeResource",
-    "path" : "/Charge",
+    "schema" : "com.prezi.fail.api.Failure",
+    "name" : "Failure",
+    "doc" : "generated from: com.prezi.fail.api.impl.FailureResource",
+    "path" : "/Failure",
     "collection" : {
       "entity" : {
-        "path" : "/Charge/{ChargeId}"
+        "path" : "/Failure/{FailureId}"
       },
       "finders" : [ {
         "name" : "time",
@@ -115,7 +115,7 @@
       } ],
       "supports" : [ ],
       "identifier" : {
-        "name" : "ChargeId",
+        "name" : "FailureId",
         "type" : "string"
       }
     },

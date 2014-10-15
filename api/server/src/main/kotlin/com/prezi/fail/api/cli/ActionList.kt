@@ -16,6 +16,6 @@ public class ActionList(val regex: String, val systemProperties: StringMap) : Ac
     override public fun run() {
         val cliConfig = ApiCliConfig()
         cliConfig.configMap = systemProperties
-        logger.info("Requesting scheduled charges: regex=${regex} before=${cliConfig.getListBefore()} after=${cliConfig.getListAfter()}")
+        logger.info("Requesting scheduled failures: regex=${regex} before=${cliConfig.getListBefore()} after=${cliConfig.getListAfter()}")
     }
 }

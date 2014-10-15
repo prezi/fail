@@ -1,12 +1,12 @@
 {
-  "name" : "Charge",
+  "name" : "Failure",
   "namespace" : "com.prezi.fail.api",
-  "path" : "/Charge",
-  "schema" : "com.prezi.fail.api.Charge",
-  "doc" : "generated from: com.prezi.fail.api.impl.ChargeResource",
+  "path" : "/Failure",
+  "schema" : "com.prezi.fail.api.Failure",
+  "doc" : "generated from: com.prezi.fail.api.impl.FailureResource",
   "collection" : {
     "identifier" : {
-      "name" : "ChargeId",
+      "name" : "FailureId",
       "type" : "string"
     },
     "supports" : [ ],
@@ -51,7 +51,7 @@
       } ]
     } ],
     "entity" : {
-      "path" : "/Charge/{ChargeId}"
+      "path" : "/Failure/{FailureId}"
     }
   }
 }

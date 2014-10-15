@@ -29,9 +29,9 @@ public class ScheduledFailureResource : CollectionResourceTemplate<String, Sched
 
     [Action(name="panic")]
     public fun panic(): LongMap {
-        logger.info("Panic command received. Aborting charges and pausing further scheduled failures.")
+        logger.info("Panic command received. Aborting failures and pausing further scheduled failures.")
         val retval = LongMap()
-        retval.set("abortedCharges", 5)
+        retval.set("abortedFailures", 5)
         retval.set("pausedSchedules", 42)
         return retval
     }
