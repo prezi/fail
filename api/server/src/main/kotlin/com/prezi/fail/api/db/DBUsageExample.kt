@@ -21,7 +21,7 @@ object DBUsageExample {
         conf.set("foo", "bar")
 
         val scheduledFailure = DBScheduledFailure()
-                .setInterval("test-interval-1")!!
+                .setPeriod("test-interval-1")!!
                 .setSapper("noop")!!
                 .setSearchTerm("hslogger-app")!!
                 .setConfiguration(conf)!!

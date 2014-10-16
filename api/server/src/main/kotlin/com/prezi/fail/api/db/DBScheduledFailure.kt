@@ -19,9 +19,9 @@ class DBScheduledFailure([DynamoDBIgnore] val model: ScheduledFailure = Schedule
     [DynamoDBHashKey(attributeName = "Id")]
     public var id: String? = null
 
-    [DynamoDBAttribute(attributeName = "Interval")]
-    public fun getInterval(): String? = model.getInterval()
-    public fun setInterval(v: String?): DBScheduledFailure? { model.setInterval(v); return this }
+    [DynamoDBAttribute(attributeName = "Period")]
+    public fun getPeriod(): String? = model.getPeriod()
+    public fun setPeriod(v: String?): DBScheduledFailure? { model.setPeriod(v); return this }
 
     [DynamoDBAttribute(attributeName = "SearchTerm")]
     public fun getSearchTerm(): String? = model.getSearchTerm()

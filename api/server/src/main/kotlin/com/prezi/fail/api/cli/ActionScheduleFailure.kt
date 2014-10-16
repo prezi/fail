@@ -26,7 +26,7 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
         val duration = args[3].toInt()
 
         val scheduledFailure = ScheduledFailure()
-                .setInterval(interval)!!
+                .setPeriod(interval)!!
                 .setSearchTerm(searchTerm)!!
                 .setSapper(sapper)!!
                 .setDuration(duration)!!

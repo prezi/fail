@@ -3,7 +3,7 @@
     "name": "ScheduledFailure",
     "namespace": "com.prezi.fail.api",
     "fields": [
-        {"name": "interval", "type": "string", "doc": "when to hurt servers. string is probably not specific enough, type TBD when we flesh out interval formats"},
+        {"name": "period", "type": "string", "doc": "when to hurt servers"},
         {"name": "searchTerm", "type": "string"},
         {"name": "sapper", "type": "string"},
         {"name": "duration", "type": "int", "doc": "how long to hurt targets, in seconds"},
