@@ -4,9 +4,9 @@
     "name" : "ScheduledFailure",
     "namespace" : "com.prezi.fail.api",
     "fields" : [ {
-      "name" : "interval",
+      "name" : "period",
       "type" : "string",
-      "doc" : "when to hurt servers. string is probably not specific enough, type TBD when we flesh out interval formats"
+      "doc" : "when to hurt servers"
     }, {
       "name" : "searchTerm",
       "type" : "string"
