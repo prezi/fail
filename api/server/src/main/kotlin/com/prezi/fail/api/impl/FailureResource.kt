@@ -40,16 +40,22 @@ public class FailureResource : CollectionResourceTemplate<String, Failure>() {
         val interval = Interval(
                 at.minusSeconds(secondsBefore ?: secondsContext ?: 0),
                 at.plusSeconds(secondsAfter ?: secondsContext ?: 3 * DateTimeConstants.SECONDS_PER_HOUR))
-        logger.info("Listing scheduled jobs for parameters at=${at} before=${secondsBefore} after=${secondsAfter} context=${secondsContext} " +
-        "parsed to interval ${interval}")
+        logger.trace("Listing scheduled runs for parameters at=${at} before=${secondsBefore} after=${secondsAfter} context=${secondsContext}")
+        logger.info("Scheduled runs in interval ${interval}")
 
         val runsFromDb = loadRunsBetween(interval)
-        populateScheduledFailuresIntoRuns(runsFromDb)
-        val scheduledFailures = loadAllScheduledFailures()
-        val additionalRuns = generateAdditionalRuns(interval, runsFromDb, scheduledFailures)
+        logger.debug("Loaded already existing runs from db: ${runsFromDb}")
 
+        populateScheduledFailuresIntoRuns(runsFromDb)
+
+        val scheduledFailures = loadAllScheduledFailures()
+        logger.trace("Loaded all scheduled failures: ${scheduledFailures}")
+
+        val additionalRuns = generateAdditionalRuns(interval, runsFromDb, scheduledFailures)
         DB.mapper.batchSave(additionalRuns)
-        return (runsFromDb + additionalRuns).map{it.model}
+        additionalRuns.forEach { logger.debug("Scheduled new run: ${it}")}
+
+        return (runsFromDb + additionalRuns).map{it.model}.sortBy{it.getAt()}
     }
 
     private fun loadRunsBetween(interval: Interval): List<DBFailure> {
@@ -60,7 +66,6 @@ public class FailureResource : CollectionResourceTemplate<String, Failure>() {
                                 (interval.getStart().getMillis() / 1000).toString()),
                         AttributeValue().withN(
                                 (interval.getEnd().getMillis() / 1000).toString()))
-
         val scanExp = DynamoDBScanExpression()
         scanExp.addFilterCondition("At", condition)
         return DB.mapper.scan(javaClass<DBFailure>(), scanExp).toList()
@@ -83,6 +88,7 @@ public class FailureResource : CollectionResourceTemplate<String, Failure>() {
 
     fun populateScheduledFailuresIntoRuns(runs: List<DBFailure>) {
         if (runs.empty) {
+            logger.trace("No runs loaded from DB, not populating with ScheduledFailure data")
             return
         }
         val batchLoadResult = DB.mapper.batchLoad(
@@ -94,6 +100,7 @@ public class FailureResource : CollectionResourceTemplate<String, Failure>() {
         val dbScheduledFailures =
                 (batchLoadResult.get(batchLoadResult.keySet().first()) as List<DBScheduledFailure>)
                         .toMap{it.id}
+        logger.trace("Loaded DBScheduledFailures to populate runs: ${dbScheduledFailures}")
         runs.forEach { it.model.setScheduledFailure(dbScheduledFailures.get(it.getScheduledFailureId())?.model) }
     }
 

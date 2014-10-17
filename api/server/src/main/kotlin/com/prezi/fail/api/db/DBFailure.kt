@@ -41,4 +41,6 @@ class DBFailure([DynamoDBIgnore] val model: Failure = Failure()) {
     public fun setScheduledFailure(f: DBScheduledFailure): DBFailure? = setScheduledFailureId(f.id)
     public fun getScheduledFailure(mapper: DynamoDBMapper): DBScheduledFailure? =
             mapper.load(javaClass<DBScheduledFailure>(), _scheduledFailureId)
+
+    public override fun toString(): String = "${id}${model}"
 }

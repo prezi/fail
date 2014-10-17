@@ -53,4 +53,6 @@ class DBScheduledFailure([DynamoDBIgnore] val model: ScheduledFailure = Schedule
     [DynamoDBMarshalling(marshallerClass = javaClass<StringMapMarshaller>())]
     public fun getConfiguration(): StringMap? = model.getConfiguration()
     public fun setConfiguration(v: StringMap?): DBScheduledFailure? { model.setConfiguration(v); return this }
+
+    public override fun toString(): String = "${id}${model}"
 }
