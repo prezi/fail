@@ -18,6 +18,7 @@ class DBRun([DynamoDBIgnore] val model: Run = Run()) {
     public fun setId(v: String?): DBRun? { model.setId(v); return this }
 
     [DynamoDBAttribute(attributeName = "At")]
+    [DynamoDBIndexRangeKey(globalSecondaryIndexName = "ScheduledFailureId-At-index")]
     public fun getAt(): Long? = model.getAt()
     public fun setAt(v: Long?): DBRun? { model.setAt(v); return this }
 
@@ -41,6 +42,7 @@ class DBRun([DynamoDBIgnore] val model: Run = Run()) {
     public fun getScheduledFailureId(): String? = _scheduledFailureId
     public fun setScheduledFailureId(v: String?): DBRun? { _scheduledFailureId = v; return this }
 
+    [DynamoDBIgnore]
     public fun setScheduledFailure(f: DBScheduledFailure): DBRun? = setScheduledFailureId(f.id)
     public fun getScheduledFailure(mapper: DynamoDBMapper): DBScheduledFailure? =
             mapper.load(javaClass<DBScheduledFailure>(), _scheduledFailureId)
