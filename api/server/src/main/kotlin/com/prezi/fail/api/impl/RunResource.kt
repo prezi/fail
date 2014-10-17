@@ -9,9 +9,9 @@ import com.linkedin.restli.server.annotations.Context
 import com.linkedin.restli.server.annotations.Finder
 import com.linkedin.restli.server.annotations.QueryParam
 import com.linkedin.restli.server.annotations.Optional
-import com.prezi.fail.api.Failure
+import com.prezi.fail.api.Run
 import com.prezi.fail.api.db.DB
-import com.prezi.fail.api.db.DBFailure
+import com.prezi.fail.api.db.DBRun
 import com.amazonaws.services.dynamodbv2.model.Condition
 import org.joda.time.DateTime
 import org.joda.time.Interval
@@ -25,17 +25,17 @@ import com.amazonaws.services.dynamodbv2.datamodeling.KeyPair
 import java.util.HashMap
 import java.util.LinkedList
 
-[RestLiCollection(name="Failure", namespace="com.prezi.fail.api")]
-public class FailureResource : CollectionResourceTemplate<String, Failure>() {
+[RestLiCollection(name="Run", namespace="com.prezi.fail.api")]
+public class RunResource : CollectionResourceTemplate<String, Run>() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     [Finder("time")]
-    public fun listFailuresByTime(
+    public fun listRunsByTime(
             [QueryParam("at")] atTimestamp: Long,
             [Optional][QueryParam("before")] secondsBefore: Int?,
             [Optional][QueryParam("after")] secondsAfter: Int?,
             [Optional][QueryParam("context")] secondsContext: Int?
-    ): List<Failure> {
+    ): List<Run> {
         val at = DateTime(atTimestamp * 1000)
         val interval = Interval(
                 at.minusSeconds(secondsBefore ?: secondsContext ?: 0),
@@ -58,7 +58,7 @@ public class FailureResource : CollectionResourceTemplate<String, Failure>() {
         return (runsFromDb + additionalRuns).map{it.model}.sortBy{it.getAt()}
     }
 
-    private fun loadRunsBetween(interval: Interval): List<DBFailure> {
+    private fun loadRunsBetween(interval: Interval): List<DBRun> {
         val condition = Condition()
                 .withComparisonOperator(ComparisonOperator.BETWEEN)
                 .withAttributeValueList(
@@ -68,13 +68,13 @@ public class FailureResource : CollectionResourceTemplate<String, Failure>() {
                                 (interval.getEnd().getMillis() / 1000).toString()))
         val scanExp = DynamoDBScanExpression()
         scanExp.addFilterCondition("At", condition)
-        return DB.mapper.scan(javaClass<DBFailure>(), scanExp).toList()
+        return DB.mapper.scan(javaClass<DBRun>(), scanExp).toList()
     }
 
     fun loadAllScheduledFailures(): List<DBScheduledFailure> =
         DB.mapper.scan(javaClass<DBScheduledFailure>(), DynamoDBScanExpression()).toList()
 
-    fun generateAdditionalRuns(interval: Interval, runsFromDb: List<DBFailure>, scheduledFailures: List<DBScheduledFailure>): List<DBFailure> =
+    fun generateAdditionalRuns(interval: Interval, runsFromDb: List<DBRun>, scheduledFailures: List<DBScheduledFailure>): List<DBRun> =
         scheduledFailures.flatMap { scheduledFailure ->
             scheduledFailure.model.nextRuns(
                     interval.withStartMillis(
@@ -83,10 +83,10 @@ public class FailureResource : CollectionResourceTemplate<String, Failure>() {
                                 .maxBy{it.getAt()!!}
                                 ?.getAtMillis() ?: interval.getStart().getMillis()
                     )
-            ).map{DBFailure(it).setScheduledFailureId(scheduledFailure.id)!!}
+            ).map{ DBRun(it).setScheduledFailureId(scheduledFailure.id)!!}
         }
 
-    fun populateScheduledFailuresIntoRuns(runs: List<DBFailure>) {
+    fun populateScheduledFailuresIntoRuns(runs: List<DBRun>) {
         if (runs.empty) {
             logger.trace("No runs loaded from DB, not populating with ScheduledFailure data")
             return
@@ -105,18 +105,18 @@ public class FailureResource : CollectionResourceTemplate<String, Failure>() {
     }
 
     [Finder("timeAndRegex")]
-    public fun listChargesByTimeAndRegex(
+    public fun listRunsByTimeAndRegex(
             [Context] paging: PagingContext,
             [QueryParam("regex")] regex: String,
             [QueryParam("at")] at: Long,
             [Optional][QueryParam("before")] before: String,
             [Optional][QueryParam("after")] after: String,
             [Optional][QueryParam("context")] context: String
-    ): List<Failure> {
+    ): List<Run> {
         logger.info("Listing scheduled jobs at=${at} before=${before} after=${after} context=${context} regex=${regex}")
         return listOf(
-                Failure().setLog("example1 log")?.setScheduledFailure(ScheduledFailure().setSapper("example1"))!!,
-                Failure().setLog("example2 log")?.setScheduledFailure(ScheduledFailure().setSapper("example2"))!!
+                Run().setLog("example1 log")?.setScheduledFailure(ScheduledFailure().setSapper("example1"))!!,
+                Run().setLog("example2 log")?.setScheduledFailure(ScheduledFailure().setSapper("example2"))!!
         )
     }
 }

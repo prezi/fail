@@ -3,8 +3,8 @@ package com.prezi.fail.api.db
 import com.linkedin.data.template.StringMap
 import com.linkedin.data.template.StringArray
 
-import com.prezi.fail.api.db.DBFailure
-import com.prezi.fail.api.FailureStatus
+import com.prezi.fail.api.db.DBRun
+import com.prezi.fail.api.RunStatus
 
 
 object DBUsageExample {
@@ -27,15 +27,15 @@ object DBUsageExample {
         val loadedScheduledFailure = DB.mapper.load(javaClass<DBScheduledFailure>(), scheduledFailure.id)
         println("Read back from DB: id=${loadedScheduledFailure?.id} ${loadedScheduledFailure?.model}")
 
-        val c = DBFailure()
+        val c = DBRun()
                 .setAt(System.currentTimeMillis() / 1000)!!
-                .setStatus(FailureStatus.FUTURE)!!
+                .setStatus(RunStatus.FUTURE)!!
                 .setLog("Test log!")!!
                 .setScheduledFailure(scheduledFailure)!!
         println("Before save: id=${c.id} ${c.model}")
 
         DB.mapper.save(c)
-        val loadedCharge = DB.mapper.load(javaClass<DBFailure>(), c.id)
+        val loadedCharge = DB.mapper.load(javaClass<DBRun>(), c.id)
         println("Read back from DB: id=${loadedCharge?.id} ${loadedCharge?.model}")
 
         println("ScheduledFailure of Charge read back from DB: ${loadedCharge?.getScheduledFailure(DB.mapper)?.model}")

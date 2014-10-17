@@ -1,7 +1,7 @@
 {
   "models" : [ {
     "type" : "enum",
-    "name" : "FailureStatus",
+    "name" : "RunStatus",
     "namespace" : "com.prezi.fail.api",
     "symbols" : [ "FUTURE", "RUNNING", "DONE", "FAILED" ]
   }, {
@@ -54,7 +54,7 @@
       "doc" : "unix timestamp when this run happens"
     }, {
       "name" : "status",
-      "type" : "FailureStatus"
+      "type" : "RunStatus"
     }, {
       "name" : "log",
       "type" : "string"

@@ -4,7 +4,7 @@ import com.prezi.fail.api.ScheduledFailure
 import org.slf4j.LoggerFactory
 import com.prezi.fail.cli.Action
 import com.linkedin.data.template.StringMap
-import com.prezi.fail.api.impl.FailureResource
+import com.prezi.fail.api.impl.RunResource
 import com.linkedin.restli.server.PagingContext
 import org.joda.time.Period
 import org.joda.time.DateTimeConstants
@@ -46,7 +46,7 @@ public class ActionListRuns(systemProperties: StringMap) : Action() {
         val t = TextTable(
                 array("At", "Sapper", "Target", "Duration (s)"),
                 copyListToArrayWithoutTheMessedUpArrayStoreException(
-                    FailureResource().listFailuresByTime(
+                    RunResource().listRunsByTime(
                             atTimestamp=config.getListAt(),
                             secondsBefore=strToSeconds(config.getListBefore()),
                             secondsAfter=strToSeconds(config.getListAfter()),

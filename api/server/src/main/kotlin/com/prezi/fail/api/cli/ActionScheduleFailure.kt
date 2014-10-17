@@ -9,7 +9,7 @@ import com.prezi.fail.api.period.PeriodFactory
 import com.prezi.fail.api.db.DBScheduledFailure
 import com.prezi.fail.api.db.DB
 import org.joda.time.DateTime
-import com.prezi.fail.api.db.DBFailure
+import com.prezi.fail.api.db.DBRun
 import com.prezi.fail.api.extensions.nextRun
 
 public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : Action() {
@@ -56,7 +56,7 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
             val dbScheduledFailure = DBScheduledFailure(scheduledFailure)
             DB.mapper.save(dbScheduledFailure)
 
-            val firstRun = DBFailure(scheduledFailure.nextRun(DateTime.now())).setScheduledFailure(dbScheduledFailure)!!
+            val firstRun = DBRun(scheduledFailure.nextRun(DateTime.now())).setScheduledFailure(dbScheduledFailure)!!
             DB.mapper.save(firstRun)
 
             logger.info("Scheduled ${dbScheduledFailure.id}${dbScheduledFailure.model}, first run will be at ${DateTime(firstRun.getAtMillis())}: ${firstRun.id}${firstRun.model}")

@@ -1,13 +1,13 @@
 {
     "type": "record",
-    "name": "Failure",
+    "name": "Run",
     "doc": "One specific failure injection run",
     "namespace": "com.prezi.fail.api",
     "fields": [
         {"name": "at", "type": "long", "doc": "unix timestamp when this run happens"},
         {"name": "status", "type": {
             "type": "enum",
-            "name": "FailureStatus",
+            "name": "RunStatus",
             "symbols": ["FUTURE", "RUNNING", "DONE", "FAILED"]
         }},
         {"name": "log", "type": "string"},
