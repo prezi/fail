@@ -74,6 +74,24 @@
         "path" : "/Charge/{ChargeId}"
       },
       "finders" : [ {
+        "name" : "time",
+        "parameters" : [ {
+          "name" : "at",
+          "type" : "long"
+        }, {
+          "optional" : true,
+          "name" : "before",
+          "type" : "int"
+        }, {
+          "optional" : true,
+          "name" : "after",
+          "type" : "int"
+        }, {
+          "optional" : true,
+          "name" : "context",
+          "type" : "int"
+        } ]
+      }, {
         "name" : "timeAndRegex",
         "parameters" : [ {
           "name" : "regex",

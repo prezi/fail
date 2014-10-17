@@ -11,6 +11,24 @@
     },
     "supports" : [ ],
     "finders" : [ {
+      "name" : "time",
+      "parameters" : [ {
+        "name" : "at",
+        "type" : "long"
+      }, {
+        "name" : "before",
+        "type" : "int",
+        "optional" : true
+      }, {
+        "name" : "after",
+        "type" : "int",
+        "optional" : true
+      }, {
+        "name" : "context",
+        "type" : "int",
+        "optional" : true
+      } ]
+    }, {
       "name" : "timeAndRegex",
       "parameters" : [ {
         "name" : "regex",

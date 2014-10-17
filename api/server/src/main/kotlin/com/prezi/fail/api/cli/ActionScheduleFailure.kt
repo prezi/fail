@@ -6,6 +6,11 @@ import com.linkedin.data.template.StringMap
 import com.prezi.fail.cli.Action
 import org.slf4j.LoggerFactory
 import com.prezi.fail.api.period.PeriodFactory
+import com.prezi.fail.api.db.DBScheduledFailure
+import com.prezi.fail.api.db.DB
+import org.joda.time.DateTime
+import com.prezi.fail.api.db.DBCharge
+import com.prezi.fail.api.extensions.nextRun
 
 public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -17,7 +22,6 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
     }
 
     override public fun run() {
-        logger.info("Note: this is just a placeholder for now, no failures are actually being scheduled.")
         val config = ApiCliConfig()
         config.configMap = systemProperties
 
@@ -49,7 +53,13 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
         if (config.isDryRun()) {
             logger.info("Except I'm not, since this is a dry-run.")
         } else {
-            logger.info("This is where I'd schedule ${scheduledFailure.toString()}")
+            val dbScheduledFailure = DBScheduledFailure(scheduledFailure)
+            DB.mapper.save(dbScheduledFailure)
+
+            val firstRun = DBCharge(scheduledFailure.nextRun(DateTime.now()))
+            DB.mapper.save(firstRun)
+
+            logger.info("Scheduled ${dbScheduledFailure.id}${dbScheduledFailure.model}, first run will be at ${DateTime(firstRun.getAtMillis())}: ${firstRun.id}${firstRun.model}")
         }
     }
 }

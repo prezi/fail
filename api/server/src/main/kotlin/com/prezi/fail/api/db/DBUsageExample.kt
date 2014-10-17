@@ -14,9 +14,6 @@ import com.prezi.fail.api.ChargeStatus
 
 object DBUsageExample {
     fun run() {
-        val client = AmazonDynamoDBClient()
-        val mapper = DynamoDBMapper(client)
-
         val conf = StringMap()
         conf.set("foo", "bar")
 
@@ -31,8 +28,8 @@ object DBUsageExample {
                 .setScheduledBy("abesto")!!
         println("Before save: id=${scheduledFailure.id} ${scheduledFailure.model}")
 
-        mapper.save(scheduledFailure)
-        val loadedScheduledFailure = mapper.load(javaClass<DBScheduledFailure>(), scheduledFailure.id)
+        DB.mapper.save(scheduledFailure)
+        val loadedScheduledFailure = DB.mapper.load(javaClass<DBScheduledFailure>(), scheduledFailure.id)
         println("Read back from DB: id=${loadedScheduledFailure?.id} ${loadedScheduledFailure?.model}")
 
         val c = DBCharge()
@@ -42,10 +39,10 @@ object DBUsageExample {
                 .setScheduledFailure(scheduledFailure)!!
         println("Before save: id=${c.id} ${c.model}")
 
-        mapper.save(c)
-        val loadedCharge = mapper.load(javaClass<DBCharge>(), c.id)
+        DB.mapper.save(c)
+        val loadedCharge = DB.mapper.load(javaClass<DBCharge>(), c.id)
         println("Read back from DB: id=${loadedCharge?.id} ${loadedCharge?.model}")
 
-        println("ScheduledFailure of Charge read back from DB: ${loadedCharge?.getScheduledFailure(mapper)?.model}")
+        println("ScheduledFailure of Charge read back from DB: ${loadedCharge?.getScheduledFailure(DB.mapper)?.model}")
     }
 }

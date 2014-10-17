@@ -3,6 +3,8 @@ package com.prezi.fail.api.db
 import com.amazonaws.services.dynamodbv2.datamodeling.*
 import com.prezi.fail.api.Charge
 import com.prezi.fail.api.ChargeStatus
+import com.prezi.fail.api.extensions.getAtMillis
+import com.prezi.fail.api.extensions.setAtMillis
 
 
 // If anyone has infinite time, this could be generated.
@@ -15,7 +17,9 @@ class DBCharge([DynamoDBIgnore] val model: Charge = Charge()) {
 
     [DynamoDBAttribute(attributeName = "At")]
     public fun getAt(): Long? = model.getAt()
+    public fun getAtMillis(): Long? = model.getAtMillis()
     public fun setAt(v: Long?): DBCharge? { model.setAt(v); return this }
+    public fun setAtMillis(v: Long?): DBCharge? { model.setAtMillis(v); return this }
 
     [DynamoDBAttribute(attributeName = "Status")]
     [DynamoDBMarshalling(marshallerClass = javaClass<EnumMarshaller>())]

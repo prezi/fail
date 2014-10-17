@@ -12,7 +12,6 @@ public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>
                 """fail [options] ${ActionListJobs.cmdLineSyntax}
                         [options] ${ActionList.cmdLineSyntax}
                         [options] ${ActionPanic.cmdLineSyntax}
-
                         [options] ${ActionScheduleFailure.cmdLineSyntax}
                         [options] ${ActionListPeriods.cmdLineSyntax}
                         """
