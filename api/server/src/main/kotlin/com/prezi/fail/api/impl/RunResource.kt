@@ -48,7 +48,7 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
 
         populateScheduledFailuresIntoRuns(runsFromDb)
 
-        val scheduledFailures = loadAllScheduledFailures()
+        val scheduledFailures = DB.loadAllScheduledFailures()
         logger.trace("Loaded all scheduled failures: ${scheduledFailures}")
 
         val additionalRuns = generateAdditionalRuns(interval, runsFromDb, scheduledFailures)
@@ -70,9 +70,6 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
         scanExp.addFilterCondition("At", condition)
         return DB.mapper.scan(javaClass<DBRun>(), scanExp).toList()
     }
-
-    fun loadAllScheduledFailures(): List<DBScheduledFailure> =
-        DB.mapper.scan(javaClass<DBScheduledFailure>(), DynamoDBScanExpression()).toList()
 
     fun generateAdditionalRuns(interval: Interval, runsFromDb: List<DBRun>, scheduledFailures: List<DBScheduledFailure>): List<DBRun> =
         scheduledFailures.flatMap { scheduledFailure ->

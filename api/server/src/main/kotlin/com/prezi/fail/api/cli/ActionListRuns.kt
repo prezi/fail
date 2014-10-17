@@ -15,12 +15,14 @@ import com.prezi.fail.api.extensions.getAtMillis
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import org.joda.time.format.DateTimeFormat
+import com.prezi.fail.api.extensions.toStringTable
+import com.prezi.fail.api.extensions.copyToArrayWithoutTheMessedUpArrayStoreException
 
 
 public class ActionListRuns(systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
     val config = ApiCliConfig().withConfigMap(systemProperties) as ApiCliConfig
-    val dateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss z")
+    val dateTimeFormat = DateTimeFormat.forPattern(ApiCliConfig().getDatetimeFormat())
 
     class object {
         val verb = "list-runs"
@@ -34,31 +36,20 @@ public class ActionListRuns(systemProperties: StringMap) : Action() {
             Period(s).toStandardSeconds().getSeconds()
         }
 
-    protected fun copyListToArrayWithoutTheMessedUpArrayStoreException(input: List<Array<String>>): Array<Array<String>> {
-        val head = input.head
-        if (head == null) {
-            return array()
-        }
-        return Array(input.size, {input[it]})
-    }
-
     override public fun run() {
-        val t = TextTable(
-                array("At", "Sapper", "Target", "Duration (s)"),
-                copyListToArrayWithoutTheMessedUpArrayStoreException(
-                    RunResource().listRunsByTime(
-                            atTimestamp=config.getListAt(),
-                            secondsBefore=strToSeconds(config.getListBefore()),
-                            secondsAfter=strToSeconds(config.getListAfter()),
-                            secondsContext=strToSeconds(config.getListContext())
-                    ).map{
-                        array<String>(dateTimeFormat.print(it.getAtMillis()!!), it.getScheduledFailure().getSapper(),
-                               it.getScheduledFailure().getSearchTerm(), it.getScheduledFailure().getDuration()!!.toString())
-                    }
-                )
+        logger.info(
+                TextTable(
+                        array("At", "Sapper", "Target", "Duration (s)"),
+                        RunResource().listRunsByTime(
+                                atTimestamp=config.getListAt(),
+                                secondsBefore=strToSeconds(config.getListBefore()),
+                                secondsAfter=strToSeconds(config.getListAfter()),
+                                secondsContext=strToSeconds(config.getListContext())
+                        ).map{
+                            array<String>(dateTimeFormat.print(it.getAtMillis()!!), it.getScheduledFailure().getSapper(),
+                                    it.getScheduledFailure().getSearchTerm(), it.getScheduledFailure().getDuration()!!.toString())
+                        }.copyToArrayWithoutTheMessedUpArrayStoreException()
+                ).toStringTable()
         )
-        val baos = ByteArrayOutputStream()
-        t.printTable(PrintStream(baos), 0)
-        logger.info(baos.toString())
     }
 }

@@ -13,6 +13,8 @@ enum class ApiCliConfigKey(val key: String, val opt: Option) {
     LIST_AFTER   : ApiCliConfigKey("fail.cli.listJobs.after", Option(null,  "after", true, "list: Show scheduled jobs this far in the past"))
     LIST_CONTEXT : ApiCliConfigKey("fail.cli.listJobs.context", Option(null, "context", true, "list: Show scheduled jobs this far both in the future and the past"))
     LIST_AT      : ApiCliConfigKey("fail.cli.listJobs.at", Option(null, "at", true, "list: Show scheduled round this unix timestamp"))
+
+    DATETIME_FORMAT : ApiCliConfigKey("fail.cli.dateTimeFormat", Option(null, "datetime-format", true, ""))
     override fun toString() = key
 }
 
@@ -27,6 +29,8 @@ open class ApiCliConfig : Config<ApiCliConfigKey>() {
     val DEFAULT_LIST_CONTEXT = null
     val DEFAULT_LIST_AT = { System.currentTimeMillis() / 1000 }
 
+    val DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss z"
+
     open fun getApiEndpoint(): String = getString(ApiCliConfigKey.API_ENDPOINT) ?: DEFAULT_API_ENDPOINT
     open fun isDebug(): Boolean = getBool(ApiCliConfigKey.DEBUG, DEFAULT_DEBUG)
     open fun isTrace(): Boolean = getBool(ApiCliConfigKey.TRACE, DEFAULT_TRACE)
@@ -36,6 +40,8 @@ open class ApiCliConfig : Config<ApiCliConfigKey>() {
     open fun getListAfter(): String? = getString(ApiCliConfigKey.LIST_AFTER) ?: DEFAULT_LIST_AFTER
     open fun getListContext(): String? = getString(ApiCliConfigKey.LIST_CONTEXT) ?: DEFAULT_LIST_CONTEXT
     open fun getListAt(): Long = getString(ApiCliConfigKey.LIST_AT)?.toLong() ?: DEFAULT_LIST_AT()
+
+    open fun getDatetimeFormat(): String = getString(ApiCliConfigKey.DATETIME_FORMAT) ?: DEFAULT_DATETIME_FORMAT
 
     override public fun getToggledValue(key: ApiCliConfigKey): String {
         return when (key) {
