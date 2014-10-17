@@ -1,0 +1,57 @@
+{
+  "name" : "Run",
+  "namespace" : "com.prezi.fail.api",
+  "path" : "/Run",
+  "schema" : "com.prezi.fail.api.Run",
+  "doc" : "generated from: com.prezi.fail.api.impl.RunResource",
+  "collection" : {
+    "identifier" : {
+      "name" : "RunId",
+      "type" : "string"
+    },
+    "supports" : [ ],
+    "finders" : [ {
+      "name" : "time",
+      "parameters" : [ {
+        "name" : "at",
+        "type" : "long"
+      }, {
+        "name" : "before",
+        "type" : "int",
+        "optional" : true
+      }, {
+        "name" : "after",
+        "type" : "int",
+        "optional" : true
+      }, {
+        "name" : "context",
+        "type" : "int",
+        "optional" : true
+      } ]
+    }, {
+      "name" : "timeAndRegex",
+      "parameters" : [ {
+        "name" : "regex",
+        "type" : "string"
+      }, {
+        "name" : "at",
+        "type" : "long"
+      }, {
+        "name" : "before",
+        "type" : "string",
+        "optional" : true
+      }, {
+        "name" : "after",
+        "type" : "string",
+        "optional" : true
+      }, {
+        "name" : "context",
+        "type" : "string",
+        "optional" : true
+      } ]
+    } ],
+    "entity" : {
+      "path" : "/Run/{RunId}"
+    }
+  }
+}

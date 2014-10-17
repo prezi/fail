@@ -35,10 +35,10 @@ object DBUsageExample {
         println("Before save: id=${c.id} ${c.model}")
 
         DB.mapper.save(c)
-        val loadedCharge = DB.mapper.load(javaClass<DBRun>(), c.id)
-        println("Read back from DB: id=${loadedCharge?.id} ${loadedCharge?.model}")
+        val loadedRun = DB.mapper.load(javaClass<DBRun>(), c.id)
+        println("Read back from DB: id=${loadedRun?.id} ${loadedRun?.model}")
 
-        println("ScheduledFailure of Charge read back from DB: ${loadedCharge?.getScheduledFailure(DB.mapper)?.model}")
+        println("ScheduledFailure of run read back from DB: ${loadedRun?.getScheduledFailure(DB.mapper)?.model}")
 
     }
 }

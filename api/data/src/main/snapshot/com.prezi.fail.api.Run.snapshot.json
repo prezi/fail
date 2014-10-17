@@ -45,7 +45,7 @@
     } ]
   }, {
     "type" : "record",
-    "name" : "Failure",
+    "name" : "Run",
     "namespace" : "com.prezi.fail.api",
     "doc" : "One specific failure injection run",
     "fields" : [ {
@@ -65,13 +65,13 @@
     } ]
   } ],
   "schema" : {
-    "schema" : "com.prezi.fail.api.Failure",
-    "name" : "Failure",
-    "doc" : "generated from: com.prezi.fail.api.impl.FailureResource",
-    "path" : "/Failure",
+    "schema" : "com.prezi.fail.api.Run",
+    "name" : "Run",
+    "doc" : "generated from: com.prezi.fail.api.impl.RunResource",
+    "path" : "/Run",
     "collection" : {
       "entity" : {
-        "path" : "/Failure/{FailureId}"
+        "path" : "/Run/{RunId}"
       },
       "finders" : [ {
         "name" : "time",
@@ -115,7 +115,7 @@
       } ],
       "supports" : [ ],
       "identifier" : {
-        "name" : "FailureId",
+        "name" : "RunId",
         "type" : "string"
       }
     },
