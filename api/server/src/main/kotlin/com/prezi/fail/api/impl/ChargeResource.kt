@@ -21,6 +21,9 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.prezi.fail.api.db.DBScheduledFailure
 import com.prezi.fail.api.extensions.*
+import com.amazonaws.services.dynamodbv2.datamodeling.KeyPair
+import java.util.HashMap
+import java.util.LinkedList
 
 [RestLiCollection(name="Charge", namespace="com.prezi.fail.api")]
 public class ChargeResource : CollectionResourceTemplate<String, Charge>() {
@@ -42,6 +45,7 @@ public class ChargeResource : CollectionResourceTemplate<String, Charge>() {
         "parsed to interval ${interval}")
 
         val runsFromDb = loadRunsBetween(interval)
+        populateScheduledFailuresIntoRuns(runsFromDb)
         val scheduledFailures = loadAllScheduledFailures()
         val additionalRuns = generateAdditionalRuns(interval, runsFromDb, scheduledFailures)
 
@@ -75,8 +79,24 @@ public class ChargeResource : CollectionResourceTemplate<String, Charge>() {
                                 .maxBy{it.getAt()!!}
                                 ?.getAtMillis() ?: interval.getStart().getMillis()
                     )
-            ).map{DBCharge(it)}
+            ).map{DBCharge(it).setScheduledFailureId(scheduledFailure.id)!!}
         }
+
+    fun populateScheduledFailuresIntoRuns(runs: List<DBCharge>) {
+        if (runs.empty) {
+            return
+        }
+        val batchLoadResult = DB.mapper.batchLoad(
+                runs.map{it.getScheduledFailureId()!!}.toSet().map{
+                    DBScheduledFailure().withId(it)!!
+                }
+        )
+        // We know we've selected from only a single table
+        val dbScheduledFailures =
+                (batchLoadResult.get(batchLoadResult.keySet().first()) as List<DBScheduledFailure>)
+                        .toMap{it.id}
+        runs.forEach { it.model.setScheduledFailure(dbScheduledFailures.get(it.getScheduledFailureId())?.model) }
+    }
 
     [Finder("timeAndRegex")]
     public fun listChargesByTimeAndRegex(

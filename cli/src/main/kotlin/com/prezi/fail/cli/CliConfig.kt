@@ -8,6 +8,12 @@ enum class CliConfigKey(val key: String, val opt: Option) {
     DEBUG        : CliConfigKey("fail.cli.debug", Option("v", "debug", false, "Set root logger to DEBUG level"))
     TRACE        : CliConfigKey("fail.cli.trace", Option("vv", "trace", false, "Set root logger to TRACE level"))
     DRY_RUN      : CliConfigKey("fail.dryRun", Option("n", "dry-run", false, "Don't actually do any non-read-only actions"))
+
+    LIST_BEFORE  : CliConfigKey("fail.cli.listJobs.before", Option(null, "before", true, "list: Show scheduled jobs this far in the future"))
+    LIST_AFTER   : CliConfigKey("fail.cli.listJobs.after", Option(null,  "after", true, "list: Show scheduled jobs this far in the past"))
+    LIST_CONTEXT : CliConfigKey("fail.cli.listJobs.context", Option(null, "context", true, "list: Show scheduled jobs this far both in the future and the past"))
+    LIST_AT      : CliConfigKey("fail.cli.listJobs.at", Option(null, "at", true, "list: Show scheduled round this unix timestamp"))
+
     override fun toString() = key
 }
 

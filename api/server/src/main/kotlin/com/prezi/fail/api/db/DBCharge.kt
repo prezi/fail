@@ -17,8 +17,10 @@ class DBCharge([DynamoDBIgnore] val model: Charge = Charge()) {
 
     [DynamoDBAttribute(attributeName = "At")]
     public fun getAt(): Long? = model.getAt()
-    public fun getAtMillis(): Long? = model.getAtMillis()
     public fun setAt(v: Long?): DBCharge? { model.setAt(v); return this }
+
+    [DynamoDBIgnore]
+    public fun getAtMillis(): Long? = model.getAtMillis()
     public fun setAtMillis(v: Long?): DBCharge? { model.setAtMillis(v); return this }
 
     [DynamoDBAttribute(attributeName = "Status")]

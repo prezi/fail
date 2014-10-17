@@ -8,7 +8,7 @@ import com.linkedin.data.template.StringMap
 public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>() {
     class object {
         public val cmdLineSyntax: String =
-                """fail [options] ${ActionListJobs.cmdLineSyntax}
+                """fail [options] ${ActionListRuns.cmdLineSyntax}
                         [options] ${ActionList.cmdLineSyntax}
                         [options] ${ActionPanic.cmdLineSyntax}
                         [options] ${ActionScheduleFailure.cmdLineSyntax}
@@ -17,7 +17,7 @@ public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>
     }
 
     override fun doParse(verb: String, args: Array<String>, tail: Array<String>): Action? = when (verb) {
-        ActionListJobs.verb -> ActionListJobs()
+        ActionListRuns.verb -> ActionListRuns(systemProperties)
         ActionList.verb -> ensuringArgCount(1, tail, { ActionList(tail[0], systemProperties) })
         ActionScheduleFailure.verb -> ensuringArgCount(ActionScheduleFailure.requiredArgCount, tail, { ActionScheduleFailure(tail, systemProperties) })
         ActionListPeriods.verb -> ActionListPeriods()

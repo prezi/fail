@@ -17,6 +17,10 @@ abstract class Config<KeyType> {
     }
 
     public var configMap: MutableMap<String, String>? = null
+    public fun withConfigMap(m: MutableMap<String, String>): Config<KeyType> {
+        configMap = m
+        return this
+    }
 
     fun isTrue(x: String?) = array("true", "TRUE").contains(x)
     fun isTrue(x: Boolean) = x
