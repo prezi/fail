@@ -41,7 +41,11 @@ dependencies {
 			// Shared code
 			project(':common'),
 			// DynamoDB
-			'com.amazonaws:aws-java-sdk:1.9.0'
+			'com.amazonaws:aws-java-sdk:1.9.0',
+			// Periods
+			'joda-time:joda-time:2.5'
+
+	testCompile 'junit:junit:4.11'
 
 	restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
 }

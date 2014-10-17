@@ -4,10 +4,6 @@ dependencies {
 	compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
 			// CLI
 			'commons-cli:commons-cli:1.2',
-			// Periods,
-			'joda-time:joda-time:2.5',
 			// Logging
 			'org.slf4j:slf4j-api:1.7.7'
-
-	testCompile 'junit:junit:4.11'
 }
