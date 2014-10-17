@@ -49,6 +49,10 @@
     "namespace" : "com.prezi.fail.api",
     "doc" : "One specific failure injection run",
     "fields" : [ {
+      "name" : "id",
+      "type" : "string",
+      "doc" : "DynamoDB UUID"
+    }, {
       "name" : "at",
       "type" : "long",
       "doc" : "unix timestamp when this run happens"

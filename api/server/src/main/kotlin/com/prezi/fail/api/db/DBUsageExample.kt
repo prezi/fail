@@ -31,11 +31,11 @@ object DBUsageExample {
                 .setStatus(RunStatus.FUTURE)!!
                 .setLog("Test log!")!!
                 .setScheduledFailure(scheduledFailure)!!
-        println("Before save: id=${c.id} ${c.model}")
+        println("Before save: ${c.model}")
 
         DB.mapper.save(c)
-        val loadedRun = DB.mapper.load(javaClass<DBRun>(), c.id)
-        println("Read back from DB: id=${loadedRun?.id} ${loadedRun?.model}")
+        val loadedRun = DB.mapper.load(javaClass<DBRun>(), c.getId())
+        println("Read back from DB: ${loadedRun?.model}")
 
         println("ScheduledFailure of run read back from DB: ${loadedRun?.getScheduledFailure(DB.mapper)?.model}")
 
