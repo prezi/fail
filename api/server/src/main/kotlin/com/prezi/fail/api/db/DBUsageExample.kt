@@ -3,7 +3,6 @@ package com.prezi.fail.api.db
 import com.linkedin.data.template.StringMap
 import com.linkedin.data.template.StringArray
 
-import com.prezi.fail.api.db.DBRun
 import com.prezi.fail.api.RunStatus
 
 

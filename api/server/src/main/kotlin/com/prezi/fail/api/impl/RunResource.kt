@@ -21,9 +21,6 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.prezi.fail.api.db.DBScheduledFailure
 import com.prezi.fail.api.extensions.*
-import com.amazonaws.services.dynamodbv2.datamodeling.KeyPair
-import java.util.HashMap
-import java.util.LinkedList
 
 [RestLiCollection(name="Run", namespace="com.prezi.fail.api")]
 public class RunResource : CollectionResourceTemplate<String, Run>() {
