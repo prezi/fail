@@ -21,6 +21,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.prezi.fail.api.db.DBScheduledFailure
 import com.prezi.fail.api.extensions.*
+import com.prezi.fail.api.period.PeriodFactory
 
 [RestLiCollection(name="Run", namespace="com.prezi.fail.api")]
 public class RunResource : CollectionResourceTemplate<String, Run>() {
@@ -75,14 +76,18 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
 
     fun generateAdditionalRuns(interval: Interval, runsFromDb: List<DBRun>, scheduledFailures: List<DBScheduledFailure>): List<DBRun> =
         scheduledFailures.flatMap { scheduledFailure ->
-            scheduledFailure.model.nextRuns(
-                    interval.withStartMillis(
-                        runsFromDb
-                                .filter{it.getScheduledFailureId() == scheduledFailure.id}
-                                .maxBy{it.getAt()!!}
-                                ?.getAtMillis() ?: interval.getStart().getMillis()
-                    )
-            ).map{ DBRun(it).setScheduledFailureId(scheduledFailure.id)!!}
+            try {
+                scheduledFailure.model.nextRuns(
+                        interval.withStartMillis(
+                            runsFromDb
+                                    .filter{it.getScheduledFailureId() == scheduledFailure.id}
+                                    .maxBy{it.getAt()!!}
+                                    ?.getAtMillis() ?: interval.getStart().getMillis()
+                        )).map{ DBRun(it).setScheduledFailureId(scheduledFailure.id)!!}
+            } catch (e: PeriodFactory.InvalidPeriodDefinition) {
+                logger.error("Failed to generate future runs because the period format is invalid for ${scheduledFailure}")
+                listOf<DBRun>()
+            }
         }
 
     fun populateScheduledFailuresIntoRuns(runs: List<DBRun>) {

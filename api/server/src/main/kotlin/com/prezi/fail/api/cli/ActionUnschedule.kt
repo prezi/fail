@@ -1,22 +1,12 @@
 package com.prezi.fail.api.cli
 
-import com.prezi.fail.api.ScheduledFailure
-import com.linkedin.data.template.StringArray
 import com.linkedin.data.template.StringMap
 import com.prezi.fail.cli.Action
 import org.slf4j.LoggerFactory
-import com.prezi.fail.api.period.PeriodFactory
 import com.prezi.fail.api.db.DBScheduledFailure
 import com.prezi.fail.api.db.DB
-import org.joda.time.DateTime
 import com.prezi.fail.api.db.DBRun
-import com.prezi.fail.api.extensions.nextRun
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression
-import com.amazonaws.services.dynamodbv2.model.Condition
-import com.amazonaws.services.dynamodbv2.model.AttributeValue
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator
-import org.joda.time.DateTimeConstants
-import com.prezi.fail.api.RunStatus
 
 public class ActionUnschedule(val args: Array<String>, systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
