@@ -49,10 +49,15 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
         logger.trace("Loaded all scheduled failures: ${scheduledFailures}")
 
         val additionalRuns = generateAdditionalRuns(interval, runsFromDb, scheduledFailures)
-        DB.mapper.batchSave(additionalRuns)
-        additionalRuns.forEach { logger.debug("Scheduled new run: ${it}")}
-
-        return (runsFromDb + additionalRuns).map{it.model}.sortBy{it.getAt()}
+        val firstFailedBatch = DB.mapper.batchSave(additionalRuns).head
+        if (firstFailedBatch == null) {
+            additionalRuns.forEach { logger.debug("Scheduled new run: ${it}") }
+            return (runsFromDb + additionalRuns).map { it.model }.sortBy { it.getAt() }
+        } else {
+            val e = firstFailedBatch.getException()
+            logger.error("At least one batch failed when scheduling new runs", e)
+            throw e
+        }
     }
 
     private fun loadRunsBetween(interval: Interval): List<DBRun> {

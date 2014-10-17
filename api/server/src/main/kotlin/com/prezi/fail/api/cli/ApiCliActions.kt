@@ -12,6 +12,7 @@ public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>
                         [options] ${ActionList.cmdLineSyntax}
                         [options] ${ActionPanic.cmdLineSyntax}
                         [options] ${ActionScheduleFailure.cmdLineSyntax}
+                        [options] ${ActionUnschedule.cmdLineSyntax}
                         [options] ${ActionListPeriods.cmdLineSyntax}
                         """
     }
@@ -20,6 +21,7 @@ public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>
         ActionListRuns.verb -> ActionListRuns(systemProperties)
         ActionList.verb -> ensuringArgCount(1, tail, { ActionList(tail[0], systemProperties) })
         ActionScheduleFailure.verb -> ensuringArgCount(ActionScheduleFailure.requiredArgCount, tail, { ActionScheduleFailure(tail, systemProperties) })
+        ActionUnschedule.verb -> ensuringArgCount(1, tail, { ActionUnschedule(tail, systemProperties) })
         ActionListPeriods.verb -> ActionListPeriods()
         else -> null
     }

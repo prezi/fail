@@ -39,4 +39,3 @@ public fun List<Array<String>>.copyToArrayWithoutTheMessedUpArrayStoreException(
     }
     return Array(size, {this[it]})
 }
-
