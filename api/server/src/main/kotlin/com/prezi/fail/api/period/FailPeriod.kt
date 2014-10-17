@@ -5,10 +5,9 @@ import org.joda.time.Interval
 import org.joda.time.Period
 import org.joda.time.Duration
 import java.util.LinkedList
+import java.util.Random
 
 abstract class FailPeriod(val offset: (Period) -> Duration) {
-    protected abstract fun nextInterval(after: DateTime): Interval
-
     protected fun chooseFromInterval(interval: Interval): DateTime =
             interval.getStart()!!.plus(offset(Period(interval)))!!
 
@@ -18,7 +17,10 @@ abstract class FailPeriod(val offset: (Period) -> Duration) {
             stream(
                     nextInterval(between.getStart()!!),
                     {nextInterval(it.getEnd())}
-            ).takeWhile{between.contains(it)}
-             .map{chooseFromInterval(it)}
+            ).map{chooseFromInterval(it)}
+             .takeWhile{between.contains(it)}
              .toList()
+
+    protected abstract fun nextInterval(after: DateTime): Interval
+    abstract val description: String
 }

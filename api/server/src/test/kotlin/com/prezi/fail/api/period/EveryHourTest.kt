@@ -3,20 +3,11 @@ package com.prezi.fail.api.period
 import org.junit.Test
 import kotlin.test.assertEquals
 import org.joda.time.DateTime
-import org.joda.time.Period
 import org.joda.time.Interval
 import org.joda.time.Duration
 
-class EveryHourTest {
-    val period = EveryHour{Duration(42000)}
-
-    fun assertNextRun(after: Long, expected: Long) {
-        assertEquals(DateTime(expected*1000), period.nextRun(DateTime(after*1000)))
-    }
-
-    fun assertNextRuns(after: DateTime, before: DateTime, vararg expected: DateTime) {
-        assertEquals(expected.toList(), period.nextRuns(Interval(after, before)))
-    }
+class EveryHourTest: FailPeriodTest {
+    override val period = EveryHour{Duration(42000)}
 
     Test fun nextRun() {
         assertNextRun(0, 3642)

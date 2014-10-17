@@ -7,6 +7,8 @@ import org.joda.time.Interval
 
 
 public class EveryHour(offset: (Period) -> Duration) : FailPeriod(offset) {
+    override val description = "Every hour"
+
     override fun nextInterval(after: DateTime): Interval {
         val start = after
                 .withMinuteOfHour(0)!!
