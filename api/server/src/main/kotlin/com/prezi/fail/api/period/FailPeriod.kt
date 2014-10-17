@@ -4,8 +4,6 @@ import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.Period
 import org.joda.time.Duration
-import java.util.LinkedList
-import java.util.Random
 
 abstract class FailPeriod(val offset: (Period) -> Duration) {
     protected fun chooseFromInterval(interval: Interval): DateTime =

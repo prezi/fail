@@ -1,6 +1,5 @@
 package com.prezi.fail.cli
 
-import com.prezi.fail.sarge.Sarge
 import com.prezi.fail.api.CliBuilders
 import com.linkedin.data.template.StringArray
 import com.linkedin.data.template.StringMap

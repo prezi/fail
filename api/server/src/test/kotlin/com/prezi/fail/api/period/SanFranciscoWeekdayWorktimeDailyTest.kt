@@ -1,7 +1,6 @@
 package com.prezi.fail.api.period
 
 import org.junit.Test
-import org.joda.time.DateTime
 import org.joda.time.Duration
 
 class SanFranciscoWeekdayWorktimeDailyTest: FailPeriodWithTimezoneTest {

@@ -1,14 +1,7 @@
 package com.prezi.fail.api.db
 
-import com.linkedin.restli.server.NettyStandaloneLauncher
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper
-import java.util.Arrays
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
-import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.prezi.fail.api.db.DBScheduledFailure
 import com.linkedin.data.template.StringMap
 import com.linkedin.data.template.StringArray
-import com.prezi.fail.api.db.DBCharge
 import com.prezi.fail.api.ChargeStatus
 
 

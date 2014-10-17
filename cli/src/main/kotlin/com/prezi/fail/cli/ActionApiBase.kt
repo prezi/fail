@@ -8,7 +8,6 @@ import com.linkedin.common.util.None
 import com.linkedin.common.callback.FutureCallback
 import javax.net.ssl.SSLContext
 import org.slf4j.LoggerFactory
-import com.linkedin.restli.client.RestLiResponseException
 
 
 public abstract class ActionApiBase(val config: CliConfig = CliConfig()) : Action() {

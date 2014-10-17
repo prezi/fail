@@ -1,7 +1,6 @@
 package com.prezi.fail.sarge.mercy
 
 import java.util.Collections
-import java.util.ArrayList
 
 public class HurtJustOne : Mercy {
     override fun deny(targets: List<String>): List<String> = if (targets.empty) {

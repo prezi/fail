@@ -5,7 +5,6 @@ import org.apache.commons.cli.Option
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.GnuParser
 import org.apache.commons.cli.HelpFormatter
-import org.apache.commons.cli.ParseException
 import java.io.PrintWriter
 import java.io.ByteArrayOutputStream
 

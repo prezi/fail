@@ -2,7 +2,6 @@ package com.prezi.fail.sarge.scout
 
 // JUnit, test helpers
 import kotlin.test.*
-import org.mockito.Mockito.*
 import org.junit.Test as test
 import com.prezi.fail.test.*
 // AWS

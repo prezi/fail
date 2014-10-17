@@ -1,9 +1,5 @@
 package com.prezi.fail
 
-import java.util.Properties
-import java.io.File
-import java.io.FileInputStream
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import ch.qos.logback.classic.Level

@@ -1,9 +1,7 @@
 package com.prezi.fail.api.period
 
 import org.junit.Test
-import kotlin.test.assertEquals
 import org.joda.time.DateTime
-import org.joda.time.Interval
 import org.joda.time.Duration
 
 class EveryHourTest: FailPeriodTest {

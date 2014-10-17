@@ -17,7 +17,6 @@ import com.jcraft.jsch.SftpProgressMonitor
 import com.jcraft.jsch.agentproxy.ConnectorFactory
 import com.jcraft.jsch.agentproxy.RemoteIdentityRepository
 // Fail
-import com.prezi.fail.inHome
 import org.slf4j.Logger
 
 

@@ -1,11 +1,9 @@
 package com.prezi.fail.sarge
 
-import java.io.File
 import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.services.ec2.AmazonEC2
 import com.amazonaws.services.ec2.AmazonEC2Client
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
-import com.prezi.fail.sarge.SargeConfig
 
 open class Aws(val config: SargeConfig) {
     protected fun buildCredentials() : AWSCredentials? = ProfileCredentialsProvider().getCredentials()

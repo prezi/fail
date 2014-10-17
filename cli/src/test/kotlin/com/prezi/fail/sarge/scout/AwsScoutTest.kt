@@ -5,10 +5,8 @@ import kotlin.test.*
 import org.junit.Test as test
 import com.prezi.fail.test.*
 // Mockito
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Matchers.any
-import org.mockito.Matchers.anyString
 // AWS
 import com.amazonaws.services.ec2.model.Filter
 import com.amazonaws.services.ec2.AmazonEC2

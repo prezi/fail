@@ -1,6 +1,5 @@
 package com.prezi.fail.cli
 
-import com.linkedin.restli.client.RestClient
 import com.prezi.fail.api.HealthcheckBuilders
 
 

@@ -9,7 +9,6 @@ import com.prezi.fail.api.cli.ApiCliActions
 import com.prezi.fail.api.cli.ApiCliOptions
 import com.prezi.fail.api.cli.ApiCliConfig
 import com.prezi.fail.api.cli.ApiCliConfigKey
-import com.prezi.fail.config.Config
 import com.prezi.fail.extensions.*
 import com.prezi.fail.api.CliResult
 import ch.qos.logback.core.read.ListAppender
