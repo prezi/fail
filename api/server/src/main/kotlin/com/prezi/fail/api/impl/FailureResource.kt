@@ -31,7 +31,6 @@ public class FailureResource : CollectionResourceTemplate<String, Failure>() {
 
     [Finder("time")]
     public fun listFailuresByTime(
-            [Context] paging: PagingContext,
             [QueryParam("at")] atTimestamp: Long,
             [Optional][QueryParam("before")] secondsBefore: Int?,
             [Optional][QueryParam("after")] secondsAfter: Int?,

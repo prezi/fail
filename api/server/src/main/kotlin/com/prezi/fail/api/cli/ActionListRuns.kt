@@ -31,7 +31,6 @@ public class ActionListRuns(systemProperties: StringMap) : Action() {
     override public fun run() {
         logger.info("Listing all scheduled runs")
         FailureResource().listFailuresByTime(
-                paging=PagingContext(0, 1000),
                 atTimestamp=config.getListAt(),
                 secondsBefore=strToSeconds(config.getListBefore()),
                 secondsAfter=strToSeconds(config.getListAfter()),
