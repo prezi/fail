@@ -1,4 +1,4 @@
-package com.prezi.fail.period
+package com.prezi.fail.api.period
 
 import org.junit.Test
 import kotlin.test.assertEquals

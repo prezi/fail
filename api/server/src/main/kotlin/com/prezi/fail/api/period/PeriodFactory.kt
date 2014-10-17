@@ -1,4 +1,4 @@
-package com.prezi.fail.period
+package com.prezi.fail.api.period
 
 import org.joda.time.Period
 import java.util.Random
