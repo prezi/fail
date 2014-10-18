@@ -48,16 +48,16 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
                         .withVisibilityTimeout(expectedDuration))
                 try {
                     action(run)
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     logger.error("exception_during_action ${e}")
                     return
                 }
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 logger.error("exception_during_message_handling ${e}")
             } finally {
                 client.deleteMessage(url, msg?.getReceiptHandle())
             }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             logger.error("exception_during_sqs_receive ${e}")
             return
         }
