@@ -1,8 +1,6 @@
 package com.prezi.fail
 
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import ch.qos.logback.classic.Level
 
 import com.prezi.fail.cli.CliOptions
 import com.prezi.fail.cli.CliActions
@@ -15,16 +13,8 @@ import com.prezi.fail.sarge.SargeConfig
 import com.prezi.fail.config.loadUserProperties
 import com.prezi.fail.config.FailConfig
 import com.prezi.fail.config.FailConfigKey
+import com.prezi.fail.config.updateLoggerLevels
 
-
-private fun setLogLevel(level: Level) {
-    (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).setLevel(level)
-    (LoggerFactory.getLogger("com.linkedin") as ch.qos.logback.classic.Logger).setLevel(level)
-}
-private fun updateRootLoggerLevel(config: FailConfig) {
-    if (config.isDebug()) { setLogLevel(Level.DEBUG) }
-    if (config.isTrace()) { setLogLevel(Level.TRACE) }
-}
 
 fun main(args: Array<String>) {
     val options = CliOptions()
@@ -49,9 +39,9 @@ fun main(args: Array<String>) {
         action = actions.parsePositionalArgs(commandLine.getArgs()!!) ?: ActionApiCli(args)
     }
 
-    updateRootLoggerLevel(cliConfig)
+    updateLoggerLevels(cliConfig, "com.linkedin")
     loadUserProperties("${System.getenv("HOME")}/.fail.properties")
-    updateRootLoggerLevel(cliConfig)
+    updateLoggerLevels(cliConfig, "com.linkedin")
 
     action.run()
     System.exit(action.exitCode)

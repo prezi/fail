@@ -17,6 +17,9 @@ import org.slf4j.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
 import org.apache.commons.cli.ParseException
 import ch.qos.logback.core.Context
+import com.prezi.fail.config.updateLoggerLevels
+import com.prezi.fail.config.getRootLogLevel
+import com.prezi.fail.config.setRootLogLevel
 
 
 [RestLiActions(namespace = "com.prezi.fail.api", name = "Cli")]
@@ -39,10 +42,12 @@ public class CliResource {
         val args = _args.copyToArray()
         val options = ApiCliOptions()
         val cliConfig = FailConfig()
+        val originalRootLogLevel = getRootLogLevel()
 
         val result = try {
             val cmdLine = options.parse(args)
             FailConfigKey.values().forEach { cliConfig.applyOptionsToSystemProperties(cmdLine, it, it.opt, systemProperties) }
+            updateLoggerLevels(cliConfig.withConfigMap(systemProperties) as FailConfig)
             if (cmdLine.hasOption(options.help)) {
                 clientShouldPrintHelp(validCommand = true, output = options.printHelp(ApiCliActions.cmdLineSyntax))
             } else {
@@ -59,6 +64,8 @@ public class CliResource {
         } catch(e: Throwable) {
             logger.error("Internal server error while trying to run ${args.join(" ")} with system properties ${systemProperties}", e)
             throw e
+        } finally {
+            setRootLogLevel(originalRootLogLevel)
         }
 
         result.setOutput(

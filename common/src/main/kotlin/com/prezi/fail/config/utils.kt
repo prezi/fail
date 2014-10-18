@@ -1,6 +1,8 @@
 package com.prezi.fail.config
 
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import ch.qos.logback.classic.Level
 import java.io.File
 import java.util.Properties
 import java.io.FileInputStream
@@ -33,6 +35,25 @@ public fun loadUserProperties(defaultPropertiesFilePath: String?) {
     } else if (defaultPropertiesFilePath != propertiesFilePath) {
         logger.warn("Tried to load properties file ${propertiesFilePath} (specified in fail.propertiesFile), but it doesn't exist")
     }
+}
+
+private fun getLogger(it: String) = (LoggerFactory.getLogger(it) as ch.qos.logback.classic.Logger)
+
+public fun getLoggerLevel(name: String): Level = getLogger(name).getLevel()
+public fun getRootLogLevel(): Level = getLoggerLevel(Logger.ROOT_LOGGER_NAME)
+
+public fun setLogLevel(level: Level, loggers: List<String>) {
+    loggers.map(::getLogger).forEach{it.setLevel(level)}
+}
+public fun setRootLogLevel(l: Level) {
+    setLogLevel(l, listOf(Logger.ROOT_LOGGER_NAME))
+}
+
+public fun updateLoggerLevels(config: FailConfig, vararg additionalLoggers: String = array()) {
+    var finalLoggers = listOf(Logger.ROOT_LOGGER_NAME) + additionalLoggers
+    if (config.isDebug()) { setLogLevel(Level.DEBUG, finalLoggers) }
+    else if (config.isTrace()) { setLogLevel(Level.TRACE, finalLoggers) }
+    else { setLogLevel(Level.INFO, finalLoggers) }
 }
 
 
