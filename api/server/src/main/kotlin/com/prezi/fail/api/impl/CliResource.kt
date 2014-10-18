@@ -56,12 +56,9 @@ public class CliResource {
             }
         } catch(e: ParseException) {
             clientShouldPrintHelp(false, e.getMessage()!!)
-        } catch(e: Exception) {
-            logger.error("Failed to run ${args.join(" ")} with system properties ${systemProperties}", e)
-            CliResult()
-                    .setExitCode(1)!!
-                    .setOutput("")!!
-                    .setValidCommandLine(true)!!
+        } catch(e: Throwable) {
+            logger.error("Internal server error while trying to run ${args.join(" ")} with system properties ${systemProperties}", e)
+            throw e
         }
 
         result.setOutput(

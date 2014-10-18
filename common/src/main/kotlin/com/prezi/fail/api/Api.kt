@@ -13,9 +13,10 @@ import com.linkedin.r2.transport.common.bridge
 import com.linkedin.r2.transport
 import com.linkedin.common.callback
 import com.prezi.fail.config.FailConfig
+import com.linkedin.restli.client.RestLiResponseException
 
 public final class Api(val config: FailConfig = FailConfig()) {
-    open val logger = LoggerFactory.getLogger(javaClass)!!
+    val logger = LoggerFactory.getLogger(javaClass)!!
     val urlPrefix = config.getApiEndpoint().endingWith('/')
 
     public fun withClient<T : Any>(f: (client.RestClient) -> T): T? {
@@ -27,11 +28,13 @@ public final class Api(val config: FailConfig = FailConfig()) {
 
         try {
             return f(restClient)
-        } catch (e: Exception) {
+        } catch (e: RestLiResponseException) {
             if (config.isDebug() || config.isTrace()) {
-                logger.error("API call failed.", e)
+                logger.error("API call failed: ${e.getServiceErrorMessage()}")
+                logger.error("Exception class: ${e.getServiceExceptionClass()}")
+                logger.error("Stack trace:\n${e.getServiceErrorStackTrace()}")
             } else {
-                logger.error("API call failed: ${e.getMessage()}. Run with -v to get more details.")
+                logger.error("API call failed: ${e.getServiceErrorMessage()}. Run with -v to get more details.")
             }
         } finally {
             restClient.shutdown(callback.FutureCallback<util.None>())
