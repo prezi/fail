@@ -1,8 +1,13 @@
 #!/bin/bash
 
+if [ "$1" != "from-gradle" -a "$1" != "-i" ]; then
+  echo "Please don't run this script directly. Instead do a ./gradlew integrationTests or a ./gradlew check from the project root."
+  echo "The case when you run may this script manually is when running it as $0 -i, which will invoke cram with -i."
+  exit 1
+fi
+
 testdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 rootdir=$(dirname $testdir)
-$rootdir/gradlew api:server:installApp cli:installApp
 
 if [ ! -e $testdir/venv/bin/activate ]; then
   echo 'Virtualenv with cram not found, creating'

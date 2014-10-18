@@ -21,4 +21,12 @@ subprojects {
 	}
 }
 
+task integrationTests(type: Exec) {
+	dependsOn "api:server:installApp", "cli:installApp"
+	commandLine "${projectDir}/integration-tests/run.sh"
+	args "from-gradle"
+}
 
+task check {
+	dependsOn integrationTests
+}
