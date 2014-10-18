@@ -6,6 +6,16 @@ if [ "$1" != "from-gradle" -a "$1" != "-i" ]; then
   exit 1
 fi
 
+[ "$1" == "from-gradle" ] && shift
+
+cleanup() {
+  echo "Stopping DynamoDB local and API"
+  kill %1
+  kill %2
+  echo "DynamoDB and API logs are in $testdir/dynamodb.log and $testdir/db.log"
+}
+trap cleanup EXIT
+
 testdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 rootdir=$(dirname $testdir)
 
@@ -32,16 +42,15 @@ if [ ! -e DynamoDBLocal.jar ]; then
   tar -xzf dynamodb_local_latest.tar.gz
 fi
 echo "Starting DynamoDB local"
-java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -inMemory &
+java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -inMemory > $testdir/dynamodb.log 2>&1 &
 
 echo "Starting API server"
-JAVA_OPTS="$JAVA_OPTS -Dfail.test.fixedUnitTimestamp=0 -Dfail.db.dynamoDBEndpoint=http://localhost:8000" $rootdir/api/server/build/install/fail-api/bin/fail-api &
+JAVA_OPTS="$JAVA_OPTS -Dfail.test.fixedUnitTimestamp=0 -Dfail.db.dynamoDBEndpoint=http://localhost:8000" $rootdir/api/server/build/install/fail-api/bin/fail-api > $testdir/api.log 2>&1 &
 
 echo "Sleeping 2 seconds to make sure both the API and DynamoDB local come up"
 sleep 2
 
 echo "Running tests"
 PATH="$testdir:$PATH" cram $testdir/cases $@
+exit $?
 
-kill %1
-kill %2

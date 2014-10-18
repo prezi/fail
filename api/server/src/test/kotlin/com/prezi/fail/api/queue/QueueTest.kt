@@ -13,6 +13,8 @@ import org.mockito.ArgumentCaptor
 import com.amazonaws.services.sqs.model.ChangeMessageVisibilityRequest
 import kotlin.test.assertEquals
 import com.prezi.fail.api.ScheduledFailure
+import org.mockito.ArgumentCaptor
+import org.mockito.Mockito.verify
 
 fun protoClientAction(c: RestClient): Run = Run()
 
