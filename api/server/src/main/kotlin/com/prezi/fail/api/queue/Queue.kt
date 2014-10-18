@@ -12,10 +12,10 @@ import com.amazonaws.AmazonServiceException
 import com.prezi.fail.api.Api
 import com.prezi.fail.api.RunBuilders
 import com.amazonaws.services.sqs.model.ChangeMessageVisibilityRequest
+import com.amazonaws.services.sqs.AmazonSQS
 
-object Queue {
-    val client = AmazonSQSClient()
-    val url = client.getQueueUrl("fail-scheduled-runs")?.getQueueUrl()
+class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-scheduled-runs") {
+    val url = client.getQueueUrl(name)?.getQueueUrl()
 
     internal val logger = LoggerFactory.getLogger(javaClass)
 

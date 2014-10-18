@@ -8,4 +8,20 @@ dependencies {
 			'org.slf4j:slf4j-api:1.7.7',
 			'ch.qos.logback:logback-classic:1.1.2',
             project(path: ':api:data', configuration: 'restClient')
+
+    testCompile 'junit:junit:4.11',
+            'org.mockito:mockito-core:1.+'
+}
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    baseName = "test-${project.archivesBaseName}"
+    from sourceSets.test.output
+}
+
+configurations {
+    testLib
+}
+
+artifacts {
+    testLib testJar
 }

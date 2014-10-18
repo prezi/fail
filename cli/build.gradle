@@ -29,7 +29,8 @@ dependencies {
 			project(':common')
 
 	testCompile 'junit:junit:4.11',
-			'org.mockito:mockito-core:1.+'
+			'org.mockito:mockito-core:1.+',
+            project(path: ':common', configuration: 'testLib')
 }
 
 // Package application

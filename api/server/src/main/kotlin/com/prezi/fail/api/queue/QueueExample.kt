@@ -25,7 +25,8 @@ fun main(args: Array<String>) {
     DB.mapper.save(item)
     println("item id: ${item.getId()}")
 
-    Queue.putRun(item.model)
-    Queue.receiveRunAnd { println("Got run from queue ${it}") }
+    val q = Queue()
+    q.putRun(item.model)
+    q.receiveRunAnd { println("Got run from queue ${it}") }
 
 }
