@@ -121,6 +121,7 @@ trait DB {
     fun ensureTablesExist(): Unit
 
     class object {
-        fun invoke(): DB = DBImpl()
+        val instance = DBImpl()
+        fun invoke(): DB = instance
     }
 }
