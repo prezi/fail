@@ -15,11 +15,11 @@ import com.linkedin.common.callback
 import com.prezi.fail.config.FailConfig
 import com.linkedin.restli.client.RestLiResponseException
 
-public final class Api(val config: FailConfig = FailConfig()) {
+public open class Api(val config: FailConfig = FailConfig()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
     val urlPrefix = config.getApiEndpoint().endingWith('/')
 
-    public fun withClient<T : Any>(f: (client.RestClient) -> T): T? {
+    public open fun withClient<T : Any>(f: (client.RestClient) -> T): T? {
         val http = http.client.HttpClientFactory()
         val r2Client = bridge.client.TransportClientAdapter(http.getClient(mapOf(
                 transport.http.client.HttpClientFactory.HTTP_SSL_CONTEXT to javax.net.ssl.SSLContext.getDefault()

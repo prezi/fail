@@ -14,7 +14,7 @@ import com.prezi.fail.api.RunBuilders
 import com.amazonaws.services.sqs.model.ChangeMessageVisibilityRequest
 import com.amazonaws.services.sqs.AmazonSQS
 
-class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-scheduled-runs") {
+class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-scheduled-runs", val api: Api = Api()) {
     val url = client.getQueueUrl(name)?.getQueueUrl()
 
     internal val logger = LoggerFactory.getLogger(javaClass)
@@ -34,7 +34,7 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
                     logger.debug("Received empty message from SQS")
                     return
                 }
-                val run = Api().withClient({ client ->
+                val run = api.withClient({ client ->
                     client.sendRequest(RunBuilders().get().id(msg.getBody()).build()).getResponseEntity()
                 })
                 if (run == null) {
