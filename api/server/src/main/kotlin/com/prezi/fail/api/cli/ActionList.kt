@@ -9,6 +9,7 @@ import java.util.regex.Pattern
 import dnl.utils.text.table.TextTable
 import com.prezi.fail.api.extensions.toStringTable
 import com.prezi.fail.api.extensions.copyToArrayWithoutTheMessedUpArrayStoreException
+import com.prezi.fail.config.FailConfig
 
 
 public class ActionList(val regexStr: String, val systemProperties: StringMap) : Action() {
@@ -20,10 +21,10 @@ public class ActionList(val regexStr: String, val systemProperties: StringMap) :
     }
 
     override public fun run() {
-        val cliConfig = ApiCliConfig()
+        val cliConfig = FailConfig()
         val regex = Pattern.compile(regexStr)
         cliConfig.configMap = systemProperties
-        val dateTimeFormat = DateTimeFormat.forPattern(ApiCliConfig().getDatetimeFormat())
+        val dateTimeFormat = DateTimeFormat.forPattern(FailConfig().getDatetimeFormat())
         logger.debug("Requesting scheduled failures: regex=${regex}")
 
         logger.info(

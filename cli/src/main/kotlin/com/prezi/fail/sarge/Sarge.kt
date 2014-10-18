@@ -9,13 +9,13 @@ import com.prezi.fail.sarge.mercy.MercyFactory
 import kotlin.concurrent.thread
 import com.prezi.changelog.ChangelogClient
 import com.prezi.fail.FailChangelogClientConfig
-import com.prezi.fail.cli.CliConfig
 import java.io.File
+import com.prezi.fail.config.FailConfig
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
                    scoutFactory: ScoutFactory = ScoutFactory(),
                    mercyFactory: MercyFactory = MercyFactory(),
-                   val cliConfig: CliConfig = CliConfig())
+                   val cliConfig: FailConfig = FailConfig())
 {
     val logger = LoggerFactory.getLogger(this.javaClass)!!
     val scout = scoutFactory.build(config)

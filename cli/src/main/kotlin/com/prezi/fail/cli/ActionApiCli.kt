@@ -3,6 +3,7 @@ package com.prezi.fail.cli
 import com.prezi.fail.api.CliBuilders
 import com.linkedin.data.template.StringArray
 import com.linkedin.data.template.StringMap
+import com.prezi.fail.api.ActionApiBase
 
 public class ActionApiCli(val args: Array<String>) : ActionApiBase() {
     override public fun run() {

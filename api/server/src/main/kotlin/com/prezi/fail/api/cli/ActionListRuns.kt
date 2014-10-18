@@ -10,12 +10,13 @@ import com.prezi.fail.api.extensions.getAtMillis
 import org.joda.time.format.DateTimeFormat
 import com.prezi.fail.api.extensions.toStringTable
 import com.prezi.fail.api.extensions.copyToArrayWithoutTheMessedUpArrayStoreException
+import com.prezi.fail.config.FailConfig
 
 
 public class ActionListRuns(systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
-    val config = ApiCliConfig().withConfigMap(systemProperties) as ApiCliConfig
-    val dateTimeFormat = DateTimeFormat.forPattern(ApiCliConfig().getDatetimeFormat())
+    val config = FailConfig().withConfigMap(systemProperties) as FailConfig
+    val dateTimeFormat = DateTimeFormat.forPattern(FailConfig().getDatetimeFormat())
 
     class object {
         val verb = "list-runs"

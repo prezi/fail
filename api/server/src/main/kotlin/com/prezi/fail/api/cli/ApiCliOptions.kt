@@ -7,13 +7,14 @@ import org.apache.commons.cli.GnuParser
 import org.apache.commons.cli.HelpFormatter
 import java.io.PrintWriter
 import java.io.ByteArrayOutputStream
+import com.prezi.fail.config.FailConfigKey
 
 public class ApiCliOptions : Options() {
     public val help: Option = Option("h", "help", false, "Display this help message");
 
     {
         addOption(help)
-        ApiCliConfigKey.values().forEach { addOption(it.opt) }
+        FailConfigKey.values().forEach { addOption(it.opt) }
     }
 
     public fun parse(args: Array<String>): CommandLine =

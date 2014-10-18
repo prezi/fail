@@ -7,10 +7,11 @@ import com.prezi.fail.api.db.DBScheduledFailure
 import com.prezi.fail.api.db.DB
 import com.prezi.fail.api.db.DBRun
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression
+import com.prezi.fail.config.FailConfig
 
 public class ActionUnschedule(val args: Array<String>, systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
-    val config = ApiCliConfig().withConfigMap(systemProperties) as ApiCliConfig
+    val config = FailConfig().withConfigMap(systemProperties) as FailConfig
 
     class object {
         val requiredArgCount = 1
@@ -19,7 +20,7 @@ public class ActionUnschedule(val args: Array<String>, systemProperties: StringM
     }
 
     override public fun run() {
-        val config = ApiCliConfig()
+        val config = FailConfig()
 
         val id = args[0]
         logger.debug("Handling delete request for runs of ScheduledFailure ${id}")

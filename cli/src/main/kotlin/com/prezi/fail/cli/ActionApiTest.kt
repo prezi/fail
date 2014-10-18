@@ -1,6 +1,7 @@
 package com.prezi.fail.cli
 
 import com.prezi.fail.api.HealthcheckBuilders
+import com.prezi.fail.api.ActionApiBase
 
 
 public class ActionApiTest : ActionApiBase() {

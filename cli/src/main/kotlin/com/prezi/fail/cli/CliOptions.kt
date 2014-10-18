@@ -6,6 +6,7 @@ import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.ParseException
 import com.prezi.fail.sarge.SargeConfigKey
+import com.prezi.fail.config.FailConfigKey
 
 public class CliOptions : Options() {
     public val help: Option = Option("h", "help", false, "Display this help message");
@@ -13,7 +14,7 @@ public class CliOptions : Options() {
     {
         addOption(help)
         SargeConfigKey.values().forEach { addOption(it.opt) }
-        CliConfigKey.values().forEach { addOption(it.opt) }
+        FailConfigKey.values().forEach { addOption(it.opt) }
     }
 
     public fun parse(args: Array<String>): CommandLine? =

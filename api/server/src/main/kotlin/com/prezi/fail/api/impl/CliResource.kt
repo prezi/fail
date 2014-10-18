@@ -7,8 +7,8 @@ import com.linkedin.data.template.StringMap
 import com.linkedin.restli.server.annotations.ActionParam
 import com.prezi.fail.api.cli.ApiCliActions
 import com.prezi.fail.api.cli.ApiCliOptions
-import com.prezi.fail.api.cli.ApiCliConfig
-import com.prezi.fail.api.cli.ApiCliConfigKey
+import com.prezi.fail.config.FailConfig
+import com.prezi.fail.config.FailConfigKey
 import com.prezi.fail.extensions.*
 import com.prezi.fail.api.CliResult
 import ch.qos.logback.core.read.ListAppender
@@ -38,11 +38,11 @@ public class CliResource {
 
         val args = _args.copyToArray()
         val options = ApiCliOptions()
-        val cliConfig = ApiCliConfig()
+        val cliConfig = FailConfig()
 
         val result = try {
             val cmdLine = options.parse(args)
-            ApiCliConfigKey.values().forEach { cliConfig.applyOptionsToSystemProperties(cmdLine, it, it.opt, systemProperties) }
+            FailConfigKey.values().forEach { cliConfig.applyOptionsToSystemProperties(cmdLine, it, it.opt, systemProperties) }
             if (cmdLine.hasOption(options.help)) {
                 clientShouldPrintHelp(validCommand = true, output = options.printHelp(ApiCliActions.cmdLineSyntax))
             } else {

@@ -40,6 +40,7 @@ object Queue {
             logger.error("invalid_run_id_in_sqs ${msg.getBody()}")
             return
         }
+
         action(run)
     }
 }

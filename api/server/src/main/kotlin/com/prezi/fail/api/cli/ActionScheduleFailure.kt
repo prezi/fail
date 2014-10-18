@@ -11,6 +11,7 @@ import com.prezi.fail.api.db.DB
 import org.joda.time.DateTime
 import com.prezi.fail.api.db.DBRun
 import com.prezi.fail.api.extensions.nextRun
+import com.prezi.fail.config.FailConfig
 
 public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -22,7 +23,7 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
     }
 
     override public fun run() {
-        val config = ApiCliConfig()
+        val config = FailConfig()
         config.configMap = systemProperties
 
         val period = args[0]
