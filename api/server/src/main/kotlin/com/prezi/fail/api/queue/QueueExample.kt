@@ -8,6 +8,7 @@ import com.linkedin.data.template.StringMap
 import com.prezi.fail.api.db.DB
 import com.prezi.fail.api.Api
 import com.prezi.fail.api.ScheduledFailureBuilders
+import org.joda.time.DateTime
 
 fun main(args: Array<String>) {
     val scheduledFailure = DBScheduledFailure()
@@ -21,7 +22,7 @@ fun main(args: Array<String>) {
             .setScheduledBy("not-abesto")!!
     DB.mapper.save(scheduledFailure)
 
-    val item = DBRun().setAt(System.currentTimeMillis() / 1000)?.setStatus(RunStatus.FAILED)?.setLog("testlog")?.setScheduledFailure(scheduledFailure)!!
+    val item = DBRun().setAtMillis(DateTime.now().getMillis())?.setStatus(RunStatus.FAILED)?.setLog("testlog")?.setScheduledFailure(scheduledFailure)!!
     DB.mapper.save(item)
     println("item id: ${item.getId()}")
 

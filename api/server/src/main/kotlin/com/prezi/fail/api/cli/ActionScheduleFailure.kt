@@ -12,6 +12,7 @@ import org.joda.time.DateTime
 import com.prezi.fail.api.db.DBRun
 import com.prezi.fail.api.extensions.nextRun
 import com.prezi.fail.config.FailConfig
+import org.joda.time.DateTimeConstants
 
 public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -47,7 +48,7 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
                 .setDuration(duration)!!
                 .setSapperArgs(StringArray(args.drop(ActionScheduleFailure.requiredArgCount)))!!
                 .setScheduledBy(System.getenv("USER"))!!
-                .setScheduledAt(System.currentTimeMillis() / 1000)!!
+                .setScheduledAt(DateTime.now().getMillis() / DateTimeConstants.MILLIS_PER_SECOND)!!
                 .setConfiguration(systemProperties)
         logger.info("Scheduling failure: ${scheduledFailure}")
 

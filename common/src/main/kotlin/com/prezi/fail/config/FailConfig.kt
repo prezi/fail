@@ -2,6 +2,8 @@ package com.prezi.fail.config
 
 import org.apache.commons.cli.Option
 import com.prezi.fail.config.Config
+import org.joda.time.DateTime
+import org.joda.time.DateTimeConstants
 
 enum class FailConfigKey(val key: String, val opt: Option) {
     API_ENDPOINT : FailConfigKey("fail.cli.apiEndpoint", Option(null, "api", true, "URL prefix to the Fail API"))
@@ -27,7 +29,7 @@ open class FailConfig : Config<FailConfigKey>() {
     val DEFAULT_LIST_BEFORE = null
     val DEFAULT_LIST_AFTER = null
     val DEFAULT_LIST_CONTEXT = null
-    val DEFAULT_LIST_AT = { System.currentTimeMillis() / 1000 }
+    val DEFAULT_LIST_AT = { DateTime.now().getMillis() / DateTimeConstants.MILLIS_PER_SECOND }
 
     val DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss z"
 

@@ -4,6 +4,7 @@ import com.linkedin.data.template.StringMap
 import com.linkedin.data.template.StringArray
 
 import com.prezi.fail.api.RunStatus
+import org.joda.time.DateTime
 
 
 object DBUsageExample {
@@ -27,7 +28,7 @@ object DBUsageExample {
         println("Read back from DB: id=${loadedScheduledFailure?.getId()} ${loadedScheduledFailure?.model}")
 
         val c = DBRun()
-                .setAt(System.currentTimeMillis() / 1000)!!
+                .setAtMillis(DateTime.now().getMillis())!!
                 .setStatus(RunStatus.FUTURE)!!
                 .setLog("Test log!")!!
                 .setScheduledFailure(scheduledFailure)!!
