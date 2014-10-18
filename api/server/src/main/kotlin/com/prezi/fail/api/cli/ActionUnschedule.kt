@@ -25,13 +25,14 @@ public class ActionUnschedule(val args: Array<String>, systemProperties: StringM
         val id = args[0]
         logger.debug("Handling delete request for runs of ScheduledFailure ${id}")
 
-        val dbScheduledFailure = DB.mapper.load(javaClass<DBScheduledFailure>(), id)
+        val db = DB()
+        val dbScheduledFailure = db.mapper.load(javaClass<DBScheduledFailure>(), id)
         if (dbScheduledFailure == null) {
             logger.warn("No scheduled failure found with id ${id}. You can use `${ActionList.cmdLineSyntax}` to find the IDs")
             return
         }
 
-        val runs = DB.mapper.query(
+        val runs = db.mapper.query(
                 javaClass<DBRun>(),
                 DynamoDBQueryExpression<DBRun>()
                     .withIndexName("ScheduledFailureId-At-index")
@@ -43,10 +44,10 @@ public class ActionUnschedule(val args: Array<String>, systemProperties: StringM
         if (config.isDryRun()) {
             logger.info("Collected schedule and ${runs.size} runs, not deleting anything because this is a dry-run")
         } else {
-            DB.mapper.batchDelete(runs)
+            db.mapper.batchDelete(runs)
             logger.info("Deleted ${runs.size} runs: ${runs}")
 
-            DB.mapper.delete(dbScheduledFailure)
+            db.mapper.delete(dbScheduledFailure)
             logger.info("Deleted schedule: ${dbScheduledFailure}")
         }
     }

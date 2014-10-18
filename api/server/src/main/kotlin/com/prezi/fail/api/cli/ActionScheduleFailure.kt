@@ -55,11 +55,12 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
         if (config.isDryRun()) {
             logger.info("Except I'm not, since this is a dry-run.")
         } else {
+            val db = DB()
             val dbScheduledFailure = DBScheduledFailure(scheduledFailure)
-            DB.mapper.save(dbScheduledFailure)
+            db.mapper.save(dbScheduledFailure)
 
             val firstRun = DBRun(scheduledFailure.nextRun(DateTime.now())).setScheduledFailure(dbScheduledFailure)!!
-            DB.mapper.save(firstRun)
+            db.mapper.save(firstRun)
 
             logger.info("Scheduled failure with ID ${dbScheduledFailure.getId()}, first run will be at ${DateTime(firstRun.getAtMillis())}")
             logger.debug("First run details: ${firstRun.model}")

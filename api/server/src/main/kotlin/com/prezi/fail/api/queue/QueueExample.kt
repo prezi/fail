@@ -20,10 +20,11 @@ fun main(args: Array<String>) {
             .setSapperArgs(StringArray())!!
             .setScheduledAt(42)!!
             .setScheduledBy("not-abesto")!!
-    DB.mapper.save(scheduledFailure)
+    val db = DB()
+    db.mapper.save(scheduledFailure)
 
     val item = DBRun().setAtMillis(DateTime.now().getMillis())?.setStatus(RunStatus.FAILED)?.setLog("testlog")?.setScheduledFailure(scheduledFailure)!!
-    DB.mapper.save(item)
+    db.mapper.save(item)
     println("item id: ${item.getId()}")
 
     val q = Queue()

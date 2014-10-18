@@ -19,28 +19,18 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey
 import com.amazonaws.services.dynamodbv2.model.Projection
 import com.amazonaws.services.dynamodbv2.model.ProjectionType
 
-class DBImpl(config: DBConfig = DBConfig()) {
+
+class DBImpl(config: DBConfig = DBConfig()) : DB {
     val logger = LoggerFactory.getLogger(javaClass)!!
     val client = AmazonDynamoDBClient()
-    val mapper = DynamoDBMapper(client);
+    override val mapper = DynamoDBMapper(client);
 
     {
         client.setEndpoint(config.getDynamoDBEndpoint())
         ensureTablesExist()
     }
 
-    public fun loadAllScheduledFailures(): List<DBScheduledFailure> =
-            mapper.scan(javaClass<DBScheduledFailure>(), DynamoDBScanExpression()).toList()
-
-    fun getTableName(clazz: Class<*>): String = clazz.getAnnotation(javaClass<DynamoDBTable>()).tableName()
-    fun getGsiName(clazz: Class<*>, getterName: String): String = clazz.getMethod(getterName).getAnnotation(javaClass<DynamoDBIndexRangeKey>()).globalSecondaryIndexName()
-    fun getFieldName(clazz: Class<*>, getterName: String): String {
-        val method = clazz.getMethod(getterName)
-        return method.getAnnotation(javaClass<DynamoDBAttribute>())?.attributeName() ?:
-                method.getAnnotation(javaClass<DynamoDBHashKey>()).attributeName()
-    }
-
-    fun ensureTablesExist() {
+    override fun ensureTablesExist(): Unit {
         ensureScheduledFailureTableExists()
         ensureRunTableExists()
     }
@@ -114,4 +104,23 @@ class DBImpl(config: DBConfig = DBConfig()) {
 
 }
 
-val DB = DBImpl()
+trait DB {
+    val mapper: DynamoDBMapper
+
+    public fun loadAllScheduledFailures(): List<DBScheduledFailure> =
+            mapper.scan(javaClass<DBScheduledFailure>(), DynamoDBScanExpression()).toList()
+
+    fun getTableName(clazz: Class<*>): String = clazz.getAnnotation(javaClass<DynamoDBTable>()).tableName()
+    fun getGsiName(clazz: Class<*>, getterName: String): String = clazz.getMethod(getterName).getAnnotation(javaClass<DynamoDBIndexRangeKey>()).globalSecondaryIndexName()
+    fun getFieldName(clazz: Class<*>, getterName: String): String {
+        val method = clazz.getMethod(getterName)
+        return method.getAnnotation(javaClass<DynamoDBAttribute>())?.attributeName() ?:
+                method.getAnnotation(javaClass<DynamoDBHashKey>()).attributeName()
+    }
+
+    fun ensureTablesExist(): Unit
+
+    class object {
+        fun invoke(): DB = DBImpl()
+    }
+}

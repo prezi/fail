@@ -23,8 +23,9 @@ object DBUsageExample {
                 .setScheduledBy("abesto")!!
         println("Before save: id=${scheduledFailure.getId()} ${scheduledFailure.model}")
 
-        DB.mapper.save(scheduledFailure)
-        val loadedScheduledFailure = DB.mapper.load(javaClass<DBScheduledFailure>(), scheduledFailure.getId())
+        val db = DB()
+        db.mapper.save(scheduledFailure)
+        val loadedScheduledFailure = db.mapper.load(javaClass<DBScheduledFailure>(), scheduledFailure.getId())
         println("Read back from DB: id=${loadedScheduledFailure?.getId()} ${loadedScheduledFailure?.model}")
 
         val c = DBRun()
@@ -34,11 +35,11 @@ object DBUsageExample {
                 .setScheduledFailure(scheduledFailure)!!
         println("Before save: ${c.model}")
 
-        DB.mapper.save(c)
-        val loadedRun = DB.mapper.load(javaClass<DBRun>(), c.getId())
+        db.mapper.save(c)
+        val loadedRun = db.mapper.load(javaClass<DBRun>(), c.getId())
         println("Read back from DB: ${loadedRun?.model}")
 
-        println("ScheduledFailure of run read back from DB: ${loadedRun?.getScheduledFailure(DB.mapper)?.model}")
+        println("ScheduledFailure of run read back from DB: ${loadedRun?.getScheduledFailure(db.mapper)?.model}")
 
     }
 }

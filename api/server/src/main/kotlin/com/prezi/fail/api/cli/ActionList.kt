@@ -30,7 +30,7 @@ public class ActionList(val regexStr: String, val systemProperties: StringMap) :
         logger.info(
             TextTable(
                     array("Id", "Period", "Sapper", "Target", "Duration (s)", "Scheduled by", "Scheduled at"),
-                    DB.loadAllScheduledFailures().filter{
+                    DB().loadAllScheduledFailures().filter{
                         regex.matcher(it.getSapper()).matches() || regex.matcher(it.getSearchTerm()).matches()
                     }.map{
                         array(it.getId()!!, it.getPeriod()!!, it.getSapper()!!, it.getSearchTerm()!!, it.getDuration().toString(),

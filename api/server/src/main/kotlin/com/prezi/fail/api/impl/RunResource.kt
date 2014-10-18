@@ -24,11 +24,11 @@ import com.prezi.fail.api.extensions.*
 import com.prezi.fail.api.period.PeriodFactory
 
 [RestLiCollection(name="Run", namespace="com.prezi.fail.api")]
-public class RunResource : CollectionResourceTemplate<String, Run>() {
+public class RunResource(val db: DB = DB()) : CollectionResourceTemplate<String, Run>() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     override fun get(key: String?): Run? {
-        val dbrun = DB.mapper.load(DBRun().setId(key))
+        val dbrun = db.mapper.load(DBRun().setId(key))
         populateScheduledFailuresIntoRuns(listOf(dbrun))
         return dbrun?.model
     }
@@ -52,11 +52,11 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
 
         populateScheduledFailuresIntoRuns(runsFromDb)
 
-        val scheduledFailures = DB.loadAllScheduledFailures()
+        val scheduledFailures = db.loadAllScheduledFailures()
         logger.trace("Loaded all scheduled failures: ${scheduledFailures}")
 
         val additionalRuns = generateAdditionalRuns(interval, runsFromDb, scheduledFailures)
-        val firstFailedBatch = DB.mapper.batchSave(additionalRuns).head
+        val firstFailedBatch = db.mapper.batchSave(additionalRuns).head
         if (firstFailedBatch == null) {
             additionalRuns.forEach { logger.debug("Scheduled new run: ${it}") }
             return (runsFromDb + additionalRuns).map { it.model }.sortBy { it.getAt() }
@@ -77,7 +77,7 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
                                 (interval.getEnd().getMillis() / 1000).toString()))
         val scanExp = DynamoDBScanExpression()
         scanExp.addFilterCondition("At", condition)
-        return DB.mapper.scan(javaClass<DBRun>(), scanExp).toList()
+        return db.mapper.scan(javaClass<DBRun>(), scanExp).toList()
     }
 
     fun generateAdditionalRuns(interval: Interval, runsFromDb: List<DBRun>, scheduledFailures: List<DBScheduledFailure>): List<DBRun> =
@@ -101,7 +101,7 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
             logger.trace("No runs loaded from DB, not populating with ScheduledFailure data")
             return
         }
-        val batchLoadResult = DB.mapper.batchLoad(
+        val batchLoadResult = db.mapper.batchLoad(
                 runs.map{it.getScheduledFailureId()!!}.toSet().map{
                     DBScheduledFailure().setId(it)!!
                 }
