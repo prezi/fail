@@ -3,11 +3,15 @@ package com.prezi.fail.cli
 import com.prezi.fail.api.CliBuilders
 import com.linkedin.data.template.StringArray
 import com.linkedin.data.template.StringMap
-import com.prezi.fail.api.ActionApiBase
+import com.prezi.fail.api.Api
+import org.slf4j.LoggerFactory
 
-public class ActionApiCli(val args: Array<String>) : ActionApiBase() {
+public class ActionApiCli(val args: Array<String>) : Action() {
+    val api = Api()
+    val logger = LoggerFactory.getLogger(javaClass)
+
     override public fun run() {
-        withClient({ client ->
+        api.withClient({ client ->
             val systemProperties = StringMap()
             System.getProperties()
                     ?.filter{(it.key as String).startsWith("fail.")}

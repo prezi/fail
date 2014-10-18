@@ -14,11 +14,11 @@ import com.linkedin.r2.transport
 import com.linkedin.common.callback
 import com.prezi.fail.config.FailConfig
 
-public abstract class ActionApiBase(val config: FailConfig = FailConfig()) : Action() {
+public final class Api(val config: FailConfig = FailConfig()) {
     open val logger = LoggerFactory.getLogger(javaClass)!!
     val urlPrefix = config.getApiEndpoint().endingWith('/')
 
-    protected fun withClient(f: (client.RestClient) -> Unit) {
+    public fun withClient(f: (client.RestClient) -> Unit) {
         val http = http.client.HttpClientFactory()
         val r2Client = bridge.client.TransportClientAdapter(http.getClient(mapOf(
                 transport.http.client.HttpClientFactory.HTTP_SSL_CONTEXT to javax.net.ssl.SSLContext.getDefault()
