@@ -1,6 +1,7 @@
 package com.prezi.fail.config
 
 import org.apache.commons.cli.Option
+import com.prezi.fail.config.Config
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants
 

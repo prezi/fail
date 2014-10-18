@@ -1,5 +1,7 @@
 package com.prezi.fail
 
+import org.slf4j.LoggerFactory
+
 import com.prezi.fail.cli.CliOptions
 import com.prezi.fail.cli.CliActions
 import com.prezi.fail.extensions.*

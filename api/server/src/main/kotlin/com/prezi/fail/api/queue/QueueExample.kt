@@ -6,6 +6,8 @@ import com.prezi.fail.api.db.DBScheduledFailure
 import com.linkedin.data.template.StringArray
 import com.linkedin.data.template.StringMap
 import com.prezi.fail.api.db.DB
+import com.prezi.fail.api.Api
+import com.prezi.fail.api.ScheduledFailureBuilders
 import org.joda.time.DateTime
 
 fun main(args: Array<String>) {
