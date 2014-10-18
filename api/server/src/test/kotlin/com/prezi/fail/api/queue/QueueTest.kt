@@ -16,7 +16,7 @@ import com.prezi.fail.api.ScheduledFailure
 
 fun protoClientAction(c: RestClient): Run = Run()
 
-class MockApi(val ret: Any) : Api() {
+class MockApi(val ret: Any?) : Api() {
     override fun <T : Any> withClient(f: (RestClient) -> T): T? = ret as T
 }
 
@@ -42,5 +42,12 @@ class QueueTest {
         q.receiveRunAnd {  }
         verify(mockSQS).changeMessageVisibility(visibilityCaptor.capture())
         assertEquals(duration, visibilityCaptor.getValue().getVisibilityTimeout())
+    }
+
+    Test fun actionNotCalledWithInvalidRun() {
+        val mockSQS = givenAny(javaClass<AmazonSQS>())
+        val mockApi = MockApi(null)
+        val q = Queue(client = mockSQS, api = mockApi)
+        q.receiveRunAnd { assert(false, {"this should not be called"} )}
     }
 }
