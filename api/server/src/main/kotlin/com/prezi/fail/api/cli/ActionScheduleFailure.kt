@@ -49,7 +49,7 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
                 .setScheduledBy(System.getenv("USER"))!!
                 .setScheduledAt(System.currentTimeMillis() / 1000)!!
                 .setConfiguration(systemProperties)
-        logger.info("Scheduling failure: ${scheduledFailure.toString()}")
+        logger.info("Scheduling failure: ${scheduledFailure}")
 
         if (config.isDryRun()) {
             logger.info("Except I'm not, since this is a dry-run.")
@@ -60,7 +60,8 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
             val firstRun = DBRun(scheduledFailure.nextRun(DateTime.now())).setScheduledFailure(dbScheduledFailure)!!
             DB.mapper.save(firstRun)
 
-            logger.info("Scheduled ${dbScheduledFailure.getId()}${dbScheduledFailure.model}, first run will be at ${DateTime(firstRun.getAtMillis())}: ${firstRun.model}")
+            logger.info("Scheduled failure with ID ${dbScheduledFailure.getId()}, first run will be at ${DateTime(firstRun.getAtMillis())}")
+            logger.debug("First run details: ${firstRun.model}")
         }
     }
 }
