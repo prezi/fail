@@ -6,6 +6,8 @@ import com.prezi.fail.api.db.DBScheduledFailure
 import com.linkedin.data.template.StringArray
 import com.linkedin.data.template.StringMap
 import com.prezi.fail.api.db.DB
+import com.prezi.fail.api.Api
+import com.prezi.fail.api.ScheduledFailureBuilders
 
 fun main(args: Array<String>) {
     val scheduledFailure = DBScheduledFailure()
@@ -17,10 +19,11 @@ fun main(args: Array<String>) {
             .setSapperArgs(StringArray())!!
             .setScheduledAt(42)!!
             .setScheduledBy("not-abesto")!!
+    DB.mapper.save(scheduledFailure)
 
     val item = DBRun().setAt(System.currentTimeMillis() / 1000)?.setStatus(RunStatus.FAILED)?.setLog("testlog")?.setScheduledFailure(scheduledFailure)!!
-    DB.mapper.save(scheduledFailure)
     DB.mapper.save(item)
+    println("item id: ${item.getId()}")
 
     Queue.putRun(item.model)
     Queue.receiveRunAnd { println("Got run from queue ${it}") }

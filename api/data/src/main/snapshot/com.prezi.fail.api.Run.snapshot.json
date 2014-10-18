@@ -74,6 +74,9 @@
     "doc" : "generated from: com.prezi.fail.api.impl.RunResource",
     "path" : "/Run",
     "collection" : {
+      "methods" : [ {
+        "method" : "get"
+      } ],
       "entity" : {
         "path" : "/Run/{RunId}"
       },
@@ -117,7 +120,7 @@
           "type" : "string"
         } ]
       } ],
-      "supports" : [ ],
+      "supports" : [ "get" ],
       "identifier" : {
         "name" : "RunId",
         "type" : "string"

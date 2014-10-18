@@ -27,6 +27,12 @@ import com.prezi.fail.api.period.PeriodFactory
 public class RunResource : CollectionResourceTemplate<String, Run>() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
+    override fun get(key: String?): Run? {
+        val dbrun = DB.mapper.load(DBRun().setId(key))
+        populateScheduledFailuresIntoRuns(listOf(dbrun))
+        return dbrun?.model
+    }
+
     [Finder("time")]
     public fun listRunsByTime(
             [QueryParam("at")] atTimestamp: Long,

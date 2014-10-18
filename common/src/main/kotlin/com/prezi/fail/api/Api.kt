@@ -18,7 +18,7 @@ public final class Api(val config: FailConfig = FailConfig()) {
     open val logger = LoggerFactory.getLogger(javaClass)!!
     val urlPrefix = config.getApiEndpoint().endingWith('/')
 
-    public fun withClient(f: (client.RestClient) -> Unit) {
+    public fun withClient<T : Any>(f: (client.RestClient) -> T): T? {
         val http = http.client.HttpClientFactory()
         val r2Client = bridge.client.TransportClientAdapter(http.getClient(mapOf(
                 transport.http.client.HttpClientFactory.HTTP_SSL_CONTEXT to javax.net.ssl.SSLContext.getDefault()
@@ -26,7 +26,7 @@ public final class Api(val config: FailConfig = FailConfig()) {
         val restClient = client.RestClient(r2Client, urlPrefix)
 
         try {
-            f(restClient)
+            return f(restClient)
         } catch (e: Exception) {
             if (config.isDebug() || config.isTrace()) {
                 logger.error("API call failed.", e)
@@ -37,5 +37,6 @@ public final class Api(val config: FailConfig = FailConfig()) {
             restClient.shutdown(callback.FutureCallback<util.None>())
             http.shutdown(callback.FutureCallback<util.None>())
         }
+        return null
     }
 }

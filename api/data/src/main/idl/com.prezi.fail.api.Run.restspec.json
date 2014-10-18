@@ -9,7 +9,10 @@
       "name" : "RunId",
       "type" : "string"
     },
-    "supports" : [ ],
+    "supports" : [ "get" ],
+    "methods" : [ {
+      "method" : "get"
+    } ],
     "finders" : [ {
       "name" : "time",
       "parameters" : [ {
