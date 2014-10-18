@@ -33,7 +33,7 @@ public class ActionList(val regexStr: String, val systemProperties: StringMap) :
                     DB.loadAllScheduledFailures().filter{
                         regex.matcher(it.getSapper()).matches() || regex.matcher(it.getSearchTerm()).matches()
                     }.map{
-                        array(it.id!!, it.getPeriod()!!, it.getSapper()!!, it.getSearchTerm()!!, it.getDuration().toString(),
+                        array(it.getId()!!, it.getPeriod()!!, it.getSapper()!!, it.getSearchTerm()!!, it.getDuration().toString(),
                               it.getScheduledBy()!!, dateTimeFormat.print(it.getScheduledAt()!! * 1000))
                     }.copyToArrayWithoutTheMessedUpArrayStoreException()
             ).toStringTable()

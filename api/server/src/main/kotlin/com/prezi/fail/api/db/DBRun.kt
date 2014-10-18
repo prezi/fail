@@ -43,7 +43,7 @@ class DBRun([DynamoDBIgnore] val model: Run = Run()) {
     public fun setScheduledFailureId(v: String?): DBRun? { _scheduledFailureId = v; return this }
 
     [DynamoDBIgnore]
-    public fun setScheduledFailure(f: DBScheduledFailure): DBRun? = setScheduledFailureId(f.id)
+    public fun setScheduledFailure(f: DBScheduledFailure): DBRun? = setScheduledFailureId(f.getId())
     public fun getScheduledFailure(mapper: DynamoDBMapper): DBScheduledFailure? =
             mapper.load(javaClass<DBScheduledFailure>(), _scheduledFailureId)
 

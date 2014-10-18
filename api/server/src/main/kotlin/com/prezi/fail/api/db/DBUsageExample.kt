@@ -20,11 +20,11 @@ object DBUsageExample {
                 .setSapperArgs(StringArray())!!
                 .setScheduledAt(42)!!
                 .setScheduledBy("abesto")!!
-        println("Before save: id=${scheduledFailure.id} ${scheduledFailure.model}")
+        println("Before save: id=${scheduledFailure.getId()} ${scheduledFailure.model}")
 
         DB.mapper.save(scheduledFailure)
-        val loadedScheduledFailure = DB.mapper.load(javaClass<DBScheduledFailure>(), scheduledFailure.id)
-        println("Read back from DB: id=${loadedScheduledFailure?.id} ${loadedScheduledFailure?.model}")
+        val loadedScheduledFailure = DB.mapper.load(javaClass<DBScheduledFailure>(), scheduledFailure.getId())
+        println("Read back from DB: id=${loadedScheduledFailure?.getId()} ${loadedScheduledFailure?.model}")
 
         val c = DBRun()
                 .setAt(System.currentTimeMillis() / 1000)!!

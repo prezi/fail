@@ -60,7 +60,7 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
             val firstRun = DBRun(scheduledFailure.nextRun(DateTime.now())).setScheduledFailure(dbScheduledFailure)!!
             DB.mapper.save(firstRun)
 
-            logger.info("Scheduled ${dbScheduledFailure.id}${dbScheduledFailure.model}, first run will be at ${DateTime(firstRun.getAtMillis())}: ${firstRun.model}")
+            logger.info("Scheduled ${dbScheduledFailure.getId()}${dbScheduledFailure.model}, first run will be at ${DateTime(firstRun.getAtMillis())}: ${firstRun.model}")
         }
     }
 }

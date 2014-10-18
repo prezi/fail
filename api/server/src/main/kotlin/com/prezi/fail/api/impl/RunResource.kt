@@ -45,7 +45,7 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
                 at.minusSeconds(secondsBefore ?: secondsContext ?: 0),
                 at.plusSeconds(secondsAfter ?: secondsContext ?: 3 * DateTimeConstants.SECONDS_PER_HOUR))
         logger.trace("Listing scheduled runs for parameters at=${at} before=${secondsBefore} after=${secondsAfter} context=${secondsContext}")
-        logger.info("Scheduled runs in interval ${interval}")
+        logger.info("Listing scheduled runs in interval ${interval}")
 
         val runsFromDb = loadRunsBetween(interval)
         logger.debug("Loaded already existing runs from db: ${runsFromDb}")
@@ -86,10 +86,10 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
                 scheduledFailure.model.nextRuns(
                         interval.withStartMillis(
                             runsFromDb
-                                    .filter{it.getScheduledFailureId() == scheduledFailure.id}
+                                    .filter{it.getScheduledFailureId() == scheduledFailure.getId()}
                                     .maxBy{it.getAt()!!}
                                     ?.getAtMillis() ?: interval.getStart().getMillis()
-                        )).map{ DBRun(it).setScheduledFailureId(scheduledFailure.id)!!}
+                        )).map{ DBRun(it).setScheduledFailureId(scheduledFailure.getId())!!}
             } catch (e: PeriodFactory.InvalidPeriodDefinition) {
                 logger.error("Failed to generate future runs because the period format is invalid for ${scheduledFailure}")
                 listOf<DBRun>()
@@ -103,13 +103,13 @@ public class RunResource : CollectionResourceTemplate<String, Run>() {
         }
         val batchLoadResult = DB.mapper.batchLoad(
                 runs.map{it.getScheduledFailureId()!!}.toSet().map{
-                    DBScheduledFailure().withId(it)!!
+                    DBScheduledFailure().setId(it)!!
                 }
         )
         // We know we've selected from only a single table
         val dbScheduledFailures =
                 (batchLoadResult.get(batchLoadResult.keySet().first()) as List<DBScheduledFailure>)
-                        .toMap{it.id}
+                        .toMap{it.getId()}
         logger.trace("Loaded DBScheduledFailures to populate runs: ${dbScheduledFailures}")
         runs.forEach { it.model.setScheduledFailure(dbScheduledFailures.get(it.getScheduledFailureId())?.model) }
     }
