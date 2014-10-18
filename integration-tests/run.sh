@@ -12,7 +12,7 @@ cleanup() {
   echo "Stopping DynamoDB local and API"
   kill %1
   kill %2
-  echo "DynamoDB and API logs are in $testdir/dynamodb.log and $testdir/db.log"
+  echo "DynamoDB and API logs are in $testdir/dynamodb.log and $testdir/api.log"
 }
 trap cleanup EXIT
 

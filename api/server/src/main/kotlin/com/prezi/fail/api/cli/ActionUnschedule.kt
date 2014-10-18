@@ -45,7 +45,7 @@ public class ActionUnschedule(val args: Array<String>, systemProperties: StringM
             logger.info("Collected schedule and ${runs.size} runs, not deleting anything because this is a dry-run")
         } else {
             db.mapper.batchDelete(runs)
-            logger.info("Deleted ${runs.size} runs: ${runs}")
+            logger.info("Deleted ${runs.size} runs")
 
             db.mapper.delete(dbScheduledFailure)
             logger.info("Deleted schedule: ${dbScheduledFailure}")
