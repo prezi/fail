@@ -2,3 +2,9 @@ language: java
 
 before_install:
   - sudo apt-get install python-pip python-virtualenv
+
+after_failure:
+  - echo API log
+  - cat integration-tests/api.log
+  - echo DynamoDB log
+  - cat integration-tests/dynamodb.log
