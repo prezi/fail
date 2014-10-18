@@ -1,11 +1,6 @@
 package com.prezi.fail.test
 
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as _when
-import org.mockito.Mockito.verify
-import org.mockito.verification.VerificationMode
-import org.mockito.stubbing.OngoingStubbing
-import org.mockito.internal.stubbing.defaultanswers.ReturnsDeepStubs
 
 public fun <T> givenAny(cls: Class<T>): T = mock(cls, ReturnsDeepStubs())!!
 public fun <T> When(methodCall: T): OngoingStubbing<T> = _when(methodCall)!!
