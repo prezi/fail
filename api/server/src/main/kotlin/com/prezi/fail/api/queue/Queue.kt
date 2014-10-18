@@ -20,7 +20,6 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
     internal val logger = LoggerFactory.getLogger(javaClass)
 
     public fun putRun(r: Run) {
-        println("putting run ${r}")
         val req = SendMessageRequest().withQueueUrl(url)
         client.sendMessage(req.withMessageBody(r.getId()))
     }
@@ -42,7 +41,6 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
                     client.deleteMessage(url, msg.getReceiptHandle())
                     return
                 }
-                println(run)
                 val expectedDuration = run.getScheduledFailure().getDuration()
                 client.changeMessageVisibility(ChangeMessageVisibilityRequest()
                         .withQueueUrl(url)
