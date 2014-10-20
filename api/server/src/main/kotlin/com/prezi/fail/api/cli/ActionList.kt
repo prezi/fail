@@ -24,19 +24,10 @@ public class ActionList(val regexStr: String, val systemProperties: StringMap) :
         val cliConfig = FailConfig()
         val regex = Pattern.compile(regexStr)
         cliConfig.configMap = systemProperties
-        val dateTimeFormat = DateTimeFormat.forPattern(FailConfig().getDatetimeFormat())
         logger.debug("Requesting scheduled failures: regex=${regex}")
-
         logger.info(
-            TextTable(
-                    array("Id", "Period", "Sapper", "Target", "Duration (s)", "Scheduled by", "Scheduled at"),
-                    DB().loadAllScheduledFailures().filter{
-                        regex.matcher(it.getSapper()).matches() || regex.matcher(it.getSearchTerm()).matches()
-                    }.map{
-                        array(it.getId()!!, it.getPeriod()!!, it.getSapper()!!, it.getSearchTerm()!!, it.getDuration().toString(),
-                              it.getScheduledBy()!!, dateTimeFormat.print(it.getScheduledAt()!! * 1000))
-                    }.copyToArrayWithoutTheMessedUpArrayStoreException()
-            ).toStringTable()
-        )
+                DB().loadAllScheduledFailures()
+                    .filter { regex.matcher(it.getSapper()).matches() || regex.matcher(it.getSearchTerm()).matches() }
+                    .toStringTable())
     }
 }

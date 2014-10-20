@@ -1,5 +1,10 @@
   $ fail schedule bp-weekday-worktime-daily service_name=my-app noop 30 | tee schedule.out
-  Scheduling failure: {duration=30, sapperArgs=[], period=bp-weekday-worktime-daily, searchTerm=service_name=my-app, sapper=noop, configuration={fail.test.fixedUnitTimestamp=0, fail.db.dynamoDBEndpoint=http://localhost:8000}, scheduledBy=*, scheduledAt=0} (glob)
+  Failure to schedule:
+  ________________________________________________________________________*__________________________ (glob)
+  | Period                   | Sapper| Target             | Duration (s)| Scheduled by*| Scheduled at           | (glob)
+  |=======================================================================*=========================| (glob)
+  | bp-weekday-worktime-daily| noop  | service_name=my-app| 30          | *| 1970-01-01 00:00:00 UTC| (glob)
+  
   Scheduled failure with ID *, first run will be at 1970-01-02T* (glob)
 
   $ fail list-runs --after P2W

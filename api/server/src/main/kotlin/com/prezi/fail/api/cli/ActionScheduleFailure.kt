@@ -13,6 +13,7 @@ import com.prezi.fail.api.db.DBRun
 import com.prezi.fail.api.extensions.nextRun
 import com.prezi.fail.config.FailConfig
 import org.joda.time.DateTimeConstants
+import com.prezi.fail.api.extensions.toStringTable
 
 public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -50,7 +51,7 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
                 .setScheduledBy(System.getenv("USER"))!!
                 .setScheduledAt(DateTime.now().getMillis() / DateTimeConstants.MILLIS_PER_SECOND)!!
                 .setConfiguration(systemProperties)
-        logger.info("Scheduling failure: ${scheduledFailure}")
+        logger.info("Failure to schedule:\n${scheduledFailure.toStringTable()}")
 
         if (config.isDryRun()) {
             logger.info("Except I'm not, since this is a dry-run.")
