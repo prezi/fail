@@ -1,5 +1,4 @@
   $ fail list-runs
-  Detected a possible problem with the current JVM version (1.7.0_45).  If you experience XML parsing problems using the SDK, try upgrading to a more recent JVM update.
   Creating table fail_ScheduledFailure...
   Waiting for table fail_ScheduledFailure to become active
   Table fail_ScheduledFailure exists and is active
