@@ -1,0 +1,45 @@
+apply plugin: "kotlin"
+
+dependencies {
+	compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
+			// Logging
+			'org.slf4j:slf4j-api:1.7.7',
+			'ch.qos.logback:logback-classic:1.1.2',
+			'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
+			'org.slf4j:jcl-over-slf4j:1.7.7',
+			// SQS
+			'com.amazonaws:aws-java-sdk:1.9.0',
+			// API client
+			project(path: ':api:data', configuration: 'restClient'),
+			// Shared code
+			project(':common')
+
+	testCompile 'junit:junit:4.11',
+			'org.mockito:mockito-core:1.+',
+			project(path: ':common', configuration: 'testLib')
+}
+
+apply plugin: "application"
+mainClassName = "com.prezi.fail.worker.WorkerPackage"
+applicationName = "fail-worker"
+
+distTar {
+	compression Compression.BZIP2
+	extension "tar.bz2"
+}
+
+test {
+	systemProperty 'aws.accessKeyId', 'foo'
+	systemProperty 'aws.secretKey', 'bar'
+}
+
+// Integration with the Prezi CI system
+if (hasProperty("preziReleaseTarballBasename")) {
+	distTar {
+		from("${projectDir}/scripts") {
+			into "${preziReleaseTarballBasename}/scripts"
+		}
+		destinationDir new File(preziReleaseDir)
+		baseName preziReleaseTarballBasename
+	}
+}

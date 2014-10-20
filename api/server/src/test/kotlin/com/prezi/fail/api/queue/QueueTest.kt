@@ -30,26 +30,4 @@ class QueueTest {
         q.putRun(run)
         verify(mockSQS).sendMessage(any())
     }
-
-    Test fun receiveSetsVisibilityTimeout() {
-        val mockSQS = givenAny(javaClass<AmazonSQS>())
-        val run = givenAny(javaClass<Run>())
-        val mockApi = MockApi(run)
-        val scheduledFailure = givenAny(javaClass<ScheduledFailure>())
-        val duration = 10
-        When(run.getScheduledFailure()).thenReturn(scheduledFailure)
-        When(scheduledFailure.getDuration()).thenReturn(duration)
-        val visibilityCaptor = ArgumentCaptor.forClass(javaClass<ChangeMessageVisibilityRequest>())
-        val q = Queue(client = mockSQS, api = mockApi)
-        q.receiveRunAnd {  }
-        verify(mockSQS).changeMessageVisibility(visibilityCaptor.capture())
-        assertEquals(duration, visibilityCaptor.getValue().getVisibilityTimeout())
-    }
-
-    Test fun actionNotCalledWithInvalidRun() {
-        val mockSQS = givenAny(javaClass<AmazonSQS>())
-        val mockApi = MockApi(null)
-        val q = Queue(client = mockSQS, api = mockApi)
-        q.receiveRunAnd { assert(false, {"this should not be called"} )}
-    }
 }
