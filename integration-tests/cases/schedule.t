@@ -18,6 +18,17 @@
   | 1970-01-14 *| noop  | service_name=my-app| 30          | (glob)
   
 
+  $ fail list '.*my-app'
+  _*_ (glob)
+  | Id*| Period                   | Sapper| Target             | Duration (s)| Scheduled by*| Scheduled at           | (glob)
+  |=*=| (glob)
+  | *| bp-weekday-worktime-daily| noop  | service_name=my-app| 30          | *| 1970-01-01 01:00:00 CET| (glob)
+  
+  $ fail list no-matches
+  ______________________________________________________________________
+  | Id| Period| Sapper| Target| Duration (s)| Scheduled by| Scheduled at|
+  |=====================================================================|
+  
 
   $ fail unschedule $(tail -1 schedule.out | cut -f 5 -d' ' | tr -d ,)
   Deleted 9 runs
