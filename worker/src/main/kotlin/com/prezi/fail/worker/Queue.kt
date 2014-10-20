@@ -20,11 +20,11 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
             val recvReq = ReceiveMessageRequest().withQueueUrl(url).withMaxNumberOfMessages(1).withWaitTimeSeconds(10)
             val recvMsg = client.receiveMessage(recvReq)
             val msg = recvMsg.getMessages().first
+            if (msg == null) {
+                logger.debug("Received empty message from SQS")
+                return
+            }
             try {
-                if (msg == null) {
-                    logger.debug("Received empty message from SQS")
-                    return
-                }
                 val run = api.withClient({ client ->
                     client.sendRequest(RunBuilders().get().id(msg.getBody()).build()).getResponseEntity()
                 })
@@ -47,7 +47,7 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
             } catch (e: Throwable) {
                 logger.error("exception_during_message_handling ${e}")
             } finally {
-                client.deleteMessage(url, msg?.getReceiptHandle())
+                client.deleteMessage(url, msg.getReceiptHandle())
             }
         } catch (e: Throwable) {
             logger.error("exception_during_sqs_receive ${e}")
