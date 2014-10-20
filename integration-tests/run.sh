@@ -47,6 +47,7 @@ java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -inMemory > 
 JAVA_OPTS="$JAVA_OPTS -Dfail.test.fixedUnitTimestamp=0"
 JAVA_OPTS="$JAVA_OPTS -Dfail.db.dynamoDBEndpoint=http://localhost:8000"
 JAVA_OPTS="$JAVA_OPTS -Daws.accessKeyId=foo -Daws.secretKey=bar"
+JAVA_OPTS="$JAVA_OPTS -Duser.timezone=UTC"
 export JAVA_OPTS
 
 echo "JAVA_OPTS=${JAVA_OPTS}"

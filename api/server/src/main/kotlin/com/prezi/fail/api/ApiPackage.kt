@@ -9,6 +9,7 @@ import kotlin.reflect.KMemberFunction0
 import java.lang.reflect.Method
 import org.joda.time.DateTimeUtils
 import org.slf4j.LoggerFactory
+import org.joda.time.DateTimeZone
 
 fun main(args: Array<String>) {
     loadUserProperties("/etc/prezi/fail-api/fail-api.properties")

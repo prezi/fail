@@ -3,7 +3,7 @@
   Scheduled failure with ID *, first run will be at 1970-01-02T* (glob)
 
   $ fail list-runs --after P2W
-  Listing scheduled runs in interval 1970-01-01T01:00:00.000+01:00/1970-01-15T01:00:00.000+01:00
+  Listing scheduled runs in interval 1970-01-01T00:00:00.000Z/1970-01-15T00:00:00.000Z
   _____________*____________________________________________ (glob)
   | At         *| Sapper| Target             | Duration (s)| (glob)
   |============*===========================================| (glob)
@@ -22,7 +22,7 @@
   _*_ (glob)
   | Id*| Period                   | Sapper| Target             | Duration (s)| Scheduled by*| Scheduled at           | (glob)
   |=*=| (glob)
-  | *| bp-weekday-worktime-daily| noop  | service_name=my-app| 30          | *| 1970-01-01 01:00:00 CET| (glob)
+  | *| bp-weekday-worktime-daily| noop  | service_name=my-app| 30          | *| 1970-01-01 00:00:00 UTC| (glob)
   
   $ fail list no-matches
   ______________________________________________________________________
