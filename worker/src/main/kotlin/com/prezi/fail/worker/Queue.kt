@@ -17,7 +17,7 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
 
     public fun receiveRunAnd(action: (Run) -> Unit): Unit {
         try {
-            val recvReq = ReceiveMessageRequest().withQueueUrl(url).withMaxNumberOfMessages(1)
+            val recvReq = ReceiveMessageRequest().withQueueUrl(url).withMaxNumberOfMessages(1).withWaitTimeSeconds(10)
             val recvMsg = client.receiveMessage(recvReq)
             val msg = recvMsg.getMessages().first
             try {

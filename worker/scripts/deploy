@@ -10,6 +10,6 @@ cp -rf ../* $basedir/
 
 cd $basedir
 ln -s $basedir ${currentlink}_tmp && mv -Tf ${currentlink}{_tmp,}
-echo "Restarting fail-scheduler"
-sudo /usr/bin/supervisorctl restart fail-scheduler
+echo "Restarting fail-worker"
+sudo /usr/bin/supervisorctl restart fail-worker
 

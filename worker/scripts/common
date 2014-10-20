@@ -1,0 +1,23 @@
+#!/usr/bin/env false
+# -*- mode: sh -*-
+# this script is not to be run directly.
+
+case $OSTYPE in
+    darwin*)
+        which greadlink >/dev/null || brew install coreutils
+        readlink=greadlink
+        mktemp=gmktemp
+        ;;
+    *)
+        readlink=readlink
+        mktemp=mktemp
+        ;;
+esac
+
+PROJECT_NAME="fail-worker"
+BUCKET_NAME=prezireleases
+
+root=$($readlink -f $0 | xargs dirname | xargs dirname | xargs dirname)
+
+ROOT_DIR=$(cd `dirname $0`/.. && pwd)
+SCRIPTS_DIR=$(cd `dirname $0` && pwd)
