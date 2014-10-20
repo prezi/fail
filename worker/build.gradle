@@ -33,12 +33,25 @@ test {
 	systemProperty 'aws.secretKey', 'bar'
 }
 
+def cli = project(":cli")
+def cliInstallApp = cli.tasks.installApp
+
+run {
+	systemProperty "fail.worker.cliExecutablePath", "${cliInstallApp.destinationDir}/bin/${cli.applicationName}"
+}
+
 // Integration with the Prezi CI system
 if (hasProperty("preziReleaseTarballBasename")) {
 	distTar {
 		from("${projectDir}/scripts") {
 			into "${preziReleaseTarballBasename}/scripts"
 		}
+
+		dependsOn cliInstallApp
+		from(cliInstallApp.destinationDir) {
+			into "${preziReleaseTarballBasename}/cli"
+		}
+
 		destinationDir new File(preziReleaseDir)
 		baseName preziReleaseTarballBasename
 	}
