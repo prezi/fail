@@ -51,7 +51,7 @@ class RunResourceTest {
         val scheduled = DBScheduledFailure().setId("a")!!
         val dbrun = DBRun().setId("1")?.setAt(0)?.setLog("testlog")?.setStatus(RunStatus.DONE)?.setScheduledFailureId(scheduled.getId())!!
         When(db.mapper).thenReturn(MyMapper(dbrun, scheduled, dynDb))
-        val run = resource.get(dbrun?.getId())
+        val run = resource.get(dbrun.getId())
         assertEquals(scheduled.model, run?.getScheduledFailure())
     }
 }
