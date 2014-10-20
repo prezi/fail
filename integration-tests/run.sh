@@ -44,8 +44,15 @@ fi
 echo "Starting DynamoDB local"
 java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -inMemory > $testdir/dynamodb.log 2>&1 &
 
+JAVA_OPTS="$JAVA_OPTS -Dfail.test.fixedUnitTimestamp=0"
+JAVA_OPTS="$JAVA_OPTS -Dfail.db.dynamoDBEndpoint=http://localhost:8000"
+JAVA_OPTS="$JAVA_OPTS -Daws.accessKeyId=foo -Daws.secretKey=bar"
+export JAVA_OPTS
+
+echo "JAVA_OPTS=${JAVA_OPTS}"
+
 echo "Starting API server"
-JAVA_OPTS="$JAVA_OPTS -Dfail.test.fixedUnitTimestamp=0 -Dfail.db.dynamoDBEndpoint=http://localhost:8000" $rootdir/api/server/build/install/fail-api/bin/fail-api > $testdir/api.log 2>&1 &
+$rootdir/api/server/build/install/fail-api/bin/fail-api > $testdir/api.log 2>&1 &
 
 echo "Sleeping 2 seconds to make sure both the API and DynamoDB local come up"
 sleep 2
