@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey
 import com.amazonaws.services.dynamodbv2.model.Projection
 import com.amazonaws.services.dynamodbv2.model.ProjectionType
+import kotlin.properties.Delegates
 
 
 class DBImpl(config: DBConfig = DBConfig()) : DB {
@@ -121,7 +122,7 @@ trait DB {
     fun ensureTablesExist(): Unit
 
     class object {
-        val instance = DBImpl()
+        val instance: DB by Delegates.lazy { DBImpl() }
         fun invoke(): DB = instance
     }
 }

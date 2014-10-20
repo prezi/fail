@@ -60,6 +60,7 @@ dependencies {
 	restClientCompile "com.linkedin.pegasus:restli-client:${pegasusVersion}"
 }
 
-
-
-
+test {
+    systemProperty 'aws.accessKeyId', 'foo'
+    systemProperty 'aws.secretKey', 'bar'
+}
