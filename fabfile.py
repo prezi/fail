@@ -4,3 +4,4 @@ from prezi.fabric.placement import CommonTasks, PlacementDeploy, PercentageParal
 
 fail_api = CommonTasks(PlacementDeploy(egg_name='fail-api'), 'fail-api', {}, '/', orchestration=PercentageParallelOrchestration(26)).deploy
 fail_scheduler = CommonTasks(PlacementDeploy(egg_name='fail-scheduler'), 'fail-scheduler', {}, '/', orchestration=PercentageParallelOrchestration(26)).deploy
+fail_worker = CommonTasks(PlacementDeploy(egg_name='fail-worker'), 'fail-worker', {}, '/', orchestration=PercentageParallelOrchestration(26)).deploy
