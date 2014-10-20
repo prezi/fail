@@ -17,7 +17,6 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.verify
 import com.prezi.fail.api.queue
 
-
 class QueueTest {
     Test fun putCallsSQS() {
         val mockSQS = givenAny(javaClass<AmazonSQS>())
