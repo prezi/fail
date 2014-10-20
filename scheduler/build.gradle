@@ -7,10 +7,15 @@ dependencies {
 			'ch.qos.logback:logback-classic:1.1.2',
 			'org.codehaus.groovy:groovy:1.8.6', // Use groovy for logback configuration
 			'org.slf4j:jcl-over-slf4j:1.7.7',
+            'com.amazonaws:aws-java-sdk:1.9.0',
 			// API client
 			project(path: ':api:data', configuration: 'restClient'),
 			// Shared code
 			project(':common')
+
+    testCompile project(path: ':common', configuration: 'testLib'),
+            'junit:junit:4.11',
+            'org.mockito:mockito-core:1.+'
 }
 
 apply plugin: "application"

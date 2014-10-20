@@ -14,6 +14,7 @@ import com.linkedin.r2.transport
 import com.linkedin.common.callback
 import com.prezi.fail.config.FailConfig
 import com.linkedin.restli.client.RestLiResponseException
+import com.linkedin.restli.client.Request
 
 public open class Api(val config: FailConfig = FailConfig()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -42,4 +43,6 @@ public open class Api(val config: FailConfig = FailConfig()) {
         }
         return null
     }
+
+    public open fun sendRequest<T: Any>(req: Request<T>): T? = withClient { client -> client.sendRequest(req) }?.getResponseEntity()
 }
