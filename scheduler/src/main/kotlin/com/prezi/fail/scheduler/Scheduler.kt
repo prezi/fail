@@ -25,6 +25,7 @@ class Scheduler(val api: Api = Api(), val queue: Queue = Queue()) {
         logger.debug("Starting scheduling run")
         val scheduledRuns = api.sendRequest(RunBuilders().findByTime()
                 .afterParam((runInterval / 1000).toInt())
+                .atParam(System.currentTimeMillis() / 1000)
                 .build())?.getElements()
         logger.debug("Enqueueing ${scheduledRuns?.size ?: 0} elements")
         scheduledRuns?.forEach { run ->
