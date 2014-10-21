@@ -4,4 +4,6 @@ appender("CONSOLE", ConsoleAppender) {
     }
 }
 
-root(DEBUG, ["CONSOLE"])
+logger("com.prezi", DEBUG)
+
+root(INFO, ["CONSOLE"])
