@@ -62,7 +62,7 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
                         run.getScheduledFailure().getSapper(),
                         run.getScheduledFailure().getDuration().toString()
                 ) + run.getScheduledFailure().getSapperArgs()).copyToArray(),
-                env = run.getScheduledFailure().getConfiguration(),
+                javaOpts = run.getScheduledFailure().getConfiguration(),
                 callback = {
                     patch.setStatus(RunStatus.DONE)
                     logger.info("${run} finished\n${output}")
@@ -104,7 +104,7 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
     }
 
     fun runCli(args: Array<String>,
-               env: Map<String, String> = mapOf(),
+               javaOpts: Map<String, String> = mapOf(),
                configure: ResultHandler.() -> Unit = {},
                callback: ResultHandler.(Int) -> Unit = {},
                error: ResultHandler.(ExecuteException) -> Unit = {},
@@ -120,7 +120,7 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
 
         val finalEnv: MutableMap<String, String> = hashMapOf()
         finalEnv.putAll(System.getenv())
-        finalEnv.putAll(env)
+        finalEnv.put("JAVA_OPTS", (finalEnv.get("JAVA_OPTS") ?: "") + " " + javaOpts.map{"-D${it.key}=${it.value}"}.join(" "))
 
         val resultHandler = ResultHandler(cmd, executor, output, callback, error, finally)
         resultHandler.configure()
