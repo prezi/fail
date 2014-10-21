@@ -11,18 +11,18 @@
   } ],
   "schema" : {
     "schema" : "com.prezi.fail.api.Healthcheck",
+    "path" : "/Healthcheck",
+    "name" : "Healthcheck",
+    "namespace" : "com.prezi.fail.api",
+    "doc" : "generated from: com.prezi.fail.api.impl.HealthcheckResource",
     "simple" : {
       "methods" : [ {
         "method" : "get"
       } ],
+      "supports" : [ "get" ],
       "entity" : {
         "path" : "/Healthcheck"
-      },
-      "supports" : [ "get" ]
-    },
-    "name" : "Healthcheck",
-    "doc" : "generated from: com.prezi.fail.api.impl.HealthcheckResource",
-    "path" : "/Healthcheck",
-    "namespace" : "com.prezi.fail.api"
+      }
+    }
   }
 }

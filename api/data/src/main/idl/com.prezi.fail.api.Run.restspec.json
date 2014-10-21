@@ -9,9 +9,11 @@
       "name" : "RunId",
       "type" : "string"
     },
-    "supports" : [ "get" ],
+    "supports" : [ "get", "partial_update" ],
     "methods" : [ {
       "method" : "get"
+    }, {
+      "method" : "partial_update"
     } ],
     "finders" : [ {
       "name" : "time",

@@ -24,10 +24,11 @@ fun doSingleFailureInjectionRun() {
     val worker = Worker()
     worker.performFailureInjectionRun(
             Run()
+                    .setId("8f37d3b9-5d94-41cb-ac2b-4ebe26f833b7")
                     .setAt(0)
                     .setStatus(RunStatus.FUTURE)
                     .setScheduledFailure(ScheduledFailure()
-                        .setConfiguration(StringMap(mapOf("fail.cli.trace" to "true")))
+                        .setConfiguration(StringMap(mapOf()))
                         .setSearchTerm("service_name=hslogger-app")
                         .setDuration(2)
                         .setPeriod("every-hour")

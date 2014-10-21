@@ -17,6 +17,7 @@ import org.apache.commons.exec.environment.EnvironmentUtils
 import com.prezi.fail.logging.LogCollector
 import com.prezi.fail.api.Api
 import com.prezi.fail.api.RunBuilders
+import com.linkedin.restli.client.util.PatchGenerator
 
 public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -63,7 +64,13 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
                 callback =  { logger.info("${run} finished\n${output}") },
                 error = { logger.error("${run} failed\n${output}", it) },
                 finally = {
-                    run.setLog(logCollector.stopAndGetEncodedMessages())
+                    api.sendRequest(
+                            RunBuilders()
+                                    .partialUpdate()
+                                    .id(run.getId())
+                                    .input(PatchGenerator.diffEmpty(
+                                            Run().setLog(logCollector.stopAndGetEncodedMessages())))
+                                    .build())
                 }
         )
         logger.info("Starting ${run}")

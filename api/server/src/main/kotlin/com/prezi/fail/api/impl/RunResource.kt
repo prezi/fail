@@ -22,6 +22,10 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.prezi.fail.api.db.DBScheduledFailure
 import com.prezi.fail.api.extensions.*
 import com.prezi.fail.api.period.PeriodFactory
+import com.linkedin.restli.common.PatchRequest
+import com.linkedin.restli.server.UpdateResponse
+import com.linkedin.restli.server.util.PatchApplier
+import com.linkedin.restli.common.HttpStatus
 
 [RestLiCollection(name="Run", namespace="com.prezi.fail.api")]
 public class RunResource(val db: DB = DB()) : CollectionResourceTemplate<String, Run>() {
@@ -31,6 +35,14 @@ public class RunResource(val db: DB = DB()) : CollectionResourceTemplate<String,
         val dbrun = db.mapper.load(DBRun().setId(key))
         populateScheduledFailuresIntoRuns(listOf(dbrun))
         return dbrun?.model
+    }
+
+    override fun update(key: String?, patch: PatchRequest<Run>?): UpdateResponse? {
+        val dbrun = db.mapper.load(DBRun().setId(key))
+        if (dbrun == null) { return UpdateResponse(HttpStatus.S_404_NOT_FOUND) }
+        PatchApplier.applyPatch(dbrun.model, patch)
+        db.mapper.save(dbrun)
+        return UpdateResponse(HttpStatus.S_204_NO_CONTENT)
     }
 
     [Finder("time")]

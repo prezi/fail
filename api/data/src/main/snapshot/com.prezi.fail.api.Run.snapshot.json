@@ -70,32 +70,36 @@
   } ],
   "schema" : {
     "schema" : "com.prezi.fail.api.Run",
-    "name" : "Run",
-    "doc" : "generated from: com.prezi.fail.api.impl.RunResource",
     "path" : "/Run",
+    "name" : "Run",
+    "namespace" : "com.prezi.fail.api",
+    "doc" : "generated from: com.prezi.fail.api.impl.RunResource",
     "collection" : {
+      "identifier" : {
+        "name" : "RunId",
+        "type" : "string"
+      },
       "methods" : [ {
         "method" : "get"
+      }, {
+        "method" : "partial_update"
       } ],
-      "entity" : {
-        "path" : "/Run/{RunId}"
-      },
       "finders" : [ {
         "name" : "time",
         "parameters" : [ {
           "name" : "at",
           "type" : "long"
         }, {
-          "optional" : true,
           "name" : "before",
+          "optional" : true,
           "type" : "int"
         }, {
-          "optional" : true,
           "name" : "after",
+          "optional" : true,
           "type" : "int"
         }, {
-          "optional" : true,
           "name" : "context",
+          "optional" : true,
           "type" : "int"
         } ]
       }, {
@@ -107,25 +111,23 @@
           "name" : "at",
           "type" : "long"
         }, {
-          "optional" : true,
           "name" : "before",
+          "optional" : true,
           "type" : "string"
         }, {
-          "optional" : true,
           "name" : "after",
+          "optional" : true,
           "type" : "string"
         }, {
-          "optional" : true,
           "name" : "context",
+          "optional" : true,
           "type" : "string"
         } ]
       } ],
-      "supports" : [ "get" ],
-      "identifier" : {
-        "name" : "RunId",
-        "type" : "string"
+      "supports" : [ "get", "partial_update" ],
+      "entity" : {
+        "path" : "/Run/{RunId}"
       }
-    },
-    "namespace" : "com.prezi.fail.api"
+    }
   }
 }

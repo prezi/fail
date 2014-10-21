@@ -41,28 +41,28 @@
   } ],
   "schema" : {
     "schema" : "com.prezi.fail.api.ScheduledFailure",
-    "name" : "ScheduledFailure",
-    "doc" : "generated from: com.prezi.fail.api.impl.ScheduledFailureResource",
     "path" : "/ScheduledFailure",
+    "name" : "ScheduledFailure",
+    "namespace" : "com.prezi.fail.api",
+    "doc" : "generated from: com.prezi.fail.api.impl.ScheduledFailureResource",
     "collection" : {
+      "identifier" : {
+        "name" : "ScheduledFailureId",
+        "type" : "string"
+      },
       "methods" : [ {
         "method" : "create"
       }, {
         "method" : "get_all"
       } ],
-      "entity" : {
-        "path" : "/ScheduledFailure/{ScheduledFailureId}"
-      },
       "supports" : [ "create", "get_all" ],
-      "identifier" : {
-        "name" : "ScheduledFailureId",
-        "type" : "string"
-      },
       "actions" : [ {
         "name" : "panic",
         "returns" : "{ \"type\" : \"map\", \"values\" : \"long\" }"
-      } ]
-    },
-    "namespace" : "com.prezi.fail.api"
+      } ],
+      "entity" : {
+        "path" : "/ScheduledFailure/{ScheduledFailureId}"
+      }
+    }
   }
 }
