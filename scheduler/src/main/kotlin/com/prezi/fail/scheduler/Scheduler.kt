@@ -12,7 +12,11 @@ class Scheduler(val api: Api = Api(), val queue: Queue = Queue()) {
 
     public fun run() {
         while (true) {
-            step()
+            try {
+                step()
+            } catch (e: Throwable) {
+                logger.error("error_during_queue_step ${e}")
+            }
             Thread.sleep(runInterval)
         }
     }
