@@ -1,5 +1,8 @@
 language: java
-cache: $HOME/.gradle/caches
+cache:
+  directories:
+    - $HOME/.gradle/caches
+    - $HOME/.gradle/wrapper
 
 before_install:
   - sudo apt-get install python-pip python-virtualenv
