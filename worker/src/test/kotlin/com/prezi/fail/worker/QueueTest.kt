@@ -14,7 +14,7 @@ import com.prezi.fail.api.ScheduledFailure
 import org.mockito.ArgumentCaptor
 
 class MockApi(val ret: Any?) : Api() {
-    override fun <T : Any> withClient(f: (RestClient) -> T): T? = ret as T
+    override fun <T : Any> withClient(f: (RestClient) -> T?): T? = ret as T
 }
 
 class QueueTest {
