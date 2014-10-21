@@ -13,10 +13,13 @@ import org.apache.commons.exec.ExecuteException
 import org.apache.commons.exec.ExecuteResultHandler
 import org.apache.commons.exec.DefaultExecuteResultHandler
 import java.io.OutputStream
+import org.apache.commons.exec.environment.EnvironmentUtils
+import com.prezi.fail.logging.LogCollector
+import com.prezi.fail.api.Api
+import com.prezi.fail.api.RunBuilders
 
-public class Worker {
+public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
-    val queue = Queue()
 
     val cliExecutablePath = WorkerConfig().getCliExecutablePath()
 
@@ -42,45 +45,73 @@ public class Worker {
                 callback = { logger.info("CLI executable works.") },
                 error = {
                     logger.error("${cliExecutablePath} --help exit with code ${getExitValue()}, meaning CLI is not healthy, bailing out."+
-                                 "\n\nSTDOUT:\n${stdout}" +
-                                 "\n\nSTDERR:\n${stderr}")
+                                 "\n\nOUTPUT:\n${output}")
                                  System.exit(1)
                 }
          ).waitFor()
     }
 
     fun performFailureInjectionRun(run: Run) {
-        logger.info("This is where I'd perform ${run}")
+        val logCollector = LogCollector().start()
+        runCli(
+                args = (array("once",
+                        run.getScheduledFailure().getSearchTerm(),
+                        run.getScheduledFailure().getSapper(),
+                        run.getScheduledFailure().getDuration().toString()
+                ) + run.getScheduledFailure().getSapperArgs()).copyToArray(),
+                env = run.getScheduledFailure().getConfiguration(),
+                callback =  { logger.info("${run} finished\n${output}") },
+                error = { logger.error("${run} failed\n${output}", it) },
+                finally = {
+                    run.setLog(logCollector.stopAndGetEncodedMessages())
+                }
+        )
+        logger.info("Starting ${run}")
     }
 
     class ResultHandler(val cmd: CommandLine,
                         val executor: Executor,
-                        val stdout: OutputStream,
-                        val stderr: OutputStream,
+                        val output: OutputStream,
                         val cb: ResultHandler.(Int) -> Unit,
-                        val error: ResultHandler.(ExecuteException) -> Unit)
+                        val error: ResultHandler.(ExecuteException) -> Unit,
+                        val finally: ResultHandler.() -> Unit)
     : DefaultExecuteResultHandler() {
         override fun onProcessComplete(exitValue: Int) {
             super.onProcessComplete(exitValue)
             cb(exitValue)
+            finally()
         }
         override fun onProcessFailed(e: ExecuteException?) {
             super.onProcessFailed(e)
             error(e!!)
+            finally()
         }
     }
 
-    fun runCli(args: Array<String>, configure: (CommandLine) -> Unit = {}, callback: ResultHandler.(Int) -> Unit = {}, error: ResultHandler.(ExecuteException) -> Unit = {}): ResultHandler {
+    fun runCli(args: Array<String>,
+               env: Map<String, String> = mapOf(),
+               configure: ResultHandler.() -> Unit = {},
+               callback: ResultHandler.(Int) -> Unit = {},
+               error: ResultHandler.(ExecuteException) -> Unit = {},
+               finally: ResultHandler.() -> Unit = {}): ResultHandler {
         val cmd = CommandLine(cliExecutablePath)
         cmd.addArguments(args)
-        configure(cmd)
+
+        val output = ByteArrayOutputStream()
+        val streamHandler = PumpStreamHandler(output)
+
         val executor = DefaultExecutor()
-        val stdout = ByteArrayOutputStream()
-        val stderr = ByteArrayOutputStream()
-        val streamHandler = PumpStreamHandler(stdout, stderr)
         executor.setStreamHandler(streamHandler)
-        val resultHandler = ResultHandler(cmd, executor, stdout, stderr, callback, error)
-        executor.execute(cmd, resultHandler)
+
+        val finalEnv: MutableMap<String, String> = hashMapOf()
+        finalEnv.putAll(System.getenv())
+        finalEnv.putAll(env)
+
+        val resultHandler = ResultHandler(cmd, executor, output, callback, error, finally)
+        resultHandler.configure()
+
+        logger.debug("Starting ${cmd} with env ${finalEnv}")
+        executor.execute(cmd, finalEnv, resultHandler)
         return resultHandler
     }
 }
