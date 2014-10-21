@@ -18,6 +18,7 @@ import com.prezi.fail.logging.LogCollector
 import com.prezi.fail.api.Api
 import com.prezi.fail.api.RunBuilders
 import com.linkedin.restli.client.util.PatchGenerator
+import com.prezi.fail.api.RunStatus
 
 public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -54,6 +55,7 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
 
     fun performFailureInjectionRun(run: Run) {
         val logCollector = LogCollector().start()
+        val patch = Run()
         runCli(
                 args = (array("once",
                         run.getScheduledFailure().getSearchTerm(),
@@ -61,15 +63,21 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
                         run.getScheduledFailure().getDuration().toString()
                 ) + run.getScheduledFailure().getSapperArgs()).copyToArray(),
                 env = run.getScheduledFailure().getConfiguration(),
-                callback =  { logger.info("${run} finished\n${output}") },
-                error = { logger.error("${run} failed\n${output}", it) },
+                callback = {
+                    patch.setStatus(RunStatus.DONE)
+                    logger.info("${run} finished\n${output}")
+                },
+                error = {
+                    patch.setStatus(RunStatus.FAILED)
+                    logger.error("${run} failed\n${output}", it)
+                },
                 finally = {
+                    patch.setLog(logCollector.stopAndGetEncodedMessages())
                     api.sendRequest(
                             RunBuilders()
                                     .partialUpdate()
                                     .id(run.getId())
-                                    .input(PatchGenerator.diffEmpty(
-                                            Run().setLog(logCollector.stopAndGetEncodedMessages())))
+                                    .input(PatchGenerator.diffEmpty(patch))
                                     .build())
                 }
         )
