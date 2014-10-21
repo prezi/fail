@@ -46,7 +46,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
 
     private fun charge(args: List<String>, deathRow: List<String>, dir: String, remoteTgz: String, runtime: String, sapper: String, user: String?) {
         changelog?.send("${user} starting ${sapper} against ${deathRow.join(", ")} for ${runtime} seconds")
-        deathRow forEach {
+        deathRow map {
             thread(start = true, block = {
                 logger.info("Sapper '${sapper}' will hammer ${it} for ${runtime} seconds")
                 val killSwitch = KillSwitch(sapper, it)
@@ -54,7 +54,7 @@ public class Sarge(val config: SargeConfig = SargeConfig(),
                 runSapper(args, dir, it, remoteTgz, runtime, sapper)
                 Runtime.getRuntime().removeShutdownHook(killSwitch)
             })
-        }
+        } forEach { it.join() }
     }
 
     private fun verifySappersTgzExists() {
