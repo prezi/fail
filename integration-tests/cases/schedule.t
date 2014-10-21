@@ -33,6 +33,6 @@
   |=====================================================================|
 
   $ fail unschedule $(tail -1 schedule.out | cut -f 5 -d' ' | tr -d ,)
-  11:05:07.704 W No scheduled failure found with id with. You can use `list regex` to find the IDs
+  ??:??:??.??? W No scheduled failure found with id with. You can use `list regex` to find the IDs (glob)
 
 
