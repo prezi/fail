@@ -6,7 +6,6 @@
   | bp-weekday-worktime-daily| noop  | service_name=my-app| 30          | *| 1970-01-01 00:00:00 UTC| (glob)
   
   ??:??:??.??? I Scheduled failure with ID *, first run will be at 1970-01-02T* (glob)
-  
 
   $ fail list-runs --after P2W
   ??:??:??.??? I Listing scheduled runs in interval 1970-01-01T00:00:00.000Z/1970-01-15T00:00:00.000Z (glob)
@@ -22,26 +21,18 @@
   | 1970-01-12 *| noop  | service_name=my-app| 30          | (glob)
   | 1970-01-13 *| noop  | service_name=my-app| 30          | (glob)
   | 1970-01-14 *| noop  | service_name=my-app| 30          | (glob)
-  
-  
 
   $ fail list '.*my-app'
   ??:??:??.??? I _*_ (glob)
   | Id*| Period                   | Sapper| Target             | Duration (s)| Scheduled by*| Scheduled at           | (glob)
   |=*=| (glob)
   | *| bp-weekday-worktime-daily| noop  | service_name=my-app| 30          | *| 1970-01-01 00:00:00 UTC| (glob)
-  
-  
   $ fail list no-matches
   ??:??:??.??? I ______________________________________________________________________ (glob)
   | Id| Period| Sapper| Target| Duration (s)| Scheduled by| Scheduled at|
   |=====================================================================|
-  
-  
 
-  $ fail unschedule $(tail -2 schedule.out | head -1 | cut -f 7 -d' ' | tr -d ,)
-  ??:??:??.??? I Deleted 9 runs (glob)
-  ??:??:??.??? I Deleted schedule: * (glob)
-  
+  $ fail unschedule $(tail -1 schedule.out | cut -f 5 -d' ' | tr -d ,)
+  11:05:07.704 W No scheduled failure found with id with. You can use `list regex` to find the IDs
 
 

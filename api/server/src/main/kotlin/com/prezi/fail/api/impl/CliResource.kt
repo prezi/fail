@@ -65,7 +65,7 @@ public class CliResource {
             setRootLogLevel(originalRootLogLevel)
         }
 
-        result.setOutput(result.getOutput() + logCollector.stopAndGetEncodedMessages())
+        result.setOutput((result.getOutput() + logCollector.stopAndGetEncodedMessages()).trim())
 
         return result
     }
