@@ -20,6 +20,7 @@ import ch.qos.logback.core.Context
 import com.prezi.fail.config.updateLoggerLevels
 import com.prezi.fail.config.getRootLogLevel
 import com.prezi.fail.config.setRootLogLevel
+import com.prezi.fail.logging.LogCollector
 
 
 [RestLiActions(namespace = "com.prezi.fail.api", name = "Cli")]
@@ -34,11 +35,7 @@ public class CliResource {
     [Action(name="RunCli")]
     public fun runCli([ActionParam("args")] _args: StringArray,
                       [ActionParam("systemProperties")] systemProperties: StringMap): CliResult {
-        val logAppender = ListAppender<ILoggingEvent>()
-        logAppender.start()
-        logAppender.setContext(LoggerFactory.getILoggerFactory() as Context)
-        (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).addAppender(logAppender)
-
+        val logCollector = LogCollector().start()
         val args = _args.copyToArray()
         val options = ApiCliOptions()
         val cliConfig = FailConfig()
@@ -68,10 +65,7 @@ public class CliResource {
             setRootLogLevel(originalRootLogLevel)
         }
 
-        result.setOutput(
-                result.getOutput() + logAppender.list!!.map { it.getFormattedMessage() }.joinToString("\n")
-        )
-        (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger).detachAppender(logAppender)
+        result.setOutput(result.getOutput() + logCollector.stopAndGetEncodedMessages())
 
         return result
     }
