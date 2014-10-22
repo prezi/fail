@@ -16,7 +16,7 @@ public class ActionApiTest : Action() {
 
     override public fun run() {
         api.withClient({ client ->
-            logger.info("Checking if API is running at ${api.urlPrefix}")
+            logger.info("Checking if API is running at ${api.urlPrefix()}")
             logger.info(
                     "Healthcheck.isRunning(): " +
                             client.sendRequest(HealthcheckBuilders().get()?.build())?.getResponse()?.getEntity()?.isRunning()

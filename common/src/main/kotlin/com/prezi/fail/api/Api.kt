@@ -18,20 +18,31 @@ import com.linkedin.restli.client.Request
 
 public open class Api(val config: FailConfig = FailConfig()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
-    val urlPrefix = config.getApiEndpoint().endingWith('/')
+    fun urlPrefix(): String = config.getApiEndpoint().endingWith('/')
+
+    fun getStatusCode(e: RestLiResponseException): Int? =
+            try{
+                try {
+                    e.getServiceErrorCode()
+                } catch (np: NullPointerException) {
+                    e.getStatus()
+                }
+            } catch (t: Throwable) {
+                null
+            }
 
     public open fun withClient<T : Any>(f: (client.RestClient) -> T?): T? {
         val http = http.client.HttpClientFactory()
         val r2Client = bridge.client.TransportClientAdapter(http.getClient(mapOf(
                 transport.http.client.HttpClientFactory.HTTP_SSL_CONTEXT to javax.net.ssl.SSLContext.getDefault()
         )))
-        val restClient = client.RestClient(r2Client, urlPrefix)
+        val restClient = client.RestClient(r2Client, urlPrefix())
 
         try {
             return f(restClient)
         } catch (e: RestLiResponseException) {
             if (config.isDebug() || config.isTrace()) {
-                logger.error("API response code: ${e.getServiceErrorCode()}")
+                logger.error("API response code: " + getStatusCode(e))
                 logger.error("API call failed: ${e.getServiceErrorMessage()}")
                 logger.error("Exception class: ${e.getServiceExceptionClass()}")
                 logger.error("Stack trace:\n${e.getServiceErrorStackTrace()}")
