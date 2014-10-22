@@ -59,8 +59,9 @@ public open class Api(val config: FailConfig = FailConfig()) {
         return null
     }
 
-    public open fun sendRequest<T: Any, R: Request<T>>(requestBuilder: AbstractRequestBuilder<*, *, R<T>>): T? = withClient { client ->
-        AuthProviderFactory().build().authenticate(requestBuilder)
-        client.sendRequest(requestBuilder.build())?.getResponseEntity()
+    public fun authenticate(builder: AbstractRequestBuilder<*, *, *>): Unit = AuthProviderFactory().build().authenticate(builder)
+
+    public open fun sendRequest<T: Any>(req: Request<T>): T? = withClient { client ->
+        client.sendRequest(req)?.getResponseEntity()
     }
 }

@@ -24,8 +24,9 @@ public class ActionApiCli(val args: Array<String>) : Action() {
         val request = CliBuilders().actionRunCli()!!
                 .paramArgs(StringArray(args.toList()))!!
                 .paramSystemProperties(systemProperties)!!
+        api.authenticate(request)
 
-        val response = api.sendRequest(request)!!
+        val response = api.sendRequest(request.build())!!
         if (response.isValidCommandLine()!!) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Response: \n${response.getOutput()}")

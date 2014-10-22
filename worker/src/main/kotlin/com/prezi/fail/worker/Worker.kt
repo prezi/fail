@@ -73,12 +73,12 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
                 },
                 finally = {
                     patch.setLog(logCollector.stopAndGetEncodedMessages())
-                    api.sendRequest(
-                            RunBuilders()
-                                    .partialUpdate()
-                                    .id(run.getId())
-                                    .input(PatchGenerator.diffEmpty(patch))
-                                    .build())
+                    val request = RunBuilders()
+                            .partialUpdate()
+                            .id(run.getId())
+                            .input(PatchGenerator.diffEmpty(patch))
+                    api.authenticate(request)
+                    api.sendRequest(request.build())
                 }
         )
         logger.info("Starting ${run}")

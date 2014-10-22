@@ -25,9 +25,9 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
                 return
             }
             try {
-                val run = api.withClient({ client ->
-                    client.sendRequest(RunBuilders().get().id(msg.getBody()).build()).getResponseEntity()
-                })
+                val request = RunBuilders().get().id(msg.getBody())
+                api.authenticate(request)
+                val run = api.sendRequest(request.build())
                 if (run == null) {
                     logger.error("run_not_found ${msg.getBody()}")
                     client.deleteMessage(url, msg.getReceiptHandle())

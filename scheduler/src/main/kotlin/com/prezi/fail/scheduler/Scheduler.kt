@@ -23,13 +23,12 @@ class Scheduler(val api: Api = Api(), val queue: Queue = Queue()) {
 
     fun step() {
         logger.debug("Starting scheduling run")
-        val scheduledRuns = api.sendRequest(RunBuilders().findByTime()
-                .afterParam((runInterval / 1000).toInt())
-                .atParam(System.currentTimeMillis() / 1000)
-                .build())?.getElements()
+        val request = RunBuilders().findByTime()
+                        .afterParam((runInterval / 1000).toInt())
+                        .atParam(System.currentTimeMillis() / 1000)
+        api.authenticate(request)
+        val scheduledRuns = api.sendRequest(request.build())?.getElements()
         logger.debug("Enqueueing ${scheduledRuns?.size ?: 0} elements")
-        scheduledRuns?.forEach { run ->
-            queue.putRun(run)
-        }
+        scheduledRuns?.forEach { run -> queue.putRun(run) }
     }
 }

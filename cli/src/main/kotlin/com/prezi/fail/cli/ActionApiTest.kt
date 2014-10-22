@@ -15,7 +15,9 @@ public class ActionApiTest : Action() {
     protected val api: Api = Api()
 
     override public fun run() {
-        val response = api.sendRequest(HealthcheckBuilders().get())!!
+        val request = HealthcheckBuilders().get()
+        api.authenticate(request)
+        val response = api.sendRequest(request.build())!!
         logger.info("Checking if API is running at ${api.urlPrefix()}")
         logger.info("Healthcheck.isRunning(): " + response.isRunning())
     }
