@@ -18,15 +18,21 @@ import com.jcraft.jsch.agentproxy.ConnectorFactory
 import com.jcraft.jsch.agentproxy.RemoteIdentityRepository
 // Fail
 import org.slf4j.Logger
+import java.io.File
 
 
 class Ssh(val host: String, val config: SshConfig = SshConfig()) {
     val logger = LoggerFactory.getLogger(this.javaClass)!!
     val session: Session by Delegates.lazy {
         val jsch = JSch()
-        val session = jsch.getSession("root", host)!!
+        val session = jsch.getSession(config.getUsername(), host)!!
+        logger.debug("using username ${session.getUserName()} for authentication")
         if (config.shouldDisableHostKeyChecking() ) session.setConfig("StrictHostKeyChecking", "no")
-        if (config.getAuthType() == AuthType.SSH_AGENT ) useSshAgent(jsch, session)
+        when (config.getAuthType()) {
+            AuthType.SSH_AGENT -> useSshAgent(jsch, session)
+            AuthType.PRIVATE_KEY_FILE -> usePrivateKeyFile(jsch, session)
+            AuthType.NONE -> Unit
+        }
         session.connect()
         session
     }
@@ -37,6 +43,15 @@ class Ssh(val host: String, val config: SshConfig = SshConfig()) {
         val sshAgentConnector = ConnectorFactory.getDefault()?.createConnector()
         val sshAgentIdentityRepository = RemoteIdentityRepository(sshAgentConnector)
         jsch.setIdentityRepository(sshAgentIdentityRepository)
+    }
+
+    fun usePrivateKeyFile(jsch: JSch, session: Session) {
+        val privateKey = config.getPrivateKeyFilePath()
+                ?: throw RuntimeException("SSH Authentication method is configured to ${config.getAuthType()} " +
+                "via ${SshConfigKey.AUTH_TYPE}. The system property ${SshConfigKey.PRIVATE_KEY_FILE_PATH} must be set.")
+        logger.debug("using private key ${privateKey} for authentication")
+        session.setConfig("PreferredAuthentications", "publickey")
+        jsch.addIdentity(privateKey)
     }
 
     fun overChannel<T : Channel>(channelName: String, beforeConnect: ((T) -> Unit)?, f: (T) -> Unit): Ssh {
