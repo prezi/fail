@@ -4,6 +4,8 @@ dependencies {
 	compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
 			'joda-time:joda-time:2.5',
             project(path: ':api:data', configuration: 'restClient'),
+			// API authentication
+			'commons-codec:commons-codec:1.6',
 			// CLI
 			'commons-cli:commons-cli:1.2',
 			// Logging

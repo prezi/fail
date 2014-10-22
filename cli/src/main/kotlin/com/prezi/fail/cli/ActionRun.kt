@@ -1,6 +1,7 @@
 package com.prezi.fail.cli
 
 import com.prezi.fail.sarge.Sarge
+import org.apache.commons.codec.binary.Base64
 
 public class ActionRun(val args: Array<String>) : Action() {
     class object {
