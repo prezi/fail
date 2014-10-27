@@ -11,8 +11,8 @@ enum class FailConfigKey(val key: String, val opt: Option) {
     TRACE        : FailConfigKey("fail.cli.trace", Option("vv", "trace", false, "Set root logger to TRACE level"))
     DRY_RUN      : FailConfigKey("fail.dryRun", Option("n", "dry-run", false, "Don't actually do any non-read-only actions"))
 
-    LIST_BEFORE  : FailConfigKey("fail.cli.listJobs.before", Option(null, "before", true, "list: Show scheduled jobs this far in the future"))
-    LIST_AFTER   : FailConfigKey("fail.cli.listJobs.after", Option(null,  "after", true, "list: Show scheduled jobs this far in the past"))
+    LIST_BEFORE  : FailConfigKey("fail.cli.listJobs.before", Option(null, "before", true, "list: Show scheduled jobs this far in the past"))
+    LIST_AFTER   : FailConfigKey("fail.cli.listJobs.after", Option(null,  "after", true, "list: Show scheduled jobs this far in the future"))
     LIST_CONTEXT : FailConfigKey("fail.cli.listJobs.context", Option(null, "context", true, "list: Show scheduled jobs this far both in the future and the past"))
     LIST_AT      : FailConfigKey("fail.cli.listJobs.at", Option(null, "at", true, "list: Show scheduled round this unix timestamp"))
 
