@@ -19,7 +19,7 @@ class Scheduler(val api: Api = Api(), val queue: Queue = Queue()) {
             } catch (e: Throwable) {
                 logger.error("error_during_queue_step ${e}")
             }
-            Thread.sleep(runInterval.toLong() + 1)
+            Thread.sleep(runInterval.toLong() * 1000 + 1)
         }
     }
 
