@@ -33,15 +33,18 @@ public class ActionListRuns(systemProperties: StringMap) : Action() {
     override public fun run() {
         logger.info(
                 TextTable(
-                        array("At", "Sapper", "Target", "Duration (s)"),
+                        array("Id", "At", "Sapper", "Target", "Status", "Duration (s)"),
                         RunResource().listRunsByTime(
                                 atTimestamp=config.getListAt(),
                                 secondsBefore=strToSeconds(config.getListBefore()),
                                 secondsAfter=strToSeconds(config.getListAfter()),
                                 secondsContext=strToSeconds(config.getListContext())
                         ).map{
-                            array<String>(dateTimeFormat.print(it.getAtMillis()!!), it.getScheduledFailure().getSapper(),
-                                    it.getScheduledFailure().getSearchTerm(), it.getScheduledFailure().getDuration()!!.toString())
+                            array<String>(
+                                    it.getId(),
+                                    dateTimeFormat.print(it.getAtMillis()!!), it.getScheduledFailure().getSapper(),
+                                    it.getScheduledFailure().getSearchTerm(), it.getStatus().toString(),
+                                    it.getScheduledFailure().getDuration()!!.toString())
                         }.copyToArrayWithoutTheMessedUpArrayStoreException()
                 ).toStringTable()
         )
