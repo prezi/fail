@@ -8,6 +8,7 @@ import com.prezi.fail.api.Run
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest
 import com.prezi.fail.api.RunBuilders
 import com.amazonaws.services.sqs.model.ChangeMessageVisibilityRequest
+import com.prezi.fail.constants.QUEUE_POISON_PILL
 
 
 class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-scheduled-runs", val api: Api = Api()) {
@@ -15,7 +16,7 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
 
     internal val logger = LoggerFactory.getLogger(javaClass)
 
-    public fun receiveRunAnd(action: (Run) -> Unit): Unit {
+    public fun receiveRunAnd(action: (Run) -> Unit, handlePoisonPill: () -> Unit): Unit {
         try {
             val recvReq = ReceiveMessageRequest().withQueueUrl(url).withMaxNumberOfMessages(1).withWaitTimeSeconds(10)
             val recvMsg = client.receiveMessage(recvReq)
@@ -23,6 +24,10 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
             if (msg == null) {
                 logger.debug("Received empty message from SQS")
                 return
+            }
+            if (msg.getBody() == QUEUE_POISON_PILL) {
+                logger.info("Got poison pill from queue, calling handler")
+                return handlePoisonPill()
             }
             try {
                 val request = RunBuilders().get().id(msg.getBody())

@@ -19,9 +19,11 @@ import com.prezi.fail.api.Api
 import com.prezi.fail.api.RunBuilders
 import com.linkedin.restli.client.util.PatchGenerator
 import com.prezi.fail.api.RunStatus
+import org.apache.commons.exec.ShutdownHookProcessDestroyer
 
 public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
+    val processDestroyer = ShutdownHookProcessDestroyer()
 
     val cliExecutablePath = WorkerConfig().getCliExecutablePath()
 
@@ -29,7 +31,10 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
         ensureCliBinaryExists()
         ensureCliBinaryWorks()
         while(true) {
-            queue.receiveRunAnd { performFailureInjectionRun(it) }
+            queue.receiveRunAnd(
+                    { performFailureInjectionRun(it) },
+                    { handlePoisonPill() }
+            )
         }
     }
 
@@ -94,6 +99,11 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
         )
     }
 
+    fun handlePoisonPill() {
+        logger.warn("Got poison pill, killing all running sappers")
+        processDestroyer.run()
+    }
+
     class ResultHandler(val cmd: CommandLine,
                         val executor: Executor,
                         val output: OutputStream,
@@ -126,6 +136,7 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
         val streamHandler = PumpStreamHandler(output)
 
         val executor = DefaultExecutor()
+        executor.setProcessDestroyer(processDestroyer)
         executor.setStreamHandler(streamHandler)
 
         val finalEnv: MutableMap<String, String> = hashMapOf()

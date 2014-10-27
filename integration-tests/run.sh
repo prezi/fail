@@ -45,6 +45,7 @@ echo "Starting DynamoDB local"
 java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -inMemory > $testdir/dynamodb.log 2>&1 &
 
 JAVA_OPTS="$JAVA_OPTS -Dfail.test.fixedUnitTimestamp=0"
+JAVA_OPTS="$JAVA_OPTS -Dfail.test.useMockSQS=1"
 JAVA_OPTS="$JAVA_OPTS -Dfail.db.dynamoDBEndpoint=http://localhost:8000"
 JAVA_OPTS="$JAVA_OPTS -Daws.accessKeyId=foo -Daws.secretKey=bar"
 JAVA_OPTS="$JAVA_OPTS -Duser.timezone=UTC"
