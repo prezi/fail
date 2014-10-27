@@ -8,7 +8,7 @@ import com.prezi.fail.extensions.*
 import com.prezi.fail.cli.Action
 import com.prezi.fail.cli.ActionApiCli
 import com.prezi.fail.cli.ActionHelp
-import com.prezi.fail.sarge.SargeConfigKey
+import com.prezi.fail.config.SargeConfigKey
 import com.prezi.fail.config.SargeConfig
 import com.prezi.fail.config.loadUserProperties
 import com.prezi.fail.config.FailConfig

@@ -1,4 +1,4 @@
-package com.prezi.fail.api.queue
+package com.prezi.fail.scheduler.queue
 
 import org.junit.Test
 import org.mockito.Mockito.*
@@ -15,7 +15,6 @@ import kotlin.test.assertEquals
 import com.prezi.fail.api.ScheduledFailure
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.verify
-import com.prezi.fail.api.queue
 
 class QueueTest {
     Test fun putCallsSQS() {

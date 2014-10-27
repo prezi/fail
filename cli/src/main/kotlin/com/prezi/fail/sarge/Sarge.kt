@@ -12,6 +12,7 @@ import com.prezi.fail.FailChangelogClientConfig
 import java.io.File
 import com.prezi.fail.config.FailConfig
 import com.prezi.fail.config.SargeConfig
+import com.prezi.fail.config.SargeConfigKey
 
 public class Sarge(val config: SargeConfig = SargeConfig(),
                    scoutFactory: ScoutFactory = ScoutFactory(),

@@ -1,6 +1,6 @@
 package com.prezi.fail.sarge.scout
 
-import com.prezi.fail.sarge.ScoutType
+import com.prezi.fail.config.ScoutType
 import com.prezi.fail.config.SargeConfig
 
 class ScoutFactory {

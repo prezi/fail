@@ -5,7 +5,7 @@ import org.apache.commons.cli.Option
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.ParseException
-import com.prezi.fail.sarge.SargeConfigKey
+import com.prezi.fail.config.SargeConfigKey
 import com.prezi.fail.config.FailConfigKey
 
 public class CliOptions : Options() {

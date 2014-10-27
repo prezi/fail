@@ -1,6 +1,6 @@
 package com.prezi.fail.sarge.mercy
 
-import com.prezi.fail.sarge.MercyType
+import com.prezi.fail.config.MercyType
 import com.prezi.fail.config.SargeConfig
 
 class MercyFactory {
