@@ -18,6 +18,7 @@ import com.linkedin.restli.client.Request
 import com.prezi.fail.api.auth.AuthProviderFactory
 import com.prezi.fail.api.auth.AuthProviderConfigKey
 import com.linkedin.restli.client.AbstractRequestBuilder
+import com.linkedin.restli.client.util.PatchGenerator
 
 public open class Api(val config: FailConfig = FailConfig()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -63,5 +64,15 @@ public open class Api(val config: FailConfig = FailConfig()) {
 
     public open fun sendRequest<T: Any>(req: Request<T>): T? = withClient { client ->
         client.sendRequest(req)?.getResponseEntity()
+    }
+
+    // Common functionality
+
+    public fun updateStatus(run: Run, status: RunStatus) {
+        val patch = Run()
+        patch.setStatus(status)
+        val request = RunBuilders().partialUpdate().id(run.getId()).input(PatchGenerator.diffEmpty(patch))
+        authenticate(request)
+        sendRequest(request.build())
     }
 }

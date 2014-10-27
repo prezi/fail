@@ -8,7 +8,7 @@ import com.prezi.fail.api.Run
 import com.prezi.fail.api.RunStatus
 import com.linkedin.data.template.GetMode
 
-// If anyone has infinite time, this could be generated.
+// If anyone has infinite time, most of this could be generated.
 
 [DynamoDBTable(tableName = "fail_Run")]
 open class DBRun([DynamoDBIgnore] val model: Run = Run()) {

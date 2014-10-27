@@ -4,11 +4,13 @@ import org.slf4j.LoggerFactory
 import com.prezi.fail.api.Api
 import com.prezi.fail.api.RunBuilders
 import com.prezi.fail.api.queue.Queue
+import com.prezi.fail.api.RunStatus
 
 
 class Scheduler(val api: Api = Api(), val queue: Queue = Queue()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
-    val runInterval: Long = 5 * 60 * 1000  // 5 minutes in ms
+    val runInterval: Int = 5 * 60  // 5 minutes in s
+    val queryAhead: Int = 24 * 3600 // 1 day in s
 
     public fun run() {
         while (true) {
@@ -17,18 +19,25 @@ class Scheduler(val api: Api = Api(), val queue: Queue = Queue()) {
             } catch (e: Throwable) {
                 logger.error("error_during_queue_step ${e}")
             }
-            Thread.sleep(runInterval)
+            Thread.sleep(runInterval.toLong() + 1)
         }
     }
 
     fun step() {
         logger.debug("Starting scheduling run")
+        val queryAt = System.currentTimeMillis() / 1000
         val request = RunBuilders().findByTime()
-                        .afterParam((runInterval / 1000).toInt())
-                        .atParam(System.currentTimeMillis() / 1000)
+                        .afterParam(queryAhead)
+                        .atParam(queryAt)
         api.authenticate(request)
-        val scheduledRuns = api.sendRequest(request.build())?.getElements()
+        val scheduleBefore = queryAt + runInterval
+        val scheduledRuns = api.sendRequest(request.build())?.getElements()?.filter {
+            it.getAt() <= scheduleBefore && it.getStatus() == RunStatus.FUTURE
+        }
         logger.debug("Enqueueing ${scheduledRuns?.size ?: 0} elements")
-        scheduledRuns?.forEach { run -> queue.putRun(run) }
+        scheduledRuns?.forEach { run ->
+            api.updateStatus(run, RunStatus.SCHEDULED)
+            queue.putRun(run)
+        }
     }
 }

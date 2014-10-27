@@ -9,7 +9,7 @@
         {"name": "status", "type": {
             "type": "enum",
             "name": "RunStatus",
-            "symbols": ["FUTURE", "RUNNING", "DONE", "FAILED"]
+            "symbols": ["FUTURE", "SCHEDULED", "RUNNING", "DONE", "FAILED"]
         }},
         {"name": "log", "type": "string"},
         {"name": "scheduledFailure", "type": "ScheduledFailure", "doc": "the ScheduledFailure causing this run"}

@@ -54,8 +54,14 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
     }
 
     fun performFailureInjectionRun(run: Run) {
+        if (run.getStatus() != RunStatus.SCHEDULED) {
+            logger.error("Run ${run.getId()} has status ${run.getStatus()} (!= ${RunStatus.SCHEDULED}), but is on the queue. Skipping.")
+            return
+        }
         val logCollector = LogCollector().start()
         val patch = Run()
+        api.updateStatus(run, RunStatus.RUNNING)
+        logger.info("Starting ${run}")
         runCli(
                 args = (array("once",
                         run.getScheduledFailure().getSearchTerm(),
@@ -81,7 +87,6 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
                     api.sendRequest(request.build())
                 }
         )
-        logger.info("Starting ${run}")
     }
 
     class ResultHandler(val cmd: CommandLine,
