@@ -27,6 +27,7 @@ class Queue(val client: AmazonSQS = AmazonSQSClient(), val name: String = "fail-
             }
             if (msg.getBody() == QUEUE_POISON_PILL) {
                 logger.info("Got poison pill from queue, calling handler")
+                client.deleteMessage(url, msg.getReceiptHandle())
                 return handlePoisonPill()
             }
             try {
