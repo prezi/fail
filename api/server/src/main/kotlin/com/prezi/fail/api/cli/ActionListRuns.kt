@@ -11,6 +11,8 @@ import org.joda.time.format.DateTimeFormat
 import com.prezi.fail.api.extensions.toStringTable
 import com.prezi.fail.api.extensions.copyToArrayWithoutTheMessedUpArrayStoreException
 import com.prezi.fail.config.FailConfig
+import com.prezi.fail.api.db.Flag
+import com.prezi.fail.api.db.DB
 
 
 public class ActionListRuns(systemProperties: StringMap) : Action() {
@@ -31,6 +33,9 @@ public class ActionListRuns(systemProperties: StringMap) : Action() {
         }
 
     override public fun run() {
+        if (Flag.PANIC.get(DB().mapper)) {
+            logger.warn("NOTE: Panic mode is engaged, no runs are actually started.")
+        }
         logger.info(
                 TextTable(
                         array("Id", "At", "Sapper", "Target", "Status", "Duration (s)"),

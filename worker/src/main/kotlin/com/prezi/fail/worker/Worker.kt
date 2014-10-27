@@ -58,6 +58,11 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
             logger.error("Run ${run.getId()} has status ${run.getStatus()} (!= ${RunStatus.SCHEDULED}), but is on the queue. Skipping.")
             return
         }
+        if (api.isPanic()) {
+            logger.warn("The API says panic mode is engaged, marking ${run.getId()} as ABORTED and skipping.")
+            api.updateStatus(run, RunStatus.ABORTED)
+            return
+        }
         val logCollector = LogCollector().start()
         val patch = Run()
         api.updateStatus(run, RunStatus.RUNNING)

@@ -25,6 +25,10 @@ class Scheduler(val api: Api = Api(), val queue: Queue = Queue()) {
 
     fun step() {
         logger.debug("Starting scheduling run")
+        if (api.isPanic()) {
+            logger.warn("The API says panic mode is engaged, not skipping run")
+            return
+        }
         val queryAt = System.currentTimeMillis() / 1000
         val request = RunBuilders().findByTime()
                         .afterParam(queryAhead)

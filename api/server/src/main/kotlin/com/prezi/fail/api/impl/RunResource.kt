@@ -26,6 +26,7 @@ import com.linkedin.restli.common.PatchRequest
 import com.linkedin.restli.server.UpdateResponse
 import com.linkedin.restli.server.util.PatchApplier
 import com.linkedin.restli.common.HttpStatus
+import com.prezi.fail.api.db.Flag
 
 [RestLiCollection(name="Run", namespace="com.prezi.fail.api")]
 public class RunResource(val db: DB = DB()) : CollectionResourceTemplate<String, Run>() {
@@ -67,19 +68,25 @@ public class RunResource(val db: DB = DB()) : CollectionResourceTemplate<String,
         val scheduledFailures = db.loadAllScheduledFailures()
         logger.trace("Loaded all scheduled failures: ${scheduledFailures}")
 
-        val additionalRuns = generateAdditionalRuns(interval, runsFromDb, scheduledFailures)
-        val firstFailedBatch = db.mapper.batchSave(additionalRuns).head
-        if (firstFailedBatch == null) {
-            additionalRuns.forEach { logger.debug("Scheduled new run: ${it}") }
-            return (runsFromDb + additionalRuns).map { it.model }.sortBy { it.getAt() }
-        } else {
-            val e = firstFailedBatch.getException()
-            logger.error("At least one batch failed when scheduling new runs", e)
-            throw e
-        }
+        val additionalRuns =
+                if (Flag.PANIC.get(DB().mapper)) {
+                    listOf<DBRun>()
+                } else {
+                    val additionalRuns = generateAdditionalRuns(interval, runsFromDb, scheduledFailures)
+                    val firstFailedBatch = db.mapper.batchSave(additionalRuns).head
+                    if (firstFailedBatch == null) {
+                        additionalRuns.forEach { logger.debug("Scheduled new run: ${it}") }
+                    } else {
+                        val e = firstFailedBatch.getException()
+                        logger.error("At least one batch failed when scheduling new runs", e)
+                        throw e
+                    }
+                    additionalRuns
+                }
+        return (runsFromDb + additionalRuns).map { it.model }.sortBy { it.getAt() }
     }
 
-    private fun loadRunsBetween(interval: Interval): List<DBRun> {
+    public fun loadRunsBetween(interval: Interval): List<DBRun> {
         val condition = Condition()
                 .withComparisonOperator(ComparisonOperator.BETWEEN)
                 .withAttributeValueList(

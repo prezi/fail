@@ -34,6 +34,7 @@ class DBImpl(config: DBConfig = DBConfig()) : DB {
     override fun ensureTablesExist(): Unit {
         ensureScheduledFailureTableExists()
         ensureRunTableExists()
+        ensureFlagTableExists()
     }
 
     fun ensureTableExists(tableName: String, createTableRequest: () -> CreateTableRequest) {
@@ -103,6 +104,23 @@ class DBImpl(config: DBConfig = DBConfig()) : DB {
         })
     }
 
+    fun ensureFlagTableExists() {
+        val clazz = javaClass<DBFlag>()
+        val tableName = getTableName(clazz)
+
+        ensureTableExists(tableName, {
+            val hashKey = getFieldName(clazz, "getName")
+
+            CreateTableRequest()
+                    .withProvisionedThroughput(
+                            ProvisionedThroughput()
+                                    .withReadCapacityUnits(1L)
+                                    .withWriteCapacityUnits(1L))
+                    .withAttributeDefinitions(
+                            AttributeDefinition().withAttributeName(hashKey).withAttributeType(ScalarAttributeType.S))
+                    .withKeySchema(KeySchemaElement().withAttributeName(hashKey).withKeyType(KeyType.HASH))
+        })
+    }
 }
 
 trait DB {
@@ -116,7 +134,8 @@ trait DB {
     fun getFieldName(clazz: Class<*>, getterName: String): String {
         val method = clazz.getMethod(getterName)
         return method.getAnnotation(javaClass<DynamoDBAttribute>())?.attributeName() ?:
-                method.getAnnotation(javaClass<DynamoDBHashKey>()).attributeName()
+                method.getAnnotation(javaClass<DynamoDBHashKey>())?.attributeName() ?:
+                throw RuntimeException("Expected to find one of DynamoDBAttribute, DynamoDBHashKey on ${clazz}.${getterName}")
     }
 
     fun ensureTablesExist(): Unit

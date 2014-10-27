@@ -8,6 +8,7 @@ import com.prezi.fail.api.db.DB
 import com.prezi.fail.api.db.DBRun
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression
 import com.prezi.fail.config.FailConfig
+import com.prezi.fail.api.db.Flag
 
 public class ActionUnschedule(val args: Array<String>, systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -26,6 +27,11 @@ public class ActionUnschedule(val args: Array<String>, systemProperties: StringM
         logger.debug("Handling delete request for runs of ScheduledFailure ${id}")
 
         val db = DB()
+
+        if (Flag.PANIC.get(db.mapper)) {
+            logger.warn("NOTE: Panic mode is engaged, no runs are being scheduled.")
+        }
+
         val dbScheduledFailure = db.mapper.load(javaClass<DBScheduledFailure>(), id)
         if (dbScheduledFailure == null) {
             logger.warn("No scheduled failure found with id ${id}. You can use `${ActionList.cmdLineSyntax}` to find the IDs")

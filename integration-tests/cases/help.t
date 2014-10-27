@@ -4,10 +4,10 @@
   usage: fail [options] once tag sapper duration-seconds [sapper-arg ...]
               [options] api-test
    -a,--all                       Hurt all targets (no mercy mode)
-      --after <arg>               list: Show scheduled jobs this far in the past
+      --after <arg>               list: Show scheduled jobs this far in the future
       --api <arg>                 URL prefix to the Fail API
       --at <arg>                  list: Show scheduled round this unix timestamp
-      --before <arg>              list: Show scheduled jobs this far in the future
+      --before <arg>              list: Show scheduled jobs this far in the past
    -c,--use-changelog             Post events to changelog
       --context <arg>             list: Show scheduled jobs this far both in the future and the past
       --datetime-format <arg>
@@ -27,10 +27,12 @@
               [options] schedule period tag sapper duration-seconds [sapper-arg ...]
               [options] unschedule id
               [options] list-periods
-     --after <arg>          list: Show scheduled jobs this far in the past
+              [options] panic
+              [options] panic-over
+     --after <arg>          list: Show scheduled jobs this far in the future
      --api <arg>            URL prefix to the Fail API
      --at <arg>             list: Show scheduled round this unix timestamp
-     --before <arg>         list: Show scheduled jobs this far in the future
+     --before <arg>         list: Show scheduled jobs this far in the past
      --context <arg>        list: Show scheduled jobs this far both in the future and the past
      --datetime-format <arg>
   -h,--help                 Display this help message

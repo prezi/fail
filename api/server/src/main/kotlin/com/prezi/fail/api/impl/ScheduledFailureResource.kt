@@ -26,13 +26,4 @@ public class ScheduledFailureResource : CollectionResourceTemplate<String, Sched
                 ScheduledFailure().setSapper("example2")!!
         )
     }
-
-    [Action(name="panic")]
-    public fun panic(): LongMap {
-        logger.info("Panic command received. Aborting failures and pausing further scheduled failures.")
-        val retval = LongMap()
-        retval.set("abortedFailures", 5)
-        retval.set("pausedSchedules", 42)
-        return retval
-    }
 }

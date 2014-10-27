@@ -3,7 +3,7 @@
     "type" : "enum",
     "name" : "RunStatus",
     "namespace" : "com.prezi.fail.api",
-    "symbols" : [ "FUTURE", "SCHEDULED", "RUNNING", "DONE", "FAILED" ]
+    "symbols" : [ "FUTURE", "SCHEDULED", "RUNNING", "DONE", "FAILED", "ABORTED" ]
   }, {
     "type" : "record",
     "name" : "ScheduledFailure",
@@ -61,7 +61,9 @@
       "type" : "RunStatus"
     }, {
       "name" : "log",
-      "type" : "string"
+      "type" : "string",
+      "default" : "",
+      "optional" : true
     }, {
       "name" : "scheduledFailure",
       "type" : "ScheduledFailure",

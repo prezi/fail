@@ -75,4 +75,11 @@ public open class Api(val config: FailConfig = FailConfig()) {
         authenticate(request)
         sendRequest(request.build())
     }
+
+    public fun isPanic(): Boolean {
+        val requestBuilder = FlagBuilders().actionIsPanic()
+        authenticate(requestBuilder)
+        val request = requestBuilder.build()
+        return sendRequest(request)!!
+    }
 }

@@ -1,0 +1,12 @@
+{
+  "name" : "Flag",
+  "namespace" : "com.prezi.fail.api",
+  "path" : "/Flag",
+  "doc" : "generated from: com.prezi.fail.api.impl.FlagResource",
+  "actionsSet" : {
+    "actions" : [ {
+      "name" : "IsPanic",
+      "returns" : "boolean"
+    } ]
+  }
+}

@@ -56,10 +56,6 @@
         "method" : "get_all"
       } ],
       "supports" : [ "create", "get_all" ],
-      "actions" : [ {
-        "name" : "panic",
-        "returns" : "{ \"type\" : \"map\", \"values\" : \"long\" }"
-      } ],
       "entity" : {
         "path" : "/ScheduledFailure/{ScheduledFailureId}"
       }

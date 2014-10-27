@@ -1,0 +1,15 @@
+{
+  "models" : [ ],
+  "schema" : {
+    "path" : "/Flag",
+    "name" : "Flag",
+    "namespace" : "com.prezi.fail.api",
+    "doc" : "generated from: com.prezi.fail.api.impl.FlagResource",
+    "actionsSet" : {
+      "actions" : [ {
+        "name" : "IsPanic",
+        "returns" : "boolean"
+      } ]
+    }
+  }
+}

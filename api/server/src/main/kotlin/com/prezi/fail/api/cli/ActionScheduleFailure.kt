@@ -14,6 +14,7 @@ import com.prezi.fail.api.extensions.nextRun
 import com.prezi.fail.config.FailConfig
 import org.joda.time.DateTimeConstants
 import com.prezi.fail.api.extensions.toStringTable
+import com.prezi.fail.api.db.Flag
 
 public class ActionScheduleFailure(val args: Array<String>, val systemProperties: StringMap) : Action() {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -57,14 +58,20 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
             logger.info("Except I'm not, since this is a dry-run.")
         } else {
             val db = DB()
+
             val dbScheduledFailure = DBScheduledFailure(scheduledFailure)
             db.mapper.save(dbScheduledFailure)
 
-            val firstRun = DBRun(scheduledFailure.nextRun(DateTime.now())).setScheduledFailure(dbScheduledFailure)!!
-            db.mapper.save(firstRun)
+            if (Flag.PANIC.get(db.mapper)) {
+                logger.warn("NOTE: Panic mode is engaged, no runs are being scheduled.")
+                logger.info("Scheduled failure with ID ${dbScheduledFailure.getId()}")
+            } else {
+                val firstRun = DBRun(scheduledFailure.nextRun(DateTime.now())).setScheduledFailure(dbScheduledFailure)!!
+                db.mapper.save(firstRun)
 
-            logger.info("Scheduled failure with ID ${dbScheduledFailure.getId()}, first run will be at ${DateTime(firstRun.getAtMillis())}")
-            logger.debug("First run details: ${firstRun.model}")
+                logger.info("Scheduled failure with ID ${dbScheduledFailure.getId()}, first run will be at ${DateTime(firstRun.getAtMillis())}")
+                logger.debug("First run details: ${firstRun.model}")
+            }
         }
     }
 }
