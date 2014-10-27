@@ -1,4 +1,4 @@
-package com.prezi.fail.sarge
+package com.prezi.fail.config
 
 import com.prezi.fail.config.Config
 import org.apache.commons.cli.Option
@@ -30,8 +30,8 @@ open class SargeConfig : Config<SargeConfigKey>() {
     val DEFAULT_AVAILABILITY_ZONE = null
 
     open fun getSappersTargzPath() = getString(SargeConfigKey.SAPPERS_TGZ_PATH) ?: DEFAULT_SAPPERS_TGZ_PATH
-    open fun getScoutType() = ScoutType.valueOf(getString(SargeConfigKey.SCOUT_TYPE) ?: DEFAULT_SCOUT_TYPE.toString())
-    open fun getMercyType() = MercyType.valueOf(getString(SargeConfigKey.MERCY_TYPE) ?: DEFAULT_MERCY_TYPE.toString())
+    open fun getScoutType() = ScoutType(getString(SargeConfigKey.SCOUT_TYPE) ?: DEFAULT_SCOUT_TYPE.toString())
+    open fun getMercyType() = MercyType(getString(SargeConfigKey.MERCY_TYPE) ?: DEFAULT_MERCY_TYPE.toString())
     open fun useChangelog() = getBool(SargeConfigKey.USE_CHANGELOG, DEFAULT_USE_CHANGELOG)
     open fun getAvailabilityZone() = getString(SargeConfigKey.AVAILABILITY_ZONE) ?: DEFAULT_AVAILABILITY_ZONE
 

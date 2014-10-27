@@ -15,7 +15,7 @@ import com.amazonaws.services.ec2.model.Reservation
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest
 // System under test
 import com.prezi.fail.sarge.Aws
-import com.prezi.fail.sarge.SargeConfig
+import com.prezi.fail.config.SargeConfig
 
 
 class AwsScoutTest  {
