@@ -1,4 +1,4 @@
-package com.prezi.fail.api.queue
+package com.prezi.fail.scheduler.queue
 
 import com.amazonaws.services.sqs
 import com.prezi.fail.api.Api

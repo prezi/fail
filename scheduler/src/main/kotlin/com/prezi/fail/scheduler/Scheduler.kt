@@ -3,7 +3,7 @@ package com.prezi.fail.scheduler
 import org.slf4j.LoggerFactory
 import com.prezi.fail.api.Api
 import com.prezi.fail.api.RunBuilders
-import com.prezi.fail.api.queue.Queue
+import com.prezi.fail.scheduler.queue.Queue
 import com.prezi.fail.api.RunStatus
 
 
