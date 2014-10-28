@@ -9,6 +9,7 @@ public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>
     class object {
         public val cmdLineSyntax: String =
                 """fail [options] ${ActionListRuns.cmdLineSyntax}
+                        [options] ${ActionLog.cmdLineSyntax}
                         [options] ${ActionList.cmdLineSyntax}
                         [options] ${ActionPanic.cmdLineSyntax}
                         [options] ${ActionScheduleFailure.cmdLineSyntax}
@@ -21,9 +22,10 @@ public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>
 
     override fun doParse(verb: String, args: Array<String>, tail: Array<String>): Action? = when (verb) {
         ActionListRuns.verb -> ActionListRuns(systemProperties)
-        ActionList.verb -> ensuringArgCount(1, tail, { ActionList(tail[0], systemProperties) })
+        ActionLog.verb -> ensuringArgCount(ActionLog.requiredArgCount, tail, { ActionLog(tail[0]) })
+        ActionList.verb -> ensuringArgCount(ActionList.requiredArgCount, tail, { ActionList(tail[0], systemProperties) })
         ActionScheduleFailure.verb -> ensuringArgCount(ActionScheduleFailure.requiredArgCount, tail, { ActionScheduleFailure(tail, systemProperties) })
-        ActionUnschedule.verb -> ensuringArgCount(1, tail, { ActionUnschedule(tail, systemProperties) })
+        ActionUnschedule.verb -> ensuringArgCount(ActionUnschedule.requiredArgCount, tail, { ActionUnschedule(tail, systemProperties) })
         ActionListPeriods.verb -> ActionListPeriods()
         ActionPanic.verb -> ActionPanic()
         ActionPanicOver.verb -> ActionPanicOver()
