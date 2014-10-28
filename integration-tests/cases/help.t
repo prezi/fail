@@ -22,6 +22,7 @@
   Online
   ------
   usage: fail [options] list-runs
+              [options] log <run-id>
               [options] list regex
               [options] panic
               [options] schedule period tag sapper duration-seconds [sapper-arg ...]
