@@ -9,9 +9,10 @@ import com.prezi.fail.api.RunStatus
 import com.prezi.fail.api.ScheduledFailure
 import com.linkedin.data.template.StringMap
 import com.linkedin.data.template.StringArray
+import com.prezi.fail.worker.constants.WORKER_PROPERTIES_FILE
 
 fun main(args: Array<String>) {
-    loadUserProperties("/etc/prezi/fail-worker/fail-worker.properties")
+    loadUserProperties(WORKER_PROPERTIES_FILE)
     updateLoggerLevels(FailConfig())
     if (args.size > 0 && args[0] == "fail-test") {
         doSingleFailureInjectionRun()

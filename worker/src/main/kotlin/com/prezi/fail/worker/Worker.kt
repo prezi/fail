@@ -20,6 +20,8 @@ import com.prezi.fail.api.RunBuilders
 import com.linkedin.restli.client.util.PatchGenerator
 import com.prezi.fail.api.RunStatus
 import org.apache.commons.exec.ShutdownHookProcessDestroyer
+import com.prezi.fail.worker.constants.WORKER_PROPERTIES_FILE
+import com.prezi.fail.config.userPropertiesFile
 
 public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
     val logger = LoggerFactory.getLogger(javaClass)!!
@@ -78,7 +80,9 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
                         run.getScheduledFailure().getSapper(),
                         run.getScheduledFailure().getDuration().toString()
                 ) + run.getScheduledFailure().getSapperArgs()).copyToArray(),
-                javaOpts = run.getScheduledFailure().getConfiguration(),
+                javaOpts = mergeProperties(
+                        run.getScheduledFailure().getConfiguration(),
+                        mapOf("fail.propertiesFile" to userPropertiesFile(WORKER_PROPERTIES_FILE)!!)),
                 callback = {
                     patch.setStatus(RunStatus.DONE)
                     logger.info("${run} finished\n${output}")
@@ -149,5 +153,11 @@ public class Worker(val queue: Queue = Queue(), val api: Api = Api()) {
         logger.debug("Starting ${cmd} with env ${finalEnv}")
         executor.execute(cmd, finalEnv, resultHandler)
         return resultHandler
+    }
+
+    fun mergeProperties(vararg maps: Map<String, String>): Map<String, String> {
+        val merged = hashMapOf<String, String>()
+        maps.forEach { merged.putAll(it) }
+        return merged
     }
 }

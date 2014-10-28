@@ -7,10 +7,12 @@ import java.io.File
 import java.util.Properties
 import java.io.FileInputStream
 
-public fun loadUserProperties(defaultPropertiesFilePath: String?) {
+public fun userPropertiesFile(default: String? = null): String? = System.getProperty("fail.propertiesFile", default)
+
+public fun loadUserProperties(defaultPropertiesFilePath: String? = null) {
     val logger = LoggerFactory.getLogger("main")!!
 
-    val propertiesFilePath = System.getProperty("fail.propertiesFile", null) ?: defaultPropertiesFilePath
+    val propertiesFilePath = userPropertiesFile(defaultPropertiesFilePath)
     if (propertiesFilePath == null) {
         logger.debug("fail.propertiesFile system property not set, and loadUserProperties didn't get a default file path. Not loading any properties files.")
         return
