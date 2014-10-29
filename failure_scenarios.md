@@ -10,7 +10,7 @@ worker: reads items from the queue, fetches run details from the api, does the f
 
 Two possible manifestations:
 
-* standalone all fail components run on the same host. The api is reached via `127.0.0.1`.
+* standalone: all fail components run on the same host. The api is reached via `127.0.0.1`.
 
 * distributed: no guarantee of where components run. The api is reached via whatever domain name or IP is provided in the configuration.
 
