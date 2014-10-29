@@ -81,9 +81,26 @@ Not applicable
 * api: all calls fail, leading to no runs being scheduled or run by the scheduler and worker
 * worker, scheduler: no effect
 
+#### Learnings
+
+Instances serving DynamoDB endpoints are load-balanced using DNS with a DNS TTL of 60 seconds. This means that to use this sapper, two things must happen while the same resolution is in the hosts DNS cache:
+
+* the sapper must run (resolving the endpoint URLs)
+* the application must (try to) establish a connection to DynamoDB
+
+We've also learned that the Java AWS SDK keeps its connection open to DynamoDB open (didn't measure how long).
+
+When the failure injection actually affected the API:
+
+* the AWS SDK in the API timed out on the non-responsive DynamoDB connection after a minute (`org.apache.http.conn.ConnectTimeoutException: Connect to dynamodb.us-east-1.amazonaws.com:443 timed out`), then retried, successfully completing the request. however,
+* the CLI timed out after 10 seconds, with an ugly exception shown to the user (`Exception in thread "main" com.linkedin.r2.RemoteInvocationException: com.linkedin.r2.RemoteInvocationException: Failed to get response from server for URI https://fail.prezi.com/Cli?action=RunCli`)
+* on the server side this appeared as a `java.nio.channels.ClosedChannelException` (the socket was closed by the CLI)
+
 #### Room for improvement
 
-See `fail_dns` above, hit apis falling out of the elb would negate the effect
+See `fail_dns` above, hit apis falling out of the elb would negate the effect. Plus:
+
+* Handle API timeouts gracefully in the CLI
 
 ### network_delay_redis
 
