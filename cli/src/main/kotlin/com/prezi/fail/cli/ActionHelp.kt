@@ -1,5 +1,8 @@
 package com.prezi.fail.cli
 
+import com.linkedin.r2.RemoteInvocationException
+import com.prezi.fail.config.FailConfig
+
 
 public class ActionHelp: Action() {
     override fun run() {
@@ -9,6 +12,16 @@ public class ActionHelp: Action() {
         println()
         println("Online")
         println("------")
-        ActionApiCli(array("--help")).run()
+        try {
+            ActionApiCli(array("--help")).run()
+        } catch (e: RemoteInvocationException) {
+            val config = FailConfig()
+            if (config.isDebug() || config.isTrace()) {
+                println("Failed to contact API at ${config.getApiEndpoint()}.")
+                throw e
+            } else {
+                println("Failed to contact API at ${config.getApiEndpoint()}, online help not available. Run with -v to get details.")
+            }
+        }
     }
 }
