@@ -17,9 +17,9 @@ public class ActionList(val regexStr: String, val systemProperties: StringMap) :
     val logger = LoggerFactory.getLogger(javaClass)!!
 
     class object {
-        val requiredArgCount = 1
+        val requiredArgCount = 0
         val verb = "list"
-        val cmdLineSyntax = "${verb} regex"
+        val cmdLineSyntax = "${verb} [regex]"
     }
 
     override public fun run() {

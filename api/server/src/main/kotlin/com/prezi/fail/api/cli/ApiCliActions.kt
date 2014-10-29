@@ -22,8 +22,8 @@ public class ApiCliActions(val systemProperties: StringMap): BaseActions<Action>
 
     override fun doParse(verb: String, args: Array<String>, tail: Array<String>): Action? = when (verb) {
         ActionListRuns.verb -> ActionListRuns(systemProperties)
-        ActionLog.verb -> ensuringArgCount(ActionLog.requiredArgCount, tail, { ActionLog(tail[0]) })
-        ActionList.verb -> ensuringArgCount(ActionList.requiredArgCount, tail, { ActionList(tail[0], systemProperties) })
+        ActionLog.verb -> ensuringArgCount(ActionLog.requiredArgCount, tail, { ActionLog(tail.first()) })
+        ActionList.verb -> ensuringArgCount(ActionList.requiredArgCount, tail, { ActionList(tail.firstOrNull() ?: ".*", systemProperties) })
         ActionScheduleFailure.verb -> ensuringArgCount(ActionScheduleFailure.requiredArgCount, tail, { ActionScheduleFailure(tail, systemProperties) })
         ActionUnschedule.verb -> ensuringArgCount(ActionUnschedule.requiredArgCount, tail, { ActionUnschedule(tail, systemProperties) })
         ActionListPeriods.verb -> ActionListPeriods()
