@@ -95,9 +95,9 @@ Not applicable
 
 There are no CPU-heavy operations, no expected impact, other than performance degradation
 
-#### Expected learnings
+#### Learnings
 
-* How much does the system slow down?
+There is no visible impact to clients.
 
 ### drop_ec2api_traffic
 
