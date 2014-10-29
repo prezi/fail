@@ -101,6 +101,7 @@ When the failure injection actually affected the API:
 See `fail_dns` above, hit apis falling out of the elb would negate the effect. Plus:
 
 * Handle API timeouts gracefully in the CLI
+* Start multiple API servers and add a DynamoDB healthcheck to the API healthcheck, with a low timeout. API nodes with bad connection will then be removed automatically from the elb, then placed back once they get a good endpoint.
 
 ### network_delay_redis
 
