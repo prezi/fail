@@ -17,6 +17,7 @@ Two possible manifestations:
 ## Sappers
 
 ### fail_dns
+
 #### Expected result
 
 * all components: fail to connect to AWS services, because the endpoints are configured using DNS names
@@ -84,10 +85,6 @@ Not applicable
 
 See `fail_dns` above, hit apis falling out of the elb would negate the effect
 
-### network_condition
-
-TBD
-
 ### network_delay_redis
 
 Not applicable
@@ -113,13 +110,23 @@ There are no CPU-heavy operations, no expected impact, other than performance de
 
 No expected effect
 
-### network_corruption
+### network_corruption, network_partial_drop, network_delay
 
-TBD
+Network connections in the system:
 
-### network_partial_drop
+* cli -> api: not critical to the running system, failure modes are obvious (user can't perform online actions). Let's ignore this.
+* scheduler, worker -> api: full drop covered by `nullroute`
+* api -> dynamodb: full drop covered by `drop_dynamodb_traffic`
+* scheduler, worker -> sqs: full drop should be covered by https://github.com/prezi/fail/issues/18; also, `nullroute`
+* worker -> target nodes: full drop covered by `nullroute`
 
-TBD
+#### Expected result
+
+We don't have a good idea of what happens during these partial network outages. It's quite possible that the only effect is failure degradation, but we don't know that.
+
+#### Expected learnings
+
+How do the systems behave during these failures? Currently we don't have a good idea.
 
 ### reboot_machine
 
@@ -144,10 +151,6 @@ Not applicable
 #### Expected learnings
 
 * how does out-of-disk affect services running in supervisor when supervisor wants to write log lines to disk?
-
-### network_delay
-
-TBD
 
 ### restart_init_scripts
 
