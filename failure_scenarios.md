@@ -110,6 +110,10 @@ There is no visible impact to clients.
 
 No expected effect
 
+#### Learnings
+
+Filling /mnt on an ebs-backed ec2 instance causes significant IO performance drop, which in turn causes significant service degradation for clients (everything times out all the time).
+
 ### network_corruption, network_partial_drop, network_delay
 
 Network connections in the system:
