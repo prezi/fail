@@ -32,11 +32,10 @@ import com.prezi.fail.api.db.Flag
 public class RunResource(val db: DB = DB()) : CollectionResourceTemplate<String, Run>() {
     val logger = LoggerFactory.getLogger(javaClass)!!
 
-    override fun get(key: String?): Run? {
-        val dbrun = db.mapper.load(DBRun().setId(key))
-        populateScheduledFailuresIntoRuns(listOf(dbrun))
-        return dbrun?.model
-    }
+    override fun get(key: String?): Run? =
+            populatedWithScheduledFailures(
+                    listOf(db.mapper.load(DBRun().setId(key)))
+            ).head?.model
 
     override fun update(key: String?, patch: PatchRequest<Run>?): UpdateResponse? {
         val dbrun = db.mapper.load(DBRun().setId(key))
@@ -60,10 +59,10 @@ public class RunResource(val db: DB = DB()) : CollectionResourceTemplate<String,
         logger.trace("Listing scheduled runs for parameters at=${at} before=${secondsBefore} after=${secondsAfter} context=${secondsContext}")
         logger.info("Listing scheduled runs in interval ${interval}")
 
-        val runsFromDb = loadRunsBetween(interval)
-        logger.debug("Loaded already existing runs from db: ${runsFromDb}")
+        val runsFromDbWithoutScheduledFailures = loadRunsBetween(interval)
+        logger.debug("Loaded already existing runs from db: ${runsFromDbWithoutScheduledFailures}")
 
-        populateScheduledFailuresIntoRuns(runsFromDb)
+        val runsFromDb = populatedWithScheduledFailures(runsFromDbWithoutScheduledFailures)
 
         val scheduledFailures = db.loadAllScheduledFailures()
         logger.trace("Loaded all scheduled failures: ${scheduledFailures}")
@@ -115,22 +114,32 @@ public class RunResource(val db: DB = DB()) : CollectionResourceTemplate<String,
             }
         }
 
-    fun populateScheduledFailuresIntoRuns(runs: List<DBRun>) {
+    fun populatedWithScheduledFailures(runs: List<DBRun>): List<DBRun> {
         if (runs.empty) {
             logger.trace("No runs loaded from DB, not populating with ScheduledFailure data")
-            return
+            return runs
         }
         val batchLoadResult = db.mapper.batchLoad(
-                runs.map{it.getScheduledFailureId()!!}.toSet().map{
+                runs.map { it.getScheduledFailureId()!! }.toSet().map {
                     DBScheduledFailure().setId(it)!!
                 }
         )
         // We know we've selected from only a single table
         val dbScheduledFailures =
                 (batchLoadResult.get(batchLoadResult.keySet().first()) as List<DBScheduledFailure>)
-                        .toMap{it.getId()}
+                        .toMap { it.getId() }
         logger.trace("Loaded DBScheduledFailures to populate runs: ${dbScheduledFailures}")
-        runs.forEach { it.model.setScheduledFailure(dbScheduledFailures.get(it.getScheduledFailureId())?.model) }
+        return runs.map {
+            val f = dbScheduledFailures.get(it.getScheduledFailureId())?.model
+            if (f != null) {
+                it.model.setScheduledFailure(f)
+                it
+            } else {
+                logger.error("ScheduledFailure for Run ${it.getId()} fetched from the DB (with ScheduledFailure id ${it.getScheduledFailureId()}) is null. This is probably an inconsistency in the database.")
+                null
+            }
+        }.filter { it != null }
+         .map { it!! }
     }
 
     [Finder("timeAndRegex")]
