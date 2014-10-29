@@ -175,6 +175,25 @@ Same as `restart_supervisor_things`
 
 We'll learn if startup on boot fails due to anything messed up in chef
 
+#### Learnings
+
+* Everything starts after boot fine
+* The run log contains the exception where we lost the SSH connection, but the exit code is 0. This is fine, but the exit code will change to non-zero once https://github.com/prezi/fail/issues/16 is fixed
+* The CLI handles the case where it gets a 503 from the ELB nicely, but prints an exception at the end. Full output:
+
+```
+17:05:29.061 E API call failed with response code 503: null. Run with -v to get more details.
+Exception in thread "main" kotlin.KotlinNullPointerException
+	at com.prezi.fail.cli.ActionApiCli.run(ActionApiCli.kt:37)
+	at com.prezi.fail.FailPackage$FailPackage$933ed3ae.main(FailPackage.kt:46)
+	at com.prezi.fail.FailPackage.main(Unknown Source)
+```
+
+#### Room for improvement
+
+* Expect the SSH connection to go down when rebooting the machine, don't log an exception
+* Don't print an exception when we get the `503` from ELB.
+
 ### drop_s3_traffic
 
 Not applicable
