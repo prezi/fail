@@ -87,7 +87,7 @@ TODO: verify that ShutdownHookProcessDestroyer works (and is used correctly)
 
 * reconfigure the apache proxy to check the api health more often, or even to don't cache its state at all
 * gracefully handle responses in the client that the RestLi client fails to parse (not JSON, malformed JSON or incomplete data)
-* implement `manual-schedule` and/or `reschedule` command to make experimenting easier
+* implement `schedule-once` and/or `reschedule` command to make experimenting easier
 
 ### drop_dynamodb_traffic
 
