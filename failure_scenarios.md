@@ -74,6 +74,21 @@ Not applicable
 
 * verify that ShutdownHookProcessDestroyer works (and is used correctly)
 
+#### Learnings
+
+* api:
+ * the apache proxy we use for authentication stays in `503` for quite a while after the service comes back up. this causes the outage to be much longer than ideal, given the failure
+ * the cli doesn't handle the HTML response well, even though it should recognize that `503` means it shouldn't expect niceness (`com.fasterxml.jackson.core.JsonParseException: Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')`)
+* it takes either some manual modifications in the DB or lots of patience to be present when a scheduled failure is just being run (or lots of scheduled failures)
+
+TODO: verify that ShutdownHookProcessDestroyer works (and is used correctly)
+
+#### Room for improvement
+
+* reconfigure the apache proxy to check the api health more often, or even to don't cache its state at all
+* gracefully handle responses in the client that the RestLi client fails to parse (not JSON, malformed JSON or incomplete data)
+* implement `manual-schedule` and/or `reschedule` command to make experimenting easier
+
 ### drop_dynamodb_traffic
 
 #### Expected result
