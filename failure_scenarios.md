@@ -122,7 +122,7 @@ Network connections in the system:
 
 #### Expected result
 
-We don't have a good idea of what happens during these partial network outages. It's quite possible that the only effect is failure degradation, but we don't know that.
+We don't have a good idea of what happens during these partial network outages. It's quite possible that the only effect is performance degradation, but we don't know that.
 
 #### Expected learnings
 
