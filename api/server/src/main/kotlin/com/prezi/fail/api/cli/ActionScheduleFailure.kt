@@ -49,7 +49,7 @@ public class ActionScheduleFailure(val args: Array<String>, val systemProperties
                 .setSapper(sapper)!!
                 .setDuration(duration)!!
                 .setSapperArgs(StringArray(args.drop(ActionScheduleFailure.requiredArgCount)))!!
-                .setScheduledBy(System.getenv("USER"))!!
+                .setScheduledBy(systemProperties.getOrElse("user.name", {"unknown"}))!!
                 .setScheduledAt(DateTime.now().getMillis() / DateTimeConstants.MILLIS_PER_SECOND)!!
                 .setConfiguration(systemProperties)
         logger.info("Failure to schedule:\n${scheduledFailure.toStringTable()}")

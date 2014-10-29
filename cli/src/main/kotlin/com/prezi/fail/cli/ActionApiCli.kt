@@ -27,6 +27,7 @@ public class ActionApiCli(val args: Array<String>) : Action() {
                 ?.filter { (it.key as String).startsWith("fail.") }
                 ?.filterNot { neverPropagate.contains(it.key) }
                 ?.forEach { systemProperties.set(it.key as String, it.value as String) }
+        systemProperties.set("user.name", System.getProperty("user.name"))
 
         val request = CliBuilders().actionRunCli()!!
                 .paramArgs(StringArray(args.toList()))!!
