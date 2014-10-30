@@ -38,6 +38,12 @@ Two possible manifestations:
  * if they crash, are they correctly restarted by supervisor?
  * if they don't crash, do they reconnect once DNS resolution is back up?
 
+#### Learnings
+
+See `fail_dynamodb_traffic` wrt AWS and DNS. The exact same learnings apply here when it comes to resolving DynamoDB from the API.
+
+TODO: redo this test once we have a distributed setup (as opposed to standalone)
+
 ### network_delay_memcache
 
 Not applicable
