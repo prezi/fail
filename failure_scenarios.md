@@ -61,6 +61,10 @@ Not applicable
  * if they crash, are they correctly restarted by supervisor?
  * if they don't crash, do they reconnect once networking is back up?
 
+#### Learnings
+
+* worker, scheduler: throw lots of exceptions during the failure run because it can't connect to SQS. Goes back to normal after the failure is over.
+
 ### restart_supervisor_things
 
 #### Expected result, number of nodes irrelevant
