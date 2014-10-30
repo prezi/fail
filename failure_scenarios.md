@@ -185,8 +185,8 @@ TODO: rerun once we have a distributed setup.
 
 * `network_corruption`: no visible effect. Ports 80 and 443 are affected, meaning all the AWS services (and later in a distributed setup also inter-component calls)
 * `network_partial_drop`: no visible effect. Ports 80 and 443 are affected, meaning all the AWS services (and later in a distributed setup also inter-component calls)
-* `netrowk_delay 80`: no visible effect, particularly: no timeouts.
-* `netrowk_delay 443`: responses from the api are noticeably slower. About one in five calls from the cli throw a `java.nio.channels.ClosedChannelException`. The api thinks it has sent the response.
+* `network_delay 80`: no visible effect, particularly: no timeouts.
+* `network_delay 443`: responses from the api are noticeably slower. About one in five calls from the cli throw a `java.nio.channels.ClosedChannelException`. The api thinks it has sent the response.
 
 #### Room for improvement
 
