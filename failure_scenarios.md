@@ -190,7 +190,7 @@ TODO: rerun once we have a distributed setup.
 
 #### Room for improvement
 
-* Lower timeout in the cli, add retries
+* Lower timeout in the cli, add retries. Probably not worth doing this in the worker and scheduler, after the outage they'll just continue working.
 * Handle this, and all, exceptions more gracefully in the cli
 
 ### reboot_machine
