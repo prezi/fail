@@ -218,6 +218,11 @@ Not applicable
 
 * how does out-of-disk affect services running in supervisor when supervisor wants to write log lines to disk?
 
+#### Learnings
+
+* sapper changed to finish filling the disk with smaller block sizes: https://github.com/prezi/fail/commit/5450bb4b4fd92d04279096f2d9f8fece980a29b9
+* both the app and supervisor keep running just fine, the api responded to ~50 requests correctly. maybe some buffer would eventually fill somewhere.
+
 ### restart_init_scripts
 
 No expected effect, everything uses supervisor. If supervisor happens to be restarted: see `restart_supervisor_things`
