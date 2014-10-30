@@ -162,6 +162,7 @@ Filling /mnt on an ebs-backed ec2 instance causes significant IO performance dro
 Network connections in the system:
 
 * cli -> api: not critical to the running system, failure modes are obvious (user can't perform online actions). Let's ignore this.
+  The only critical case would be not being able to engage panic mode, but in the worst case the DB can be manually edited.
 * scheduler, worker -> api: full drop covered by `nullroute`
 * api -> dynamodb: full drop covered by `drop_dynamodb_traffic`
 * scheduler, worker -> sqs: full drop should be covered by https://github.com/prezi/fail/issues/18; also, `nullroute`
@@ -174,6 +175,23 @@ We don't have a good idea of what happens during these partial network outages. 
 #### Expected learnings
 
 How do the systems behave during these failures? Currently we don't have a good idea.
+
+
+#### Learnings
+
+The failures were run against a standalone setup with default arguments. This means scheduler, worker -> wasn't tested.
+
+TODO: rerun once we have a distributed setup.
+
+* `network_corruption`: no visible effect. Ports 80 and 443 are affected, meaning all the AWS services (and later in a distributed setup also inter-component calls)
+* `network_partial_drop`: no visible effect. Ports 80 and 443 are affected, meaning all the AWS services (and later in a distributed setup also inter-component calls)
+* `netrowk_delay 80`: no visible effect, particularly: no timeouts.
+* `netrowk_delay 443`: responses from the api are noticeably slower. About one in five calls from the cli throw a `java.nio.channels.ClosedChannelException`. The api thinks it has sent the response.
+
+#### Room for improvement
+
+* Lower timeout in the cli, add retries
+* Handle this, and all, exceptions more gracefully in the cli
 
 ### reboot_machine
 
