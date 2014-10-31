@@ -52,4 +52,4 @@ The API and its clients use [rest.li](http://rest.li/) to communicate in a RESTf
 code generation is involved, leading to a somewhat complicated development flow when you want to change data types
 transmitted over the wire or the exposed API functionality. The below graph should make it clear what to do:
 
-![restli hacking workflow](doc/restli-notugly.svg)
+![restli hacking workflow](doc/restli-notugly.svg?raw=true)
