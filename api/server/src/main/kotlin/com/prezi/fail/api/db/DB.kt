@@ -61,8 +61,8 @@ class DBImpl(config: DBConfig = DBConfig()) : DB {
             CreateTableRequest()
                     .withProvisionedThroughput(
                             ProvisionedThroughput()
-                                    .withReadCapacityUnits(1L)
-                                    .withWriteCapacityUnits(1L))
+                                    .withReadCapacityUnits(5L)
+                                    .withWriteCapacityUnits(5L))
                     .withAttributeDefinitions(
                             AttributeDefinition().withAttributeName(hashKey).withAttributeType(ScalarAttributeType.S))
                     .withKeySchema(KeySchemaElement().withAttributeName(hashKey).withKeyType(KeyType.HASH))
@@ -82,8 +82,8 @@ class DBImpl(config: DBConfig = DBConfig()) : DB {
             CreateTableRequest()
                     .withProvisionedThroughput(
                             ProvisionedThroughput()
-                                    .withReadCapacityUnits(1L)
-                                    .withWriteCapacityUnits(1L))
+                                    .withReadCapacityUnits(10L)
+                                    .withWriteCapacityUnits(5L))
                     .withAttributeDefinitions(
                             AttributeDefinition().withAttributeName(primaryHashKey).withAttributeType(ScalarAttributeType.S),
                             AttributeDefinition().withAttributeName(indexHashKey).withAttributeType(ScalarAttributeType.S),
@@ -97,8 +97,8 @@ class DBImpl(config: DBConfig = DBConfig()) : DB {
                                             KeySchemaElement().withAttributeName(indexRangeKey).withKeyType(KeyType.RANGE))
                                     .withProvisionedThroughput(
                                             ProvisionedThroughput()
-                                                    .withReadCapacityUnits(1L)
-                                                    .withWriteCapacityUnits(1L))
+                                                    .withReadCapacityUnits(5L)
+                                                    .withWriteCapacityUnits(5L))
                                     .withProjection(Projection().withProjectionType(ProjectionType.ALL))
                     )
         })
@@ -114,7 +114,7 @@ class DBImpl(config: DBConfig = DBConfig()) : DB {
             CreateTableRequest()
                     .withProvisionedThroughput(
                             ProvisionedThroughput()
-                                    .withReadCapacityUnits(1L)
+                                    .withReadCapacityUnits(5L)
                                     .withWriteCapacityUnits(1L))
                     .withAttributeDefinitions(
                             AttributeDefinition().withAttributeName(hashKey).withAttributeType(ScalarAttributeType.S))
