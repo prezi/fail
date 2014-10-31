@@ -89,12 +89,10 @@ At startup the file a properties file is optionally loaded. The precedence for c
  - command line options
  - `-D` via `JAVA_OPTS`
  - properties file
- - Default values hard-coded in `fail`
- 
- The properties file to load, if it exists:
   - the path defined in the system property `fail.propertiesFile`, or if that isn't set: 
-  - in the CLI `~/.fail.properties`
-  - in the server `/etc/prezi/fail-api/fail-api.properties`
+  - `~/.fail.properties`, or if it doesn't exist:
+  - no properties file loaded
+ - Default values hard-coded in `fail`
 
 ### Full list of supported configuration options for the client
 

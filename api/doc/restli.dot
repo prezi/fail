@@ -1,0 +1,14 @@
+digraph {
+  node [ shape=box style=filled fillcolor=lightblue ];
+
+  pdsc[label="Data definition: api/data/src/main/pegasus/**.pdsc"];
+  resource[label="API logic: api/server/main/kotlin/com/prezi/fail/api/impl/*Resource.kt"];
+  restspec[label="api/data/src/main/idl/*.restspec.json"];
+  dao[label="api/data/src/mainGeneratedDataTemplate/java/**.java"]
+  builder[label="Client library: api/data/mainGeneratedRest/java/**.java"]
+
+  pdsc->dao [label="api:data:build"];
+  dao->builder;
+  resource->restspec [label="server:data:publisRestliIdl"];
+  restspec->builder [label="build"];
+}
