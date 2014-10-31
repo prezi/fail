@@ -6,7 +6,7 @@ This is the component you'll mostly be interacting with as a user of `fail`.
 
 The output of `fail --help` is separated into two parts: an "offline" and an "online" portion. The offline commands
 work from whatever machine you're using to run the `fail` CLI. The online commands are not implemented in the CLI:
-for these the CLI is only an extremely thin client forwarding your command to the `[API](../api)`, which then executes
+for these the CLI is only an extremely thin client forwarding your command to the [API](../api), which then executes
 your command and responds with the output you see. Even the help for the online commands comes from the API.
 
 ### Offline
