@@ -4,24 +4,34 @@
 
 A light-weight implementation of the ideas behind Chaos Monkey. See the original: [Simian Army](https://github.com/Netflix/SimianArmy). This project was originally called `anthropomorphic-battalion` but was renamed for obvious reasons.
 
-## Quick-start
+## Quick Start
 
-Build:
+Pre-requisites:
+
+ * All the examples: You must be able to log in to the target servers as root using an active ssh-agent, without a password prompt
+ * For EC2 examples: You have AWS credentials configured in ~/.aws/credentials
 
 ```sh
 ./gradlew installApp
+alias fail=./cli/build/install/fail/bin/fail
+
+# Log in to my-host and sleep for 30 seconds
+fail once my-host.my-domain.com noop 30 --scout-type DNS  
+
+# Log in to my-host and use all available CPU for 30 seconds
+fail once my-host.my-domain.com pin-cpu 30 --scout-type DNS  
+
+# Log in to my-host and use all available CPU for 30 seconds
+fail once my-host.my-domain.com pin-cpu 30 --scout-type DNS  
+
+# Log in to one EC2 host that has the tag service_name=my-service and use all available CPU for 30 seconds
+fail once service_name=my-service pin-cpu 30  
+
+# Log in to all EC2 hosts that have the tag service_name=my-service and use all available CPU for 30 seconds
+fail once service_name=my-service pin-cpu 30 --all 
 ```
 
-Run:
-
-```sh
-cli/build/install/fail/bin/fail once $TAGKEY=$TAGVALUE $SAPPER $SECONDS [$ARG1 $ARG2 ...]
-```
-
-These will choose a single EC2 node in us-east that has the tag `$TAGKEY=$TAGVALUE`, and run $SAPPER for $SECONDS
-seconds on it, optionally passing $ARG1 $ARG2 ... to the sapper. Details below.
-
-Alternatively you may download a release from https://github.com/prezi/fail/releases. Note that the release contains
+You may also download a release from https://github.com/prezi/fail/releases. Note that the release contains
 ONLY the cli, not any parts of the server side. We try to create releases whenever something changes in the cli, but
 feel free to open an issue if something is missing.
 
