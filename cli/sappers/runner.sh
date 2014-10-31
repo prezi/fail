@@ -2,16 +2,22 @@
 
 sapper=${1}; shift
 sleep=${1}; shift
-args=$*
+args=("$@")
 
 rm -f nohup.out && touch nohup.out
 tail -f nohup.out &
 tailer=$!
 export sapper sleep tailer
+
+stopper() {
+    ./${sapper}/stop "${args[@]}"
+    sleep 1
+    kill $tailer
+}
 (
-    trap "./${sapper}/stop ${args} ; sleep 1 ; kill $tailer" EXIT
+    trap stopper EXIT
     set -x
-    if ./${sapper}/start ${args}; then
+    if ./${sapper}/start "${args[@]}"; then
         sleep ${sleep}
     else
         exitcode=$?
