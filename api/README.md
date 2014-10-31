@@ -40,10 +40,10 @@ Required permissions:
 #### `fail.db.dynamoDBEndpoint`
 DynamoDB endpoint to connect to. Defaults to `dynamodb.us-east-1.amazonaws.com`.
 
-#### `fail.cli.debug`
+#### `fail.cli.debug=true`
 Set log level to `DEBUG`
 
-#### `fail.cli.trace`
+#### `fail.cli.trace=true`
 Set log level to `TRACE`
 
 ## Hacking
