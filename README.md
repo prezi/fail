@@ -21,9 +21,14 @@ cli/build/install/fail/bin/fail once $TAGKEY=$TAGVALUE $SAPPER $SECONDS [$ARG1 $
 These will choose a single EC2 node in us-east that has the tag `$TAGKEY=$TAGVALUE`, and run $SAPPER for $SECONDS
 seconds on it, optionally passing $ARG1 $ARG2 ... to the sapper. Details below.
 
+Alternatively you may download a release from https://github.com/prezi/fail/releases. Note that the release contains
+ONLY the cli, not any parts of the server side. We try to create releases whenever something changes in the cli, but
+feel free to open an issue if something is missing.
+
 ### Server side
 
-The so called "online" commands (related to scheduling failures) will only be available once there is a running fail server. Generally you'll only need a single instance of this running in your organization - no need to run anything on all the target nodes.
+The so called "online" commands (related to scheduling failures) will only be available once there is a running fail server.
+Generally you'll only need a single instance of this running in your organization - no need to run anything on all the target nodes.
 
 After building with `./gradlew installApp` you can run a local server like this:
 
