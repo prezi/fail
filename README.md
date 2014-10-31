@@ -23,7 +23,7 @@ seconds on it, optionally passing $ARG1 $ARG2 ... to the sapper. Details below.
 
 ### Server side
 
-The so called "online" commands will only be available once there is a running fail server. Generally you'll only need a single instance of this running in your organization - no need to run anything on all the target nodes.
+The so called "online" commands (related to scheduling failures) will only be available once there is a running fail server. Generally you'll only need a single instance of this running in your organization - no need to run anything on all the target nodes.
 
 After building with `./gradlew installApp` you can run a local server like this:
 
