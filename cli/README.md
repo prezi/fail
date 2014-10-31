@@ -1,3 +1,86 @@
+# `fail` CLI
+
+This is the component you'll mostly be interacting with as a user of `fail`.
+
+## Commands
+
+The output of `fail --help` is separated into two parts: an "offline" and an "online" portion. The offline commands
+work from whatever machine you're using to run the `fail` CLI. The online commands are not implemented in the CLI:
+for these the CLI is only an extremely thin client forwarding your command to the `[API](../api)`, which then executes
+your command and responds with the output you see. Even the help for the online commands comes from the API.
+
+### Offline
+
+#### `fail once <target> <sapper> <duration> [arg1 arg2 ...]`
+
+Inject a single failure, once, right now.
+
+ * `<target>`: depends on the scout type used to actually find the target nodes, see the Configuring
+   section for details
+ * `<sapper>`: the name of the failure to inject; you can find the list in [cli/sappers](sappers). Issue
+   https://github.com/prezi/fail/issues/12: a command to list the available sappers.
+ * `<duration>`: a number; how long the failure condition should last, in seconds.
+ * `argN`: arguments to be passed to the sapper. Most don't accept any arguments.
+ 
+#### `fail test-api`
+
+Sends a healthcheck request to the API. See the Configuring section for how to specify the API endpoint.
+
+### Online
+
+#### `fail schedule <period> <target> <sapper> <duration> [arg1 arg2 ...]`
+
+Schedule a failure to be automatically, periodically run.
+
+ * `<period>`: one of the items output by `list-periods`, for example `every-hour`. Failure injection runs are scheduled
+   at a random time within each period.
+ * The rest of the arguments are the same as for `fail once` (see above).
+ 
+#### `fail list-periods`
+
+List the periods available to use for `fail schedule`.
+
+#### `fail list [regex]`
+
+List schedule entries created by `fail schedule`. To clarify: this does NOT list individual failure injection runs,
+but the entry that says "this failure should be scheduled every hour".
+
+ * `[regex]`: optional argument; if provided, only items whose target or sapper match the regex. If you want to 
+   match a substring, don't forget to prepend and append `.*` to the regex.
+   
+#### `fail unschedule <id>`
+
+Remove a schedule entry and cancel any failure runs already scheduled.
+
+ * `<id>`: the ID of a schedule, as output by `fail list` and `fail schedule`
+ 
+#### `fail list-runs`
+
+List individual failure injection runs. 
+
+The `--at`, `--before`, `--after` and `--context` options specify what time-frame to query. The default is to query
+3 hours into the future from now.
+
+ * `--at` is a unix timestamp, defaults to right now.
+ * `--before`, `--after` and `--context` define what time-frame to query around `--at`. The default is `--after P3H`.
+   These options takes an argument that JodaTime can parse as a period. Some examples should be enough to understand the format:
+  * `P1D`: one day
+  * `P1W1D`: one week and one day
+  * `PT3H`: 3 hours. Note the `T`, which marks the end of the date specification and the beginning of the time specification.
+  * `P1DT2H`: 1 day and 2 hours
+
+#### `fail log <id>`
+
+Print the log of a `DONE` or `FAILED` failure injection run. This is the same as if you'd have run the failure manually
+using `fail once`.
+
+ * `<id>`: the ID of an individual failure injection run, as output by `fail list-runs`
+ 
+#### `fail panic` and `fail panic-over`
+
+Engage or disable panic mode. While panic is active, no failure injection runs are started or scheduled. Once 
+https://github.com/prezi/fail/issues/14 is fixed, `fail panic` will also abort any running failure injection runs.
+
 ## Configuring
 
 At startup the file a properties file is optionally loaded. The precedence for configuration values
