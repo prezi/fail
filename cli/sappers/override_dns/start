@@ -1,0 +1,6 @@
+#!/bin/bash
+
+HOST=$1; shift
+IP=${1:-127.0.0.2}
+
+echo "$IP $HOST # added-by-fail" >> /etc/hosts
