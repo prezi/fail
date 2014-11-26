@@ -19,16 +19,16 @@ alias fail=./cli/build/install/fail/bin/fail
 fail once my-host.my-domain.com noop 30 --scout-type DNS  
 
 # Log in to my-host and use all available CPU for 30 seconds
-fail once my-host.my-domain.com pin-cpu 30 --scout-type DNS  
+fail once my-host.my-domain.com pin_cpu 30 --scout-type DNS  
 
 # Log in to my-host and use all available CPU for 30 seconds
-fail once my-host.my-domain.com pin-cpu 30 --scout-type DNS  
+fail once my-host.my-domain.com pin_cpu 30 --scout-type DNS  
 
 # Log in to one EC2 host that has the tag service_name=my-service and use all available CPU for 30 seconds
-fail once service_name=my-service pin-cpu 30  
+fail once service_name=my-service pin_cpu 30  
 
 # Log in to all EC2 hosts that have the tag service_name=my-service and use all available CPU for 30 seconds
-fail once service_name=my-service pin-cpu 30 --all 
+fail once service_name=my-service pin_cpu 30 --all 
 ```
 
 You may also download a release from https://github.com/prezi/fail/releases. Note that the release contains
