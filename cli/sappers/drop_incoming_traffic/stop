@@ -1,0 +1,4 @@
+#!/bin/bash
+
+. $(dirname $0)/../helpers.sh
+restore_iptables drop_incoming_traffic

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+ports="$*"
+
+. $(dirname $0)/../helpers.sh
+
+save_iptables drop_incoming_traffic
+
+for port in $ports; do
+	iptables -A INPUT -p tcp --dport $port -j DROP
+done
