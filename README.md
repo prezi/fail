@@ -12,6 +12,11 @@ Pre-requisites:
  * For EC2 examples: You have AWS credentials configured in ~/.aws/credentials
 
 ```sh
+# Installing the CLI
+## Install the latest release with homebrew 
+brew tap prezi/oss
+brew install fail
+## Or build from source
 ./gradlew installApp
 alias fail=./cli/build/install/fail/bin/fail
 
